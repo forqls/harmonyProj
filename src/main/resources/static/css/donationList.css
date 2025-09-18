@@ -1,165 +1,272 @@
-/* 공통 스타일 */
-body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f9f9f9;
-    color: #333;
-    margin-top: 80px;
+.main_menu_wrap a {
+    color: #1a1a1a !important;
 }
 
-.container {
-    max-width: 1200px; /* 최대 너비 설정 */
-    margin: 0 auto; /* 중앙 정렬 */
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 카드 스타일 */
-    border-radius: 8px; /* 둥근 모서리 */
-}
-
-/* 제목 스타일 */
-h1.title {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #333;
-    text-align: center;
-    margin-bottom: 30px;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 15px;
-}
-
-/* 테이블 스타일 */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-table th, table td {
-    padding: 15px;
-    text-align: center;
-    border: 1px solid #ddd;
+.login_wrap button {
+    background: none;
+    color: #1a1a1a !important;
+    border: none;
     font-size: 1rem;
-}
-
-table th {
-    background-color: #4CAF50;
-    color: white;
-    font-weight: bold;
-}
-
-table tr:nth-child(even) {
-    background-color: #e9ffe7;
-}
-
-table tr:hover {
-    background-color: #f2f2f2;
+    font-weight: 500;
     cursor: pointer;
 }
+/*page header color*/
 
-/* 버튼 스타일 */
-button {
-    background-color: #4CAF50;
+.dona_write{
+    transform: translateX(0px) !important;
+    padding: 0.8rem 3.2rem;
+    font-size: 1.1rem;
+    background-color: #5cc78d;
+    font-weight: 500;
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 1rem;
-    font-weight: bold;
+    border-radius: 9px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    margin: 6rem 0 3rem 1rem;
 }
 
-button:hover {
-    background-color: #45a049;
+
+.doantion_list_wrap {
+    width: 75%;
+    margin: 0 auto;
+    height: 100%;
+    padding: 4rem 0;
+    box-sizing: border-box;
 }
 
-.category_btn_wrap button {
+.list_container {
+    padding: 3rem 0 0;
+}
+
+.dCategory h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+}
+.dCategory h1:before {
+    content: "";
+    display: block;
+    background-image: url(../img/leaves_icon.svg);
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    top: -1.8rem;
+    right: -1.9rem;
+    width: 52px;
+    height: 100%;
+    z-index: 6;
+}
+.dCategory {
+    margin-top: 2rem;
+}
+
+div.searchContainer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.categoryBtn {
+    margin: 2rem 0 1rem;
+    display: inline-block;
+}
+
+.categoryBtn button, td.list_category_custom {
+    border: 1px solid #cfcfcf;
+    border-radius: 50px;
+    margin-right: 0.5rem;
     background: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 100px;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
     font-weight: 400;
-    transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
+}
+td.list_category_custom {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem !important;
+    margin: 0.8rem 0 0.1rem 0.4rem !important;
+}
+.categoryBtn button{
+    font-size: 1.1rem;
+    padding: 0.5rem 1.1rem !important;
+}
+.category_custom input, .category_custom label {
+    cursor: pointer;
 }
 
-.category_btn_wrap button:hover {
+td.list_category_custom{
+    margin-left: 0.4rem !important;
+    border-color: #34D28B !important;
+}
+
+td.list_category_custom, .news_category_custom {
+    color: #34D28B !important;
+}
+
+[type="radio"] {
+    appearance: none;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    width: 1.3em;
+    height: 1.3em;
+    transition: all 0.3s;
+    transform: translateY(2px);
+    margin: 0 5px 0 0;
+}
+[type="radio"]:checked {
+    border: 0.4em solid #34D28B;
+}
+.categoryBtn button.active {
+    border-color: #34D28B;
     color: #34D28B;
+}
+
+.categoryBtn button:hover {
+    border-color: #34D28B;
+    color: #34D28B;
+}
+
+
+
+.category_custom{
+    float: right;
+    margin: 2.7rem 0 1rem;
+}
+
+div.sortCategory input {
+    margin-left: 0.6rem;
+}
+
+.list_container tr {
+    width: 28%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 2.6% 2rem;
+    cursor: pointer;
+    align-items: flex-start;
+}
+
+.list_container tbody {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+table.table {
+    width: 100%;
+    scale: 1.04;
+    margin-top: 2.6rem;
+}
+
+.search_custom {
+    display: inline-block;
+    width: 27rem;
+    border: 2px solid #e8e8e8;
+    border-radius: 50px;
+    padding: 0.9rem;
+}
+select#selectItem {
+    font-weight: 400;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+#selectItem:focus {
+    border: none;
+}
+input#searchInput {
+    border: none;
+    margin-left: 0.4rem;
+    width: 80%;
+    font-size: 1rem;
+}
+button#searchButton {
+    background: #34D28B;
+    border: 1px solid #34D28B;
+    border-radius: 30px;
+    padding: 0.7rem 1.5rem;
+    color: #fff;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-weight: 500;
+    margin-left: 0.7rem;
+}
+
+
+input#searchInput:focus {
+    outline:none;
+}
+
+#searchInput:focus + .search_custom,
+.search_custom:has(#searchInput:focus) {
     border-color: #34D28B;
 }
 
-/* 검색 창 스타일 */
-.searchContainer {
-    display: flex;
-    align-items: center;
-    margin: 20px 0;
+td.img_custom {
+    width: 100%;
+    height: 235px;
+    overflow: hidden;
+    border-radius: 19px;
+    backdrop-filter: blur(1000px) !important;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden; /* 가상 요소가 넘치지 않도록 */
 }
 
-.searchContainer input[type="text"] {
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-right: 10px;
-    width: 250px;
+td.img_custom img {
+    width: auto;
+    height: 100%;
+    position: absolute;
+    right: 50%;
+    transform: translateX(50%);
+}
+.list_custom td {
+    margin: 0.3rem 0px;
 }
 
-.searchContainer button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+td.list_title_custom {
+    font-size: 1.2rem;
+    line-height: 1.2em;
+    letter-spacing: -0.5px;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+td.dona_date, .dona_title_custom {
+    color: #6b6b6b;
+    font-size: 0.9rem !important;
 }
 
-.searchContainer button:hover {
-    background-color: #45a049;
+.dona_list_container tr td:nth-child(2) {
+    padding: 0 !important;
+}
+.dona_list_container tr td {
+    padding: 0 0.4rem;
+}
+.img_custom {
+
 }
 
-/* 라디오 버튼 스타일 */
-.sortCategory {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
+/* 배경 블러 처리 */
+.img_custom::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: inherit;
+    background-size: inherit;
+    background-position: inherit;
+    filter: blur(40px);
+    z-index: -1;
 }
 
-.sortCategory input[type="radio"] {
-    margin-right: 5px;
+td.views_custom {
+    font-size: 0.8rem;
+    margin-top: 0.8rem;
+    color: #6b6b6b;
 }
-
-.sortCategory label {
-    margin-right: 15px;
-    font-size: 1rem;
-    cursor: pointer;
-}
-
-/* 반응형 디자인 */
-@media screen and (max-width: 768px) {
-    .container {
-        margin: 10px;
-        padding: 10px;
-    }
-
-    h1.title {
-        font-size: 1.8rem;
-    }
-
-    table th, table td {
-        font-size: 0.9rem;
-        padding: 10px;
-    }
-
-    .searchContainer input[type="text"] {
-        width: 200px;
-    }
-
-    .sortCategory {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-}
+/*donaList end*/
