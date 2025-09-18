@@ -38,7 +38,7 @@ public class DonationController {
 	public String newsList (Model model){
 		ArrayList<Donation> list = dService.selectDonaList(0);
 		model.addAttribute("list", list);
-		return "/admin/donaList";
+		return "admin/donaList";
 	}
 
 	@GetMapping("/admin/donaDelete/{no}")

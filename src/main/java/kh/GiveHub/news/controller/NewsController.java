@@ -31,7 +31,7 @@ public class NewsController {
 	public String newsList(Model model) {
 		ArrayList<News> list = nService.selectNewsList();
 		model.addAttribute("list", list);
-		return "/admin/newsList";
+		return "admin/newsList";
 	}
 
 	// 관리자 소식 상세 페이지(삭제)
@@ -49,7 +49,7 @@ public class NewsController {
 	public String nnewsList(Model model) {
 		ArrayList<News> list = nService.nnewsList();
 		model.addAttribute("list", list);
-		return "/news/newsList";
+		return "news/newsList";
 	}
 
 	// 디테일 페이지로 들어가기
@@ -57,13 +57,13 @@ public class NewsController {
 	public String newsDetail(Model model, @PathVariable("newsNo") int newsNo) {
 		News n = nService.newsDetail(newsNo);
 		model.addAttribute("n", n);
-		return "/news/newsdetail";
+		return "news/newsdetail";
   }
 	
 	//뉴스 작성 (윤정호)
 	@GetMapping("/news/write")
 	public String newsWrite() {
-		return "/news/newsWrite";
+		return "news/newsWrite";
 	}
 	
 	@PostMapping("/news/insert")
