@@ -28,7 +28,7 @@ public class MemberController {
     //로그인 화면 연결
     @GetMapping("/member/login")
     public String logIn() {
-        return "/member/login";
+        return "member/login";
     }
 
     @PostMapping("/member/login")
@@ -175,7 +175,7 @@ public class MemberController {
     
     @GetMapping("/findmyid")
     public String findmyIdPage() {
-    	return "/member/findmyid";
+    	return "member/findmyid";
     }
     
     @PostMapping("/member/findMyId")
