@@ -60,7 +60,7 @@
     </style>
 </head>
 <body>
-<div th:replace="~{/common/navbar.html :: navbar}"></div>
+<div th:replace="common/navbar.html"></div>
 <script src="/js/common.js"></script>
     <div class="container">
         <form action="/pay" method="post">
@@ -89,7 +89,7 @@
         </form>
     </div>
 <footer>
-    <div th:replace="~{/common/footer.html :: footer_bar}"></div>
+    <div th:replace="common/footer.html"></div>
 </footer>
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script>

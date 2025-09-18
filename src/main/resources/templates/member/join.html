@@ -90,7 +90,7 @@
     <title>Insert title here</title>
 </head>
 <body>
-<div th:replace="~{/common/navbar.html :: navbar}"></div>
+<div th:replace="common/navbar.html"></div>
 <script src="/js/common.js"></script>
 <form id="joinForm" method="post" action="/member/join">
     <table align="center" style="margin-top: 100px;">
@@ -210,7 +210,7 @@
 </form>
 <br><br><br><br><br>
 <footer>
-    <div th:replace="~{/common/footer.html :: footer_bar}"></div>
+    <div th:replace="common/footer.html"></div>
 </footer>
 <script type="text/javascript">
     let idCheck = false;
