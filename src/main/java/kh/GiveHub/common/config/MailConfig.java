@@ -1,4 +1,3 @@
-// 수정 후
 package kh.GiveHub.common.config;
 
 import org.springframework.beans.factory.annotation.Value;
