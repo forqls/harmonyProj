@@ -38,14 +38,11 @@
         select * from donation join member using(mem_no)
     </select>
 
-	<insert id="insertDonation">
-		<selectKey order="BEFORE" resultType="_int" keyProperty="doNo">
-			select seq_do_no.nextval from dual
-		</selectKey>
-		insert into donation
-		values (#{doNo}, #{doTitle}, 'null', #{doGoal}, #{doCategory}, #{doStartDate},
-			#{doEndDate}, default, default, default, #{memNo})
-	</insert>
+    <insert id="insertDonation">
+        insert into donation
+        values (default, #{doTitle}, 'null', #{doGoal}, #{doCategory}, #{doStartDate},
+        #{doEndDate}, default, default, default, #{memNo})
+    </insert>
 	
 	<update id="setContent">
 		update donation
