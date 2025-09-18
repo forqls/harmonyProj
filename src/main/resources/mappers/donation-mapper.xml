@@ -16,9 +16,10 @@
             </if>
             <if test="d.doTitle != null">
                 and do_Title like '%${d.doTitle}%'
+                and do_Title like '%' || #{d.doTitle} || '%'
             </if>
             <if test="d.memName != null">
-                and mem_name like '%${d.memName}%'
+                and mem_name like '%' || #{d.memName} || '%'
             </if>
         </where>
         <choose>
