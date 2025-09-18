@@ -61,10 +61,10 @@
 		join member m on(m.mem_no = p.mem_no)
 		where p.mem_no = #{no} and do_status = 'Y'
 		<if test="type == 0">
-			and do_enddate <![CDATA[>]]> sysdate
+			and do_enddate <![CDATA[>]]> NOW()
 		</if>
 		<if test="type == 1">
-			and do_enddate <![CDATA[<=]]> sysdate
+			and do_enddate <![CDATA[<=]]> NOW()
 
 		</if>
 	</select>
