@@ -11,7 +11,7 @@ import java.sql.Date;
 @Setter
 @ToString
 public class Donation {
-	private int doNo;
+    private int doNo;
     private String doTitle;
     private String doContent;
     private int doGoal;

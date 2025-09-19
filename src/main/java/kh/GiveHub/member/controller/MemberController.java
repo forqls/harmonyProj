@@ -1,20 +1,26 @@
 package kh.GiveHub.member.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
+
 import jakarta.servlet.http.HttpSession;
 import kh.GiveHub.member.model.exception.MemberException;
 import kh.GiveHub.member.model.service.MemberService;
 import kh.GiveHub.member.model.vo.Member;
 import kh.GiveHub.payment.model.vo.Payment;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,26 +28,31 @@ import java.util.Random;
 public class MemberController {
 
     private final MemberService mService;
+    private final PaymentService pService;
 
     private final BCryptPasswordEncoder bcrypt;
 
     //로그인 화면 연결
     @GetMapping("/member/login")
     public String logIn() {
-        return "member/login";
+        return "/member/login";
     }
 
     @PostMapping("/member/login")
-    public String login(Member m, Model model,HttpSession session) {
-//    	System.out.println(bcrypt.encode(m.getMemPwd()));
-    	Member loginUser = mService.login(m);
-//        System.out.println(loginUser);
-        model.addAttribute("loginUser", loginUser);
-        if(loginUser != null && bcrypt.matches(m.getMemPwd(), loginUser.getMemPwd()) && !loginUser.getMemType().equals("2")) {
-    		return "redirect:/";
-    	}else {
-    		return "redirect:/admin/main";
-    	}
+    public String login(Member m, Model model, HttpSession session) {
+        Member loginUser = mService.login(m);
+
+        if (loginUser != null && bcrypt.matches(m.getMemPwd(), loginUser.getMemPwd())) {
+            session.setAttribute("loginUser", loginUser);
+            if (loginUser.getMemType().equals("2")) {
+                return "redirect:/admin/main";
+            }
+            return "redirect:/";
+        }
+
+        model.addAttribute("loginError", "로그인 실패");
+
+        return "/member/login";
     }
 
     //로그아웃
@@ -54,7 +65,7 @@ public class MemberController {
     // 회원가입
     @GetMapping("/member/join")
     public String Join() {
-        return "member/join";
+        return "/member/join";
     }
 
     @PostMapping("/member/join")
@@ -69,7 +80,8 @@ public class MemberController {
         m.setMemPwd(bcrypt.encode(m.getMemPwd()));
         int result = mService.memberJoin(m);
         if (result > 0) {
-            return "redirect:/";
+            pService.memberJoin(m.getMemNo());
+            return "/member/join-success";
         }
         System.out.println(bcrypt);
         throw new MemberException("실패");
@@ -84,17 +96,15 @@ public class MemberController {
     @GetMapping("/member/mypage")
     public String mypage(Model model) {
         int no = ((Member) model.getAttribute("loginUser")).getMemNo();
-        model.addAttribute("list", mService.selectDonationList(no, 0));
-        return "member/mypage";
+        model.addAttribute("list", mService.selectDonationList(no, 2));
+        return "/member/mypage";
     }
 
     @GetMapping("/ongoingList")
     @ResponseBody
     public ArrayList<Payment> ongoingList(Model model) {
         int no = ((Member) model.getAttribute("loginUser")).getMemNo();
-        ArrayList<Payment> list = mService.selectDonationList(no, 0);
-        System.out.println(list);
-        return list;
+        return mService.selectDonationList(no, 0);
     }
 
     @GetMapping("/finishedList")
@@ -110,7 +120,7 @@ public class MemberController {
         if (model.getAttribute("loginUser") != null) {
             ArrayList<Member> list = mService.selectMemberList();
             model.addAttribute("list", list);
-            return "admin/main";
+            return "/admin/main";
         }
         throw new MemberException("실패");
     }
@@ -172,88 +182,88 @@ public class MemberController {
             throw new MemberException("회원 정보 수정 중 오류가 남");
         }
     }
-    
+
     @GetMapping("/findmyid")
     public String findmyIdPage() {
-    	return "member/findmyid";
+        return "/member/findmyid";
     }
-    
+
     @PostMapping("/member/findMyId")
     public void findMyId(@RequestParam("name") String name) {
-    	
+
     }
-    
+
     @GetMapping("/findmyidsuccess")
     public String findMyIdSuccess(@RequestParam("email") String email , Model model) {
-    	String memId = mService.findIdByEmail(email);
-    	System.out.println("잘 들어옴" + email);
-    	System.out.println(memId);
-    	model.addAttribute("memId",memId);
-    	
-    	return "member/findmyidsuccess";
-    	
+        String memId = mService.findIdByEmail(email);
+        System.out.println("잘 들어옴" + email);
+        System.out.println(memId);
+        model.addAttribute("memId",memId);
+
+        return "/member/findmyidsuccess";
+
     }
-    
+
     @GetMapping("/findpassword")
     public String findpasswordPage() {
-    	return "member/findpassword";
+        return "/member/findpassword";
     }
-    
+
     @PostMapping("/temporaryPwd")
     @ResponseBody
     public HashMap<String,String> temporaryPwd(@RequestParam("email") String email) {
 //    	System.out.println("들어온 이메일은 " + email);
-    	
-    	String tempPwd = tempPwdMk();
-    	String encodePwd =  bcrypt.encode(tempPwd);
-    	
-    	
-    	int updatePwdCode = mService.updateTempPwd(email,encodePwd);
-    	String memName = mService.findMemNameByEmail(email);
-    	
-    	HashMap<String,String> result = new HashMap<>();
-    	
-    	result.put("pwd", tempPwd);
-    	result.put("memName", memName);
-    	
-    	System.out.println(updatePwdCode);
-    	System.out.println(memName);
-    	
-    	if(updatePwdCode > 0) {
-    		return result;
-    	}else {
-    		throw new MemberException("오류 발생");
-    	}
+
+        String tempPwd = tempPwdMk();
+        String encodePwd =  bcrypt.encode(tempPwd);
+
+
+        int updatePwdCode = mService.updateTempPwd(email,encodePwd);
+        String memName = mService.findMemNameByEmail(email);
+
+        HashMap<String,String> result = new HashMap<>();
+
+        result.put("pwd", tempPwd);
+        result.put("memName", memName);
+
+        System.out.println(updatePwdCode);
+        System.out.println(memName);
+
+        if(updatePwdCode > 0) {
+            return result;
+        }else {
+            throw new MemberException("오류 발생");
+        }
     }
-    
-    
+
+
     @GetMapping("/findmypasswordsuccess")
     public String findMyPwdSuccess(@RequestParam("pwd") String pwd ,@RequestParam("memName") String memName, Model model) {
-    	System.out.println("잘 들어옴" + pwd);
-    	System.out.println("아주 잘 들어옴 " + memName);
-    	model.addAttribute("memName",memName);
-    	model.addAttribute("memPwd",pwd);
-    	
-    	return "member/findpasswordsuccess";
-    	
+        System.out.println("잘 들어옴" + pwd);
+        System.out.println("아주 잘 들어옴 " + memName);
+        model.addAttribute("memName",memName);
+        model.addAttribute("memPwd",pwd);
+
+        return "/member/findpasswordsuccess";
+
     }
-    
-    
-    
+
+
+
     //임시 비번 생성 메소드
     private String tempPwdMk() {
-    	int length = 10;
-    	String chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    	StringBuilder password = new StringBuilder();
-    	Random random = new Random();
-    	
-    	for(int i=0;i<length;i++) {
-    		password.append(chars.charAt(random.nextInt(chars.length())));
-    	}
-    	
-    	
-    	return password.toString();
-    	
+        int length = 10;
+        String chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder password = new StringBuilder();
+        Random random = new Random();
+
+        for(int i=0;i<length;i++) {
+            password.append(chars.charAt(random.nextInt(chars.length())));
+        }
+
+
+        return password.toString();
+
     }
 
     @GetMapping("/member/delete")
@@ -267,7 +277,21 @@ public class MemberController {
         }
 
     }
-    
-    
-    
+
+
+    @GetMapping("/member/join.email")
+    @ResponseBody
+    public int checkEmail(@RequestParam("email") String email) {
+//    	System.out.println(email);
+        return mService.checkEmail(email);
+    }
+
+
+
+
+
+
+
+
+
 }

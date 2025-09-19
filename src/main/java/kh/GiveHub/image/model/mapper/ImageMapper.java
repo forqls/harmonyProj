@@ -9,4 +9,6 @@ public interface ImageMapper {
 
 	void insertImage(Image img);
 
+	int deleteImage(String filename);
+
 }

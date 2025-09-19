@@ -2,25 +2,25 @@ package kh.GiveHub.member.model.service;
 
 import kh.GiveHub.member.model.vo.Member;
 import kh.GiveHub.payment.model.vo.Payment;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import kh.GiveHub.member.model.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-	
+
 	private final MemberMapper mapper;
 
-    public ArrayList<Member> selectMemberList() {
+	public ArrayList<Member> selectMemberList() {
 		return mapper.selectMemberList();
-    }
+	}
 
-    //로그인
+	//로그인
 	public Member login(Member m) {
 		return mapper.login(m);
 	}
@@ -47,7 +47,7 @@ public class MemberService {
 
 	public int checkIdDuplication(String email) {
 		return mapper.checkIdDuplication(email);
-		
+
 	}
 
 	public int editMemberInfo(Member m) {
@@ -66,9 +66,18 @@ public class MemberService {
 		return mapper.findMemNameByEmail(email);
 	}
 
-    public ArrayList<Payment> selectDonationList(int no, int type) {
+	public ArrayList<Payment> selectDonationList(int no, int type) {
 		return mapper.selectDonationList(no, type);
-    }
+	}
 
 	public int deleteMember(String login) { return mapper.deleteMember(login);}
+
+	public int checkEmail(String email) {
+		return mapper.checkEmail(email);
+	}
+
+	public int updateRank(HashMap<String, Object> rankMap) {
+		return mapper.updateRank(rankMap);
+	}
+
 }

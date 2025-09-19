@@ -15,8 +15,8 @@ import lombok.RequiredArgsConstructor;
 public class NewsService {
     private final NewsMapper mapper;
 
-    public News selectNews(String nNo) {
-        return mapper.selectNews(nNo);
+    public News selectNews(int newsNo) {
+        return mapper.selectNews(newsNo);
     }
 
     public ArrayList<News> selectNewsList() {
@@ -27,36 +27,62 @@ public class NewsService {
         return mapper.deleteNews(nNo);
     }
 
-    public ArrayList<News> nnewsList() {
-        return mapper.nnewsList();
+    public ArrayList<News> nnewsList(int doNo) {
+        return mapper.nnewsList(doNo);
     }
 
     public int setContent(int newsNo, String content) {
         StringBuilder newContent = new StringBuilder(content);
-        Pattern pattern = Pattern.compile("<img[^>]+?src=\"([^\"]+)\"[^>]*?>");
+        //Pattern pattern = Pattern.compile("<img[^>]+?src=\"([^\"]+)\"[^>]*?>");
+//        Pattern pattern = Pattern.compile(
+//				"<img[^>]+?src=\"(?:\\.\\./temp/|\\.\\./\\.\\./temp/|/temp/)([^\"]+)\"[^>]*?>");
+        Pattern pattern = Pattern.compile(
+                "<img[^>]+?src=\"(?:\\.\\./temp/|\\.\\./\\.\\./temp/|/temp/)([^\"]+?)\"([^>]*?)>");
         Matcher matcher = pattern.matcher(content);
-        
+
         int offset = 0;
-        
+
         while(matcher.find()) {
-            String oldPath = matcher.group(1);
-            String newPath = oldPath.replace("/temp/", "/upload/");
-            
-            int startIndex = matcher.start(1) + offset;
-            int endIndex = matcher.end(1) + offset;
-            
-            newContent.replace(startIndex, endIndex, newPath);
-            
-            offset += newPath.length() - oldPath.length();
+            String filename = matcher.group(1);
+            String attributes = matcher.group(2);
+
+            String oldStr = matcher.group(0);
+            String newStr = "<img src=\"/upload/" + filename + "\"" + attributes + ">";
+
+            int startIndex = matcher.start() + offset;
+            int endIndex = matcher.end() + offset;
+
+            newContent.replace(startIndex, endIndex, newStr);
+
+            offset += newStr.length() - oldStr.length();
         }
-        
+
         return mapper.setContent(newsNo, newContent.toString());
     }
 
-	public int insertNews(News n) {
-		return mapper.insertNews(n);
-	}
+    public int insertNews(News n) {
+        return mapper.insertNews(n);
+    }
 
 
     public News newsDetail(int newsNo) {return mapper.newsDetail(newsNo);}
+
+    public ArrayList<News> selectNewsNew() {
+        return mapper.selectNewsNew();
+    }
+
+    public News selectNewsDetail(String newsNo) {return mapper.selectNewsDetail(newsNo);
+    }
+
+    public String getOldContent(int newsNo) {
+        return mapper.getOldContent(newsNo);
+    }
+
+    public int updateNews(News n) {
+        return mapper.updateNews(n);
+    }
+    //쿼리 delete 가 아니라 update status='N'으로 하는거
+    public int deleteNews2(int newsNo) {
+        return mapper.deleteNews2(newsNo);
+    }
 }

@@ -19,4 +19,6 @@ public class News {
     private String doNo;
     private String doTitle;
     private String memName;
+    private String thumbnailPath;
+    private String doCategory;
 }
