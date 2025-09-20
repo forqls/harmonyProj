@@ -1,69 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kh.GiveHub.donation.model.mapper.DonationMapper">
-    <delete id="deleteDona">
-        delete from donation where do_no = #{no}
-    </delete>
-
+    <update id="deleteDona"> update donation set do_status = 'N' where do_no = #{no} </update>
     <select id="selectCategory">
-        select * from donation
-        join member using(mem_no)
-        join (select '/upload/'||IMG_RENAME as thumbnailPath, REF_NO, img_type from image where board_type = 'D' and img_type = '0') on (ref_no = do_no)
+        select * from don_view
         <where>
-            img_type = '0' and do_enddate <![CDATA[>=]]> NOW()
-            <if test="categorySelect != 'all'">
-                and do_category = #{categorySelect}
-            </if>
-            <if test="d.doTitle != null">
-                and do_Title like '%${d.doTitle}%'
-                and do_Title like '%' || #{d.doTitle} || '%'
-            </if>
-            <if test="d.memName != null">
-                and mem_name like '%' || #{d.memName} || '%'
-            </if>
+            do_enddate
+            <![CDATA[ >= ]]>
+            sysdate and do_status = 'Y'
+            <if test="categorySelect != 'all'"> and do_category = #{categorySelect} </if>
+            <if test="d.doTitle != null"> and do_Title like '%${d.doTitle}%' </if>
+            <if test="d.memName != null"> and mem_name like '%${d.memName}%' </if>
         </where>
         <choose>
-            <when test="optionSelect == 'popular'">
-                order by do_views desc
-            </when>
-            <when test="optionSelect == 'recent'">
-                order by do_createdate desc
-            </when>
-            <when test="optionSelect == 'urgent'">
-                order by do_enddate asc
-            </when>
+            <when test="optionSelect == 'popular'"> order by do_views desc </when>
+            <when test="optionSelect == 'recent'"> order by do_createdate desc </when>
+            <when test="optionSelect == 'urgent'"> order by do_enddate asc </when>
         </choose>
     </select>
-
     <select id="selectDonaList">
         select * from donation join member using(mem_no)
+        <if test="i == 1">
+            join (select ('/upload/' || IMG_RENAME) as thumbnailPath, REF_NO, img_type from image where board_type = 'D' and img_type = '0') on (ref_no = do_no) where do_status = 'Y' and do_enddate
+            <![CDATA[ >= ]]>
+            sysdate order by do_createdate desc
+        </if>
+        <if test="i == 0"> order by do_no </if>
     </select>
-
     <insert id="insertDonation">
-        insert into donation
-        values (default, #{doTitle}, 'null', #{doGoal}, #{doCategory}, #{doStartDate},
-        #{doEndDate}, default, default, default, #{memNo})
+        <selectKey order="BEFORE" resultType="_int" keyProperty="doNo"> select seq_do_no.nextval from dual </selectKey>
+        insert into donation values (#{doNo}, #{doTitle}, 'null', #{doGoal}, #{doCategory}, #{doStartDate}, #{doEndDate}, default, default, default, #{memNo})
     </insert>
-	
-	<update id="setContent">
-		update donation
-		set do_content = #{content}
-		where do_no = #{doNo}
-	</update>
-
-    <select id="selectDonation">
-        select *
-        from donation
-            join member using(mem_no)
-            join (select '/upload/'||IMG_RENAME as thumbnailPath, REF_NO, img_type from image where board_type = 'D' and img_type = '0') on (ref_no = do_no)
-            left join (select do_no, sum(pay_amount) pay_amount, count(*) pay_count from payment where do_no = #{doNo} group by do_no) using(do_no)
-        where do_status = 'Y' and do_no =#{doNo}
+    <update id="setContent"> update donation set do_content = #{content} where do_no = #{doNo} </update>
+    <select id="getOldContent"> select do_content from donation where do_no = #{doNo} </select>
+    <update id="updateDonation"> update Donation set do_title = #{doTitle}, do_goal = ${doGoal}, do_category = #{doCategory}, do_enddate = #{doEndDate} where do_no = #{doNo} </update>
+    <select id="selectNew">
+        <![CDATA[ SELECT * FROM ( SELECT * FROM donation join (select ('/upload/' || IMG_RENAME) as thumbnailPath, REF_NO, img_type from image where board_type = 'D' and img_type = '0') on (ref_no = do_no) WHERE do_status = 'Y' ORDER BY do_createdate DESC) WHERE ROWNUM <= 3 ]]>
     </select>
-
-    <update id="updateCount">
-        update donation
-        set do_views = do_views + 1
-        where do_no = #{doNo}
-    </update>
+    <select id="selectDonation"> select * from donation join member using(mem_no) left join (select '/upload/'||IMG_RENAME as thumbnailPath, REF_NO, img_type from image where board_type = 'D' and img_type = '0') on (ref_no = do_no) left join (select do_no, sum(pay_amount) pay_amount, count(*) pay_count from payment where do_no = #{doNo} group by do_no) using(do_no) where do_status = 'Y' and do_no =#{doNo} </select>
+    <update id="updateCount"> update donation set do_views = do_views + 1 where do_no = #{doNo} </update>
+    <select id="selectMostCategoryList">
+        select * from don_view where do_category=#{mostCategory} and do_status='Y' and do_enddate
+        <![CDATA[ >= ]]>
+        sysdate FETCH FIRST 2 ROWS ONLY
+    </select>
+    <select id="selectDeadLineList">
+        select * from don_view where do_status='Y' and do_enddate
+        <![CDATA[ >= ]]>
+        sysdate order by do_enddate FETCH FIRST 2 ROWS ONLY
+    </select>
+    <update id="deleteDonation"> update donation set do_status='N' where do_no = #{doNo} </update>
 </mapper>
 

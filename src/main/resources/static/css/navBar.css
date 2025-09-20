@@ -14,36 +14,40 @@ header {
 
 
 .top_wrap{
-	width: 94%;
+    width: 94%;
     padding: 0 3%;
-	height: 80px;
+    height: 80px;
     z-index: 1;
 }
+div#logo {
+    width: 65px;
+}
 .logo_main a {
-	height: 100%;
+    width: 60px;
+    height: 100%;
     display: flex;
     align-items: center;
 }
 div#top_bar {
-	margin: 0 auto;
-	display: flex;
-	justify-content: space-between;
-	
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+
 }
 
 li.main_menu_img {
-   width: 354px;
+    width: 354px;
 }
 
 img {
-   width: 100%;
+    width: 100%;
 }
 
 nav#main_menu>Ul>li>a {
-   display: block;
-   position: absolute;
-   z-index: 1;
-   color: #fff;
+    display: block;
+    position: absolute;
+    z-index: 1;
+    color: #fff;
 }
 
 nav#main_menu ul li a {
@@ -56,21 +60,22 @@ nav#main_menu ul li a {
 }
 
 .img_menu ul {
-   display: inline-block;
-   margin-top: 1rem;
+    display: inline-block;
+    margin-top: 1rem;
 }
 
 nav#main_menu {
-    width: 70%;
-    padding-left: 7%;
+    width: 75.5%;
+    /*padding-left: 7%;*/
 }
+
 div.slide_up_inner_menu>ul:first-child {
-   margin-right: 8rem;
+    margin-right: 8rem;
 }
 
 .img_menu li {
-	margin-bottom:0.5rem;
-   line-height: 1.5rem;
+    margin-bottom:0.5rem;
+    line-height: 1.5rem;
 }
 
 .main_menu_wrap ul {
@@ -92,17 +97,17 @@ div#slide_up_menu {
 }
 .slide_up_inner_menu {
     width: 100%;
-    padding-left: 18.8%;
+    padding-left: 12.9%;
 }
 .slide_up_inner_menu a>li {
-	color:#fff;
+    color:#fff;
 }
 .slide_up_inner_menu a>li>img {
-	border-radius: 17px;
+    border-radius: 17px;
 }
 .login_wrap {
-	display: flex;
-	justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }
 .login_wrap button {
     background: none;
@@ -118,3 +123,31 @@ button#myPage, button#login {
 }
 
 /* header end */
+
+/* footer */
+footer {
+    background: #31BC7E;
+}
+
+footer .logo_white {
+    width: 70px;
+}
+
+footer .footer_text01 a, footer span {
+    color: #fff;
+}
+
+footer .footer_text01 a {
+    margin-right: 1rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+footer span {
+    font-size: 1rem;
+}
+
+.footer_text {
+    padding: 1.9rem 0 0;
+}
+/* footer end */

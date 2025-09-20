@@ -42,19 +42,43 @@ tinymce.init({
             const file = this.files[0];
             const imgName =
                 file.name.substring(file.name.lastIndexOf("/") + 1);
-            const path = await processImage(file, imgName, 1);
-            pathArr.push(path);
-            callback(path, { title: file.name });
+            const temppath = await processImage(file, imgName, 1);
+            callback(temppath, { title: file.name });
         }
         input.click();
+    },
+    //이건 기능과 상관 없는 확인용 코드임.
+    //무엇을 확인? - 이미지 경로 관련.
+    setup: function(editor) {
+        console.log('현재 URL:', window.location.pathname);
+        console.log('TinyMCE base URL:', editor.documentBaseUrl);
+        console.log('TinyMCE settings:', editor.settings);
+
+        editor.on('BeforeSetContent', function(e) {
+            console.log('Content before processing:', e.content);
+        });
+
+        editor.on('SetContent', function(e) {
+            console.log('Content after processing:', e.content);
+            // DOM에서 직접 img 태그들을 찾아서 경로 확인
+            const images = editor.getBody().getElementsByTagName('img');
+            Array.from(images).forEach((img, i) => {
+                console.log(`Image ${i + 1}:`, {
+                    src: img.getAttribute('src'),
+                    'data-mce-src': img.getAttribute('data-mce-src'),
+                    baseURI: img.baseURI
+                });
+            });
+        });
     }
+
 });
 
 //썸네일
 const thumbBtn = document.getElementById("thumbBtn");
 thumbBtn.addEventListener("click", function () {
     const input = document.createElement("input");
-    const thumbImg = document.getElementById("thumbImg");
+    const thumbPre = document.getElementById("thumbPre");
     input.setAttribute("type", "file");
     input.setAttribute("accept", "image/*");
 
@@ -63,29 +87,34 @@ thumbBtn.addEventListener("click", function () {
         const imgName =
             file.name.substring(file.name.lastIndexOf("/") + 1);
         console.log(imgName);
-        const path = await processImage(file, imgName, 0);
-        thumbImg.src = path;
-        pathArr.push(path);
+        const temppath = await processImage(file, imgName, 0);
+        thumbPre.src = temppath;
     }
     input.click();
 });
 
 //이미지 임시 저장
-const processImage = async function (file, imgName, imgType) {
+const processImage = async function(file, imgName, imgType){
     const formData = new FormData();
     formData.append("image", file);
     formData.append("imgName", imgName);
     formData.append("imgType", imgType);
 
     try {
-        const response = await fetch("/image/temp", {
-            method: "POST",
-            body: formData
+        const response = await fetch("/image/temp",{
+            method:"POST",
+            body:formData
         });
-        if (!response.ok) {
+        if(!response.ok){
             throw new Error("Upload failed : !response.ok");
         }
-        return await response.text();
+        //경로 확인용
+        const temppath = await response.text();
+        console.log('서버에서 받은 경로:', temppath);
+        pathArr.push(temppath);
+        console.log('callback에 전달하기 전 경로:', temppath);
+        //
+        return temppath;
     } catch (error) {
         console.error(error);
     }
@@ -95,72 +124,135 @@ const processImage = async function (file, imgName, imgType) {
 /////버튼 관련
 const submitBtn = document.getElementById("submitBtn");
 const backBtn = document.getElementById("backBtn");
+const editBtn = document.getElementById("editBtn");
 
 //제출 버튼
-submitBtn.addEventListener("click", async function (e) {
-    //도네이션 insert 
-    const form = document.querySelector("form");
-    let bid;
-    try {
-        const response = await fetch("/news/insert", {
-            method: "POST",
-            body: new FormData(form)
-        });
-        if (!response.ok) {
-            throw new Error("failed : insert news")
+if(submitBtn){
+    submitBtn.addEventListener("click", async function(e) {
+        //뉴스 insert
+        const form = document.querySelector("form");
+        let bid;
+        try {
+            const response = await fetch("/news/insert",{
+                method: "POST",
+                body: new FormData(form)
+            });
+            if(!response.ok){
+                throw new Error("failed : insert news")
+            }
+            bid = await response.json();
+            console.log(bid);
+        } catch (error) {
+            console.error
         }
-        bid = await response.json();
-        console.log(bid);
-    } catch (error) {
-        console.error
-    }
 
-    //1)이미지들 temp->upload로 이동
-    //2)content 넣기
-    const content = tinymce.get("newsContent").getContent();
-    const boardType = document.getElementById("boardType").value;
+        //1)이미지들 temp->upload로 이동
+        //2)content 넣기
+        const content = tinymce.get("newsContent").getContent();
+        const boardType = document.getElementById("boardType").value;
 
-    try {
-        const formData = new FormData();
-        pathArr.forEach(fileName => {
-            formData.append("uploadFileNames", fileName);
-        });
-        formData.append("bid", bid);
-        formData.append("content", content);
-        formData.append("boardType", boardType);
-        const response = await fetch("/image/upload", {
-            method: "POST",
-            body: formData
-        });
-        if (!response.ok) {
-            throw new Error("failed : save upload");
+        try {
+            const formData = new FormData();
+            pathArr.forEach(temppath=>{
+                formData.append("uploadFiles", temppath);
+            });
+            formData.append("bid", bid);
+            formData.append("content", content);
+            formData.append("boardType", boardType);
+            const response = await fetch("/image/upload",{
+                method: "POST",
+                body: formData
+            });
+            if(!response.ok){
+                throw new Error("failed : save upload (upload news content)");
+            }
+            const isUploaded = await response.json();
+            if(isUploaded){
+                alert("후원글 작성이 완료되었습니다.");
+                window.location.href="/news/newsList";
+            }
+        } catch (error) {
+            console.error(error);
         }
-    } catch (error) {
-        console.error(error);
-    }
-});
+    });
+}
+//수정 완료 버튼
+if(editBtn){
+    console.log("editBtn loaded");
+    editBtn.addEventListener("click", async function(){
 
-//뒤로가기 버튼 
-backBtn.addEventListener("click", async function () {
-    try {
-        const formData = new FormData();
-        pathArr.forEach(fileName => {
-            formData.append("uploadFileNames", fileName);
-        });
-        const response = await fetch("/image/delete", {
-            method: "DELETE",
-            body: formData
-        });
-        if (!response.ok) {
-            throw new Error("delete temp files failed");
+        //뉴스 update
+        const form = document.querySelector("form");
+        let result = 0;
+        try {
+            const response = await fetch("/news/update",{
+                method: "POST",
+                body: new FormData(form)
+            });
+            if(!response.ok){
+                throw new Error("failed : insert news")
+            }
+            result = await response.json();
+            console.log("update result : "+result);
+        } catch (error) {
+            console.error
         }
-        const isDeleted = await response.json();
-        if (disDeleted) {
-            window.history.back();
+
+        //
+        if(result == 1){
+            try {
+                const formData = new FormData();
+                const bid = document.getElementById("newsNo").value;
+                const content = tinymce.get("newsContent").getContent();
+                pathArr.forEach(temppath => {
+                    formData.append("updateFiles", temppath);
+                });
+                formData.append("bid", bid);
+                formData.append("boardType", "news");
+                formData.append("content", content);
+                const response = await fetch("/image/update",{
+                    method: "POST",
+                    body: formData
+                });
+                if(!response.ok){
+                    throw new Error("failed : save upload (update news content)");
+                }
+                const isUpdated = await response.json();
+                if(isUpdated){
+                    alert("후원글 수정이 완료되었습니다.");
+                    window.location.href="/news/newsList";
+                }
+            } catch (error) {
+                console.error(error);
+            }
         }
-    } catch (error) {
-        console.error(error);
-    }
-});
+    });
+}
+//뒤로가기 버튼
+if(backBtn){
+    backBtn.addEventListener("click", async function(){
+        console.log(pathArr);
+        try{
+            const formData = new FormData();
+            pathArr.forEach(path=>{
+                formData.append("tempFiles", path);
+            });
+            const response = await fetch("/image/delete",{
+                method: "POST",
+                body: formData
+            });
+            if (!response.ok){
+                throw new Error("delete temp files failed");
+            }
+            const isDeleted = await response.json();
+            console.log(isDeleted);
+            if (isDeleted){
+                window.history.back();
+            }
+        }catch(error){
+            console.error(error);
+        }
+    });
+}
 //////////
 

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kh.GiveHub.payment.model.mapper.PaymentMapper">
+    <insert id="savePayment" parameterType="kh.GiveHub.payment.model.vo.PaymentRequest"> insert into payment values(seq_pay_no.nextval,#{amount},sysdate,'success',#{memNo},#{doNo}) </insert>
+    <select id="totalAmount"> select sum(pay_amount) from payment where mem_no=#{memNo} </select>
+    <insert id="memberJoin"> insert into payment values(seq_pay_no.nextval,0,sysdate,'success',#{memNo},167) </insert>
+</mapper>

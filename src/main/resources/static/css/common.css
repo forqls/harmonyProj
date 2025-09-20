@@ -1,7 +1,7 @@
 /* 웹사이트 전체 기본 설정값 */
 @import
-	url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Playwrite+FR+Trad:wght@100..400&family=Rhodium+Libre&display=swap')
-	;
+url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Playwrite+FR+Trad:wght@100..400&family=Rhodium+Libre&display=swap')
+;
 
 * {
 	color: #0A0A0A;
@@ -21,7 +21,7 @@ a {
 	width: 75%;
 	margin: 0 auto;
 	height: 100%;
-	padding: 4rem 0;
+	padding: 5rem 0;
 	box-sizing: border-box;
 }
 

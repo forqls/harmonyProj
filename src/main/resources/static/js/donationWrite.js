@@ -71,14 +71,38 @@ tinymce.init({
 
         input.onchange = async function () {
             const file = this.files[0];
-            const imgName = 
-            file.name.substring(file.name.lastIndexOf("/")+1);
-            const path = await processImage(file, imgName, 1);
-            pathArr.push(path);
-            callback(path, { title: file.name });
+            const imgName =
+                file.name.substring(file.name.lastIndexOf("/")+1);
+            const temppath = await processImage(file, imgName, 1);
+            callback(temppath, { title: file.name });
         }
         input.click();
+    },
+    //이건 기능과 상관 없는 확인용 코드임.
+    //무엇을 확인? - 이미지 경로 관련.
+    setup: function(editor) {
+        console.log('현재 URL:', window.location.pathname);
+        console.log('TinyMCE base URL:', editor.documentBaseUrl);
+        console.log('TinyMCE settings:', editor.settings);
+
+        editor.on('BeforeSetContent', function(e) {
+            console.log('Content before processing:', e.content);
+        });
+
+        editor.on('SetContent', function(e) {
+            console.log('Content after processing:', e.content);
+            // DOM에서 직접 img 태그들을 찾아서 경로 확인
+            const images = editor.getBody().getElementsByTagName('img');
+            Array.from(images).forEach((img, i) => {
+                console.log(`Image ${i + 1}:`, {
+                    src: img.getAttribute('src'),
+                    'data-mce-src': img.getAttribute('data-mce-src'),
+                    baseURI: img.baseURI
+                });
+            });
+        });
     }
+
 });
 
 //썸네일
@@ -91,11 +115,10 @@ thumbBtn.addEventListener("click",function(){
 
     input.onchange = async function(){
         const file = input.files[0];
-        const imgName = 
+        const imgName =
             file.name.substring(file.name.lastIndexOf("/")+1);
-        const path = await processImage(file, imgName, 0);
-        thumbPre.src = path;
-        pathArr.push(path);
+        const temppath = await processImage(file, imgName, 0);
+        thumbPre.src = temppath;
     }
     input.click();
 });
@@ -115,89 +138,165 @@ const processImage = async function(file, imgName, imgType){
         if(!response.ok){
             throw new Error("Upload failed : !response.ok");
         }
-        return await response.text();
+        const temppath = await response.text();
+        pathArr.push(temppath);
+        console.log(pathArr);
+        return temppath;
     } catch (error) {
         console.error(error);
     }
+
 };
 //////////
 
 /////버튼 관련
 const submitBtn = document.getElementById("submitBtn");
 const backBtn = document.getElementById("backBtn");
-
+const editBtn = document.getElementById("editBtn");
+document.getElementById("doCategory").addEventListener("change", function(){
+    console.log(doCategory.value);
+});
 //제출 버튼
-submitBtn.addEventListener("click", async function (e) {
-    //카테고리 유뮤 확인
-    const doCategory = document.getElementById("doCategory");
-    if (doCategory.value == null) {
-        alert("donation category");
-        doCategory.focus();
-        e.preventDefault;
-    }
-
-    //도네이션 insert 
-    const form = document.querySelector("form");
-    let bid;
-    try {
-        const response = await fetch("/donation/insert",{
-            method: "POST",
-            body: new FormData(form)
-        });
-        if(!response.ok){
-            throw new Error("failed : insert donation")
+if(submitBtn){
+    submitBtn.addEventListener("click", async function(e) {
+        //카테고리 유뮤 확인
+        const doCategory = document.getElementById("doCategory");
+        if (doCategory.value == "null") {
+            console.log(doCategory.value);
+            alert("donation category");
+            return;
         }
-        bid = await response.json();
-        console.log(bid);
-    } catch (error) {
-        console.error
-    }
 
-    //1)이미지들 temp->upload로 이동
-    //2)content 넣기
-    const content = tinymce.get("doContent").getContent();
-    const boardType = document.getElementById("boardType").value; 
+        //도네이션 insert
+        const form = document.querySelector("form");
+        let bid;
+        try {
+            const response = await fetch("/donation/insert",{
+                method: "POST",
+                body: new FormData(form)
+            });
+            if(!response.ok){
+                throw new Error("failed : insert donation")
+            }
+            bid = await response.json();
+            console.log(bid);
+        } catch (error) {
+            console.error
+        }
 
-    try {
-        const formData = new FormData();
-        pathArr.forEach(fileName=>{
-            formData.append("uploadFileNames", fileName);
-        });
-        formData.append("bid", bid);
-        formData.append("content", content);
-        formData.append("boardType", boardType);
-        const response = await fetch("/image/upload",{
-            method: "POST",
-            body: formData
-        });
-        if(!response.ok){
-            throw new Error("failed : save upload");
-        }
-    } catch (error) {
-        console.error(error);
-    }
-});
+        //1)이미지들 temp->upload로 이동
+        //2)content 넣기
+        const content = tinymce.get("doContent").getContent();
+        const boardType = document.getElementById("boardType").value;
 
-//뒤로가기 버튼 
-backBtn.addEventListener("click", async function(){
-    try{
-        const formData = new FormData();
-        pathArr.forEach(fileName=>{
-            formData.append("uploadFileNames", fileName);
-        });
-        const response = await fetch("/image/delete",{
-            method: "DELETE",
-            body: formData
-        });
-        if (!response.ok){
-            throw new Error("delete temp files failed");
+        try {
+            const formData = new FormData();
+            pathArr.forEach(temppath=>{
+                formData.append("uploadFiles", temppath);
+            });
+            formData.append("bid", bid);
+            formData.append("content", content);
+            formData.append("boardType", boardType);
+            const response = await fetch("/image/upload",{
+                method: "POST",
+                body: formData
+            });
+            if(!response.ok){
+                throw new Error("failed : save upload (upload donation content)");
+            }
+            const isUploaded = await response.json();
+            if(isUploaded){
+                alert("후원글 작성이 완료되었습니다.");
+                window.location.href="/donation/donationlist";
+            }
+        } catch (error) {
+            console.error(error);
         }
-        const isDeleted = await response.json();
-        if (disDeleted){
-            window.history.back();
+    });
+}
+//수정 완료 버튼
+if(editBtn){
+    console.log("editBtn loaded");
+    editBtn.addEventListener("click", async function(){
+
+        const doCategory = document.getElementById("doCategory");
+        if (doCategory.value == "null") {
+            console.log(doCategory.value);
+            alert("donation category");
+            return;
         }
-    }catch(error){
-        console.error(error);
-    }
-});
+
+        //도네이션 update
+        const form = document.querySelector("form");
+        let result = 0;
+        try {
+            const response = await fetch("/donation/update",{
+                method: "POST",
+                body: new FormData(form)
+            });
+            if(!response.ok){
+                throw new Error("failed : insert donation")
+            }
+            result = await response.json();
+            console.log("update result : "+result);
+        } catch (error) {
+            console.error
+        }
+
+        //
+        if(result == 1){
+            try {
+                const formData = new FormData();
+                const bid = document.getElementById("doNo").value;
+                const content = tinymce.get("doContent").getContent();
+                pathArr.forEach(temppath => {
+                    formData.append("updateFiles", temppath);
+                });
+                formData.append("bid", bid);
+                formData.append("boardType", "donation");
+                formData.append("content", content);
+                const response = await fetch("/image/update",{
+                    method: "POST",
+                    body: formData
+                });
+                if(!response.ok){
+                    throw new Error("failed : save upload (update donation content)");
+                }
+                const isUpdated = await response.json();
+                if(isUpdated){
+                    alert("후원글 수정이 완료되었습니다.");
+                    window.location.href="/donation/donationlist";
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    });
+}
+//뒤로가기 버튼
+if(backBtn){
+    backBtn.addEventListener("click", async function(){
+        console.log(pathArr);
+        try{
+            const formData = new FormData();
+            pathArr.forEach(path=>{
+                formData.append("tempFiles", path);
+            });
+            const response = await fetch("/image/delete",{
+                method: "POST",
+                body: formData
+            });
+            if (!response.ok){
+                throw new Error("delete temp files failed");
+            }
+            const isDeleted = await response.json();
+            console.log(isDeleted);
+            if (isDeleted){
+                window.history.back();
+            }
+        }catch(error){
+            console.error(error);
+        }
+    });
+}
 //////////

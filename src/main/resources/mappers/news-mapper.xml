@@ -1,47 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="kh.GiveHub.news.model.mapper.NewsMapper">
-	<select id="selectNews">
-		select * from news
-			join donation using(do_no)
-		where news_no = #{nNo}
-	</select>
-
-	<select id="selectNewsList">
-		select * from news join donation using(do_no)
-	</select>
-
-	<delete id="deleteNews">
-		delete from news where news_no = #{nNo}
-	</delete>
-
+	<select id="selectNews"> select * from news_view where news_no = #{newsNo} </select>
+	<select id="selectNewsList"> select * from news_view order by news_no </select>
+	<update id="deleteNews"> update news set news_status = 'N' where news_no = #{nNo} </update>
 	<select id="nnewsList">
-		select n.*, d.do_title, m.mem_name
-		from news n
-		join donation d on (n.do_no = d.do_no)
-		join member m on (d.mem_no = m.mem_no)
+		select * from news_view where news_status = 'Y'
+		<if test="doNo != 0"> and do_no = #{doNo} </if>
+		order by news_no desc
 	</select>
-
 	<insert id="insertNews">
-		<selectKey order="BEFORE" resultType="_int" keyProperty="newsNo">
-			select seq_news_no.nextval from dual
-		</selectKey>
-		insert into news
-		values (#{newsNo}, #{newsTitle}, 'null', default,
-		 default, #{memNo}, #{doNo})
+		<selectKey order="BEFORE" resultType="_int" keyProperty="newsNo"> select seq_news_no.nextval from dual </selectKey>
+		insert into news values (#{newsNo}, #{newsTitle}, 'null', default, default, #{memNo}, #{doNo})
 	</insert>
-	<update id="setContent">
-		update news
-		set news_content = #{newContent}
-		where news_no = #{newsNo}
-	</update>
-
-	<select id="newsDetail">
-		select *
-		from news
-		join donation using(do_no)
-		where news_no = #{newsNo}
+	<update id="setContent"> update news set news_content = #{newContent} where news_no = #{newsNo} </update>
+	<update id="updateNews"> update news set news_title = #{newsTitle} where news_no = #{newsNo} </update>
+	<select id="getOldContent"> select news_content from news where news_no = #{newsNo} </select>
+	<select id="newsDetail"> select * from news_view where news_no = #{newsNo} </select>
+	<select id="selectNewsNew">
+		<![CDATA[ select * FROM news_view where ROWNUM <= 3 and news_status ='Y' ]]>
 	</select>
-	
+	<select id="selectNewsDetail"> select * from news_view where news_no = #{newsNo} </select>
+	<update id="deleteNews2"> update news set news_status ='N' where news_no = #{newsNo} </update>
 </mapper>

@@ -44,13 +44,13 @@ p.category.category_white {
 }
 
 h3.board_title {
-    font-size: 2rem;
-    font-weight: 400;
-    width: 60%;
-    letter-spacing: -1.5px;
-    line-height: 1.2em;
-    margin-bottom: 1.2rem;
-    color: #fff;
+   font-size: 2rem;
+   font-weight: 400;
+   width: 80%;
+   letter-spacing: -1.5px;
+   line-height: 1.2em;
+   margin-bottom: 1.2rem;
+   color: #fff;
 }
 
 .title_wrap p {
@@ -65,24 +65,54 @@ h3.board_title {
 
 .slide_img, .board_img {
    display: flex;
+   height: auto;
 }
+
 /* 공통영역 end */
 
 
-	
+
 section#section_01 {
    height: 90vh;
 }
 
 .main_wrap {
    background-image: url(../img/sitting_brother.jpg);
-   height: 90vh;
-   background-size: cover;
-   background-repeat: repeat;
-   position: absolute;
-   top: 0;
-   left: 0;
-   width: 100%;
+   height: 88vh;
+   background-repeat: no-repeat;
+   background-position: center;
+   background-size: 110%;
+   animation-name : bg_size_custom;
+   animation-duration : 8s;
+}
+
+@keyframes  bg_size_custom {
+   0% {
+      background-size: 100%;
+   }
+   100% {
+      background-size: 110%;
+   }
+}
+.text_animation_h1 h1{
+   transition-delay: 1s;
+   animation-name : text_animation;
+   animation-duration : 1s;
+}
+.text_animation_p p{
+   animation-name : text_animation;
+   animation-duration : 1s;
+}
+span.text_animation_custom {
+   overflow: hidden;
+}
+@keyframes  text_animation {
+   0% {
+      transform: translateY(50px);
+   }
+   100% {
+      transform: translateY(0px);
+   }
 }
 
 .main_title_wrap {
@@ -114,15 +144,19 @@ section#section_01 {
    border-radius: 17px;
    border: 1px solid #fff;
    padding: 1rem 2.8rem;
+   cursor: pointer;
 }
 /* section01(main) end */
 section#section_02 {
-    padding-top: 7rem;
+   padding-top: 7rem;
 }
 .right_container {
-    width: 87.5%;
-    float: right;
-    padding: 2rem 0 4rem;
+   width: 87.5%;
+   float: right;
+   padding: 2rem 0 4rem;
+}
+span.link_text {
+   color: #fff;
 }
 
 #section_02 .title_wrap {
@@ -134,9 +168,20 @@ section#section_02 {
 .title_container {
    position: relative;
 }
+div.visual_img {
+   width: 100%;
+   overflow: hidden;
+   position: relative;
+}
+div.slide_img_wrap {
+   width: 340%;
+   display: flex;
+   transition: transform 0.5s ease-in-out;
+}
 
 .img_wrap {
-   width: 24%;
+   width: 19%;
+   height: 60vh !important;
    margin-right: 72px;
    position: relative;
    overflow: hidden;
@@ -154,6 +199,10 @@ section#section_02 {
    opacity: 0;
    color: #fff;
 }
+.img_wrap a {
+   height: 100% !important;
+   display: block;
+}
 
 .slide_img_wrap .text_wrap a {
    color: #fff;
@@ -161,13 +210,30 @@ section#section_02 {
 }
 
 .custom_board_img {
+   height: 360px;
+   width: auto;
    border-radius: 17px;
    overflow: hidden;
+   position: relative;
    display: flex;
+   backdrop-filter: blur(1000px) !important;
+   background-size: cover;
+   background-position: center;
+}
+.custom_board_img img {
+   height: 100% !important;
+   width: auto !important;
+   /*position: absolute;*/
+   /*left: 50%;*/
+   /*top: 50%;*/
+   /*transform: translate(-50%, -50%);*/
 }
 
 .img_wrap img, .custom_board_img img {
    transition-duration: 1s;
+   border-right: 19px;
+   width: 100%;
+   height: auto;
 }
 
 .img_wrap:hover img, .custom_board_img:hover img {
@@ -182,7 +248,7 @@ section#section_02 {
 }
 
 .img_wrap:hover img {
-   filter: brightness(0.7);
+   filter: brightness(0.5);
 }
 
 .right_arrow:after {
@@ -234,7 +300,7 @@ section#section_02 {
 }
 
 .board_img_wrap {
-	display:flex;
+   display:flex;
    width: 300%;
    margin-right: 72px;
    float: left;
@@ -261,7 +327,7 @@ section#section_02 {
 }
 
 .board_content_text_wrap {
-   padding: 1.2rem 1.5rem;
+   padding: 1.2rem;
 }
 
 .board_content_text_wrap .title {
@@ -310,8 +376,8 @@ div.dona_btn a {
    font-size: 1.2rem;
    font-weight: 500;
    letter-spacing: 0px;
-   transition-duration: 0.5s  
-   
+   transition-duration: 0.5s
+
 }
 
 .dona_btn a:hover {
@@ -320,14 +386,14 @@ div.dona_btn a {
 }
 
 #floating_btn {
-    position: fixed;
-    bottom: 14rem;
-    right: 3%;
-    z-index: 1000;
-    transition: all 0.3s ease-in-out;
+   position: fixed;
+   bottom: 14rem;
+   right: 3%;
+   z-index: 1000;
+   transition: all 0.3s ease-in-out;
 }
 
 #floating_btn {
-    transition: all 0.3s ease-in-out;
+   transition: all 0.3s ease-in-out;
 }
 /* floationg Button */

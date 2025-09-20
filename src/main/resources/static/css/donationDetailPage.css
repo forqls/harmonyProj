@@ -1,8 +1,12 @@
 @import
-	url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Playwrite+FR+Trad:wght@100..400&family=Rhodium+Libre&display=swap');
+url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Playwrite+FR+Trad:wght@100..400&family=Rhodium+Libre&display=swap');
 .detail_title_wrap {
     text-align: center;
     margin: 5rem 0 2rem;
+}
+
+.container{
+    overflow: hidden;
 }
 
 
@@ -10,7 +14,7 @@ p.title_sub_text {
     font-size: 1.3rem;
     color: #1D9206;
     font-weight: 400;
-     margin-bottom: 0.6rem;
+    margin-bottom: 0.6rem;
 }
 h1.donation_detail_text {
     font-size: 3.2rem;
@@ -77,12 +81,140 @@ p.donation_data_small {
     line-height: 15px;
 }
 
+.donation_img_wrap {
+    display: inline-block;
+    margin-right: 72px;
+    height: 490px;
+    overflow: hidden;
+    border-radius: 17px;
+    position: relative;
+}
+.donation_img_wrap img {
+    height: 100%;
+    width: auto !important;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
+span.edit_delete_btn {
+    float: right;
+}
 
+button#doanteBtn {
+    padding: 0.8rem 3.2rem;
+    font-size: 1.1rem;
+    background-color: #5cc78d;
+    font-weight: 500;
+    color: white;
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    margin: 6rem 0 2rem;
+}
 
+button#newsWriteBtn, button#editBtn{
+    padding: 0.8rem 3.2rem;
+    font-size: 1.1rem;
+    background-color: #fff;
+    font-weight: 500;
+    color: #4caf75;
+    border: 1px solid #4caf75;
+    border-radius: 9px;
+    cursor: pointer;
+    margin: 6rem 0 2rem;
+}
 
+button#deleteBtn{
+    padding: 0.8rem 3.2rem;
+    font-size: 1.1rem;
+    background-color: #fff;
+    font-weight: 500;
+    color: #606060;
+    border: 1px solid #898989;
+    border-radius: 9px;
+    cursor: pointer;
+    margin: 6rem 0 2rem;
+}
 
+button#doanteBtn:hover {
+    background-color: #4db575; /* hover 시 색상 변경 */
+}
 
+button#newsWriteBtn:hover {
+    font-weight: 500;
+}
 
+button#editBtn:hover {
+    font-weight: 500;
+}
 
+button#deleteBtn:hover {
+    font-weight: 500;
+}
+
+div#floating_btn {
+    display: inline-block;
+}
+
+.news_write_wrap {
+    display: inline-block;
+    float: right;
+    margin: 6rem 0 2rem;
+}
+.news_write_wrap button{
+    cursor: pointer;
+}
+
+.newsList_custom .select_list {
+    border: 1px solid #dfdfdf;
+    border-radius: 19px;
+    padding: 1.6rem 1.8rem;
+    box-sizing: border-box;
+    text-align: justify;
+    margin-bottom: 2rem;
+    transition-duration: 0.2s;
+    width: 28%;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    align-items: flex-start;
+}
+.newsList_custom .select_list:nth-child(even){
+    margin: 0 2.6% 2rem;
+}
+tbody.newsList_custom {
+    display: flex;
+    flex-wrap: wrap;
+}
+.newsList_custom td {
+    margin-bottom: 0.5rem;
+}
+
+.newsList_custom .select_list:hover {
+    border: 1px solid #34D28B;
+    transition-duration: 0.2s;
+}
+tr.selectlist.select_list td:last-child {
+    margin-top: 1rem;
+}
+table.table {
+    width: 96%;
+    scale: 1 !important;
+    margin: 2.6rem auto 0;
+}
+h2.news_title {
+    margin-top: 3rem;
+    font-size: 2.2rem;
+}
+button.delete_btn {
+    border: 1px solid #a9a9a9;
+    background: #fff;
+    padding: 0.8rem 2rem;
+    border-radius: 9px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #898989;
+}
 
