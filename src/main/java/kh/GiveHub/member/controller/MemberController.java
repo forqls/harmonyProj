@@ -20,6 +20,7 @@ import kh.GiveHub.member.model.exception.MemberException;
 import kh.GiveHub.member.model.service.MemberService;
 import kh.GiveHub.member.model.vo.Member;
 import kh.GiveHub.payment.model.vo.Payment;
+import kh.GiveHub.payment.model.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
