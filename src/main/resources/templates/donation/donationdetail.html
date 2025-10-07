@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link href="/css/reset.css" rel="stylesheet" type="text/css">
-<link href="/css/common.css" rel="stylesheet" type="text/css">
-<link href="/css/donationDetailPage.css" rel="stylesheet" type="text/css">
-<link href="/css/navBar.css" rel="stylesheet" type="text/css">
-<link href="/css/footer.css" rel="stylesheet" type="text/css">
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<link href="/css/reset.css" rel="stylesheet" type="text/css">
+	<link href="/css/common.css" rel="stylesheet" type="text/css">
+	<link href="/css/donationDetailPage.css" rel="stylesheet" type="text/css">
+	<link href="/css/navBar.css" rel="stylesheet" type="text/css">
+	<link href="/css/donationList.css" rel="stylesheet" type="text/css">
+
 	<style>
 		.main_menu_wrap a {
 			color: #1a1a1a !important;
 		}
-
-
 		.login_wrap button {
 			background: none;
 			color: #1a1a1a !important;
@@ -22,81 +21,237 @@
 			font-weight: 500;
 			cursor: pointer;
 		}
+		.donation_content img{
+			width: auto !important;
+		}
+
+		tbody .selectlist:hover {
+			cursor: pointer; /* 마우스 커서 변경 */
+		}
+		table.table{width: 100%}
+		.modal-container {
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.5);
+			justify-content: center;
+			align-items: center;
+			z-index: 3;
+		}
+		.modal-content {
+			background-color: white;
+			padding: 40px;
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+			max-width: 500px;
+			width: 90%;
+			position: relative;
+		}
+		.donation_content {
+			margin-top: 3rem;
+			border: 2px solid #e7e7e7;
+			border-radius: 17px;
+			padding: 4rem 3rem 2rem;
+		}
 	</style>
+	<meta charset="UTF-8">
 </head>
 <style>
 </style>
 <body>
-<div th:replace="common/navbar.html"></div>
+<div th:replace="~{common/navbar.html :: navbar}"></div>
 <script src="/js/common.js"></script>
-	<section>
-		<div class="container">
-			<div class="detail_title_wrap">
-				<p class="title_sub_text">후원</p>
-				<h1 class="donation_detail_text">[[${d.doTitle}]]</h1>
-				<p class="page_category">[[${d.doCategory}]]</p>
+<section>
+	<div class="container">
+		<div class="detail_title_wrap">
+			<p class="title_sub_text">후원</p>
+			<h1 class="donation_detail_text">[[${d.doTitle}]]</h1>
+			<p class="page_category">[[${d.doCategory}]]</p>
+		</div>
+
+		<p id="doNo" hidden>[[${d.doNo}]]</p>
+		<p hidden>[[${session.loginUser != null ? session.loginUser.memNo : ''}]]</p>
+
+		<div class="donation_info">
+			<div class="donation_img_wrap">
+				<img th:src="@{${d.thumbnailPath}}" alt="">
 			</div>
-
-			<div class="donation_info">
-				<div class="donation_img_wrap">
-					<img th:src="@{${d.thumbnailPath}}" alt="">
-				</div>
-				<div class="donation_info_text_wrap">
-					<ul>
-						<li>
-							<p>모인 금액</p> <span display="inline-block"><p class="donation_data" th:text="${d.payAmount}"></p>
+			<div class="donation_info_text_wrap">
+				<ul>
+					<li>
+						<p>모인 금액</p> <span display="inline-block"><p class="donation_data" th:text="${d.payAmount}"></p>
 								<span>원</span>
-								<p class="donation_data_small" th:text="${1.0*d.payAmount/d.doGoal*100}"></p>
+								<p class="donation_data_small" th:text="${#numbers.formatDecimal(1.0*d.payAmount/d.doGoal*100, 1, 1)}"></p>
 								<span style="font-weight: 900">%</span></span>
-						</li>
-						<li>
-							<p>남은시간</p>
-							<p class="donation_data" th:text="${date}"></p>
-							<span>일</span>
-						</li>
-						<li>
-							<p>후원자</p>
-							<p class="donation_data" th:text="${d.payCount}"></p>
-							<span>명</span>
-						</li>
-					</ul>
+					</li>
+					<li>
+						<p>남은시간</p>
+						<p class="donation_data" th:text="${date}"></p>
+						<span>일</span>
+					</li>
+					<li>
+						<p>후원자</p>
+						<p class="donation_data" th:text="${d.payCount}"></p>
+						<span>명</span>
+					</li>
+				</ul>
 
-					<ul class="info_text_second">
-						<li><span><p style="font-weight: 500">목표금액</p></span> <span><p th:text="${d.doGoal}"></p>
+				<ul class="info_text_second">
+					<li><span><p style="font-weight: 500">목표금액</p></span> <span><p th:text="${d.doGoal}"></p>
 								<span>원</span></span></li>
-						<li><span><p style="font-weight: 500">기부 기간</p></span> <span><p>[[${d.doStartDate}]]</p>
+					<li><span><p style="font-weight: 500">기부 기간</p></span> <span><p>[[${d.doStartDate}]]</p>
 								<span>~</span>
 								<p>[[${d.doEndDate}]]</p></span></li>
-					</ul>
-				</div>
-			</div>
-			<div style="text-align: center" class="bar-label" th:text="${1.0*d.payAmount/d.doGoal*100+'%'}"></div>
-			<div class="bar-container">
-				<div id="Content_bar" class="bar" th:style="'width:' + ${1.0*d.payAmount/d.doGoal*100 < 100 ? #strings.toString(1.0*d.payAmount/d.doGoal*100) : '100'} + '%;'"></div>
-			</div>
-			<!-- ajax -->
-<!--			<script type="text/javascript">-->
-<!--				$(document).ready(function() {-->
-<!--					document.getElementById("Content_bar").style.width = '20%';-->
-<!--				});-->
-<!--			</script>-->
-			<div class="doantion_content">
-			
-			</div>
-			
-			<div class="content_board_wrap">
-				<table class="content_board">
-				</table>
-			</div>
+				</ul>
 
+			</div>
+		</div>
+		<div style="text-align: center" class="bar-label" th:text="${#numbers.formatDecimal(1.0*d.payAmount/d.doGoal*100, 1, 1)+'%'}"></div>
+		<div class="bar-container">
+			<div id="Content_bar" class="bar"
+				 th:style="'width:' + ${1.0*d.payAmount/d.doGoal*100 < 100 ? #strings.toString(1.0*d.payAmount/d.doGoal*100) : '100'} + '%;'"></div>
+		</div>
+		<!-- ajax -->
+		<!--			<script type="text/javascript">-->
+		<!--				$(document).ready(function() {-->
+		<!--					document.getElementById("Content_bar").style.width = '20%';-->
+		<!--				});-->
+		<!--			</script>-->
 
+		<br><br>
+		<div class="donation_content" th:utext="${d.doContent}">
 
 		</div>
-	</section>
+		<br><br>
+		<div class="content_board_wrap">
+			<table class="content_board">
+			</table>
+		</div>
+
+		<div id="floating_btn" class="dona_btn">
+			<button id="doanteBtn">후원하기</button>
+		</div>
+
+		<th:block th:if="${session.loginUser != null}">
+            <span class="edit_delete_btn">
+                <button th:if="${session.loginUser.memNo == d.memNo}" id="newsWriteBtn" type="button" onclick="newsWrite()">
+                    소식글 작성
+                </button>
+                <button th:if="${session.loginUser.memNo == d.memNo}" id="editBtn" type="button" onclick="doEdit()">
+                    수정
+                </button>
+                <button class="delete_btn" th:if="${session.loginUser.memNo == d.memNo}" type="button" onclick="openModal('deleteModal')">
+                    삭제
+                </button>
+            </span>
+		</th:block>
+
+
+
+		<div class="donationList">
+			<h2 class="news_title">그 후의 이야기</h2>
+			<table class="table">
+				<!--                <thead>-->
+				<!--                <tr>-->
+				<!--                    <th>번호</th>-->
+				<!--                    <th>새소식 제목</th>-->
+				<!--                    <th>올린 날짜</th>-->
+				<!--                    <th>프로젝트 팀</th>-->
+				<!--                </tr>-->
+				<!--                </thead>-->
+				<tbody class="newsList_custom">
+				<tr class="selectlist select_list" th:each="n : ${list}">
+					<td class="news_category_custom" th:text="${n.newsNo}"></td>
+					<td class="list_title_custom" th:text="${n.newsTitle}"></td>
+					<td th:text="${n.memName}"></td>
+					<td class="dona_date" th:text="${n.newsCreateDate}"></td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</section>
+
 <footer>
-	<div th:replace="common/footer.html"></div>
+	<div th:replace="~{common/footer.html :: footer_bar}"></div>
 </footer>
 
+<div class="modal-container" id="deleteModal" data-modal>
+	<div class="modal-content">
+		<h1 class="donation_detail_text">경고</h1>
+		<p class="donation_data_small">정말로 삭제하시겠습니까?</p>
+		<div class="buttonDiv">
+			<button onclick="doDelete()">확인</button>
+			<button onclick="closeModal('deleteModal')">취소</button>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	const newsWrite = () => {
+		const doNo = document.getElementById("doNo").textContent;
+		window.location.href= "/news/write/"+doNo;
+	};
 
+	const doEdit = () => {
+		const doNo = document.getElementById("doNo").textContent;
+		window.location.href="/donation/edit/"+doNo;
+	};
+	//아래는 Modal 사용하는 방법이라는데,
+	//클래스 정의를하지 않고 간단히 사용할 수 있지만
+	//공부할겸 이 방법으로 해봤습니다. (윤정호)
+	class Modal{
+		constructor(modalId){
+			this.modal = document.getElementById(modalId);
+			this.isOpen = false;
+		}
+		open(){
+			this.modal.style.display = "flex";
+			this.isOpen = true;
+		}
+		close(){
+			this.modal.style.display="none";
+			this.isOpen=false;
+		}
+	}
+	const modals = new Map();
+	document.querySelectorAll('[data-modal]').forEach(element => {
+		const modalId = element.id;
+		modals.set(modalId, new Modal(modalId));
+	});
+
+	const openModal=function(modalId){
+		const modal = modals.get(modalId)
+		modal.open();
+	}
+	const closeModal=function(modalId){
+		const modal = modals.get(modalId)
+		modal.close();
+	}
+
+	const doDelete=()=>{
+		const doNo = document.getElementById("doNo").textContent;
+		window.location.href="/donation/delete/"+doNo;
+	}
+
+	window.onload = () => {
+		document.getElementById("doanteBtn").addEventListener("click", function () {
+			const doNo = document.getElementById("doNo").textContent;
+
+			const paymentUrl = `/payment?doNo=${encodeURIComponent(doNo)}`;
+			window.location.href = paymentUrl;
+		});
+
+
+		document.querySelectorAll('.selectlist').forEach((tr) => {
+			tr.addEventListener('click', () => {
+				const newsNo = tr.children[0].innerText; // 첫 번째 td에서 newsNo 가져오기
+				// 해당 newsNo로 URL을 이동
+				location.href = "/news/newsDetail/" + newsNo;
+			});
+		});
+	};
+</script>
 </body>
 </html>

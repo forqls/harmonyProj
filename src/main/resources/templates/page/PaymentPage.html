@@ -7,48 +7,24 @@
     <link href="/css/reset.css" rel="stylesheet" type="text/css">
     <link href="/css/common.css" rel="stylesheet" type="text/css">
     <link href="/css/navBar.css" rel="stylesheet" type="text/css">
-    <link href="/css/footer.css" rel="stylesheet" type="text/css">
+    <link href="/css/page.css" rel="stylesheet" type="text/css">
     <title>기부 페이지</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
+            min-height: calc(100vh - 247px);
         }
-        .container {
-            display: inline-block;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        .container.payment_container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .container input[type="radio"],
         .container input[type="text"] {
-            margin: 10px 0;
-        }
-        .container input[type="text"] {
-            padding: 5px;
-            width: 150px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .submit-btn {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .submit-btn:hover {
-            background-color: #45a049;
+            margin: 10px 6px 10px 0;
         }
         .main_menu_wrap a {
             color: #1a1a1a !important;
         }
-
-
         .login_wrap button {
             background: none;
             color: #1a1a1a !important;
@@ -57,44 +33,94 @@
             font-weight: 500;
             cursor: pointer;
         }
+        input#donor-name {
+            font-size: 1.8rem;
+            width: 167px;
+            font-weight: 500;
+            border: none;
+        }
+        input#donor-name:focus{
+            outline: none;
+        }
+        .choose_custom {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        .choose_custom span {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            align-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+            margin-right: 1.2rem;
+        }
+        .dona_mem {
+            font-size: 1.8rem;
+        }
+        button#payBtn {
+            margin-top: 2rem;
+        }
+        .choose_custom label, .text_style {
+            font-size: 1.2rem;
+        }
     </style>
 </head>
 <body>
-<div th:replace="common/navbar.html"></div>
+<div th:replace="~{common/navbar.html :: navbar}"></div>
 <script src="/js/common.js"></script>
-    <div class="container">
-        <form action="/pay" method="post">
-            <div>
-                <label for="donor-name">기부자</label>
-                <input type="text" id="donor-name" name="donater" placeholder="이름 입력" value="#" readonly> 님
-            </div>
-            <div>
-                <input type="radio" id="amount1" name="amount" value="10000">
-                <label for="amount1">1만원</label>
-                <input type="radio" id="amount2" name="amount" value="30000">
-                <label for="amount2">3만원</label>
-                <input type="radio" id="amount3" name="amount" value="50000">
-                <label for="amount3">5만원</label>
-                <br>
-                <input type="radio" id="amount4" name="amount" value="100000">
-                <label for="amount4">10만원</label>
-                <input type="radio" id="amount5" name="amount" value="200000">
-                <label for="amount5">20만원</label>
-            </div>
-            <div>
-                <label for="custom-amount">직접입력</label>
-                <input type="text" id="custom-amount" name="customAmount" placeholder="금액 입력"> 원
-            </div>
-            <button type="button" class="submit-btn" id="payBtn">결제 하기</button>
-        </form>
-    </div>
+<div class="container payment_container">
+    <form action="/pay" method="post">
+        <div class="dona_mem">
+            <label for="donor-name">기부자</label>
+            <input type="text" id="donor-name" name="donater" placeholder="이름 입력" th:value="${memName}" readonly>님
+        </div>
+        <p style="visibility: hidden;">[[${session.loginUser.memNo}]]</p>
+        <p id="doNo" hidden>[[${doNo}]]</p>
+        <p id="memNo" hidden>[[${session.loginUser.memNo}]]</p>
+        <div class="choose_custom">
+                <span>
+                    <input type="radio" id="amount1" name="amount" value="10000">
+                    <label for="amount1">1만원</label>
+                </span>
+            <span>
+                    <input type="radio" id="amount2" name="amount" value="30000">
+                    <label for="amount2">3만원</label>
+                </span>
+            <span>
+                    <input type="radio" id="amount3" name="amount" value="50000">
+                    <label for="amount3">5만원</label>
+                </span>
+            <br>
+            <span>
+                    <input type="radio" id="amount4" name="amount" value="100000">
+                    <label for="amount4">10만원</label>
+                </span>
+            <span>
+                    <input type="radio" id="amount5" name="amount" value="200000">
+                    <label for="amount5">20만원</label>
+                </span>
+
+        </div>
+        <div class="text_style">
+            <label for="custom-amount">직접입력</label>
+            <input type="text" id="custom-amount" name="customAmount" placeholder="금액 입력"> 원
+        </div>
+        <button type="button" class="submitBtn" id="payBtn">결제 하기</button>
+    </form>
+</div>
 <footer>
-    <div th:replace="common/footer.html"></div>
+    <div th:replace="~{common/footer.html :: footer_bar}"></div>
 </footer>
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script>
     // 아임포트 초기화
     IMP.init("imp64726784");
+    const doNo = document.getElementById("doNo").textContent;
+    const doName = document.getElementById("donor-name").value;
+    const memNo = document.getElementById("memNo").textContent;
+
 
     document.getElementById("payBtn").addEventListener("click", function() {
         const amountList = document.getElementsByName('amount');
@@ -124,12 +150,9 @@
             pg: "html5_inicis.INIpayTest", // 사용할 PG사
             pay_method: "card", // 결제 방식
             merchant_uid: "order_" + new Date().getTime(), // 주문 고유 번호
-            name: "기부금 결제", // 결제 상품명
+            name: doNo, // 결제 테이블 번호
             amount: amount, // 결제 금액
-            buyer_email: "user@example.com", // 구매자 이메일
-            buyer_name: "홍길동", // 구매자 이름
-            buyer_tel: "010-1234-5678", // 구매자 전화번호
-            buyer_addr: "서울특별시 강남구 테헤란로" // 구매자 주소
+            buyer_name: doName // 구매자 이름
         }, function(rsp) {
             if (rsp.success) {
                 alert("결제가 완료되었습니다. 결제 금액: " + rsp.paid_amount);
@@ -140,12 +163,17 @@
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        imp_uid: rsp.imp_uid,
-                        merchant_uid: rsp.merchant_uid
+                        impuid: rsp.imp_uid,
+                        merchantuid: rsp.merchant_uid,
+                        amount : parseInt(rsp.paid_amount, 10),
+                        name:doName,
+                        doNo:parseInt(doNo, 10),
+                        memNo: parseInt(memNo, 10)
                     })
                 }).then(response => {
                     if (response.ok) {
                         alert("결제 정보가 서버에 성공적으로 전달되었습니다.");
+                        window.location.href = window.location.protocol + "//" + window.location.host;
                     } else {
                         alert("서버 전송 중 문제가 발생했습니다.");
                     }
@@ -154,6 +182,10 @@
                 alert("결제에 실패하였습니다. 오류 메시지: " + rsp.error_msg);
             }
         });
+
+
+
+
     });
 </script>
 </body>

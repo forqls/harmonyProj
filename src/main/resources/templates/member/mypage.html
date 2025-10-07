@@ -1,568 +1,617 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link href="/css/reset.css" rel="stylesheet" type="text/css">
-<link href="/css/common.css" rel="stylesheet" type="text/css">
-<link href="/css/navBar.css" rel="stylesheet" type="text/css">
-<link href="/css/footer.css" rel="stylesheet" type="text/css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<style>
-.page_container {
-	padding-top: 12rem;
-}
-.my_info_container {
-    width: 25%;
-	min-width: 240px;
-    margin-right: 72px;
-}
-.my_info_wrap {
-    width: 100%;
-}
-.my_info_menu_wrap {
-    background: #f9f9f9;
-    padding: 3rem;
-    border-radius: 17px;
-}
-p.text_color.my_info_title {
-    color: #1D9206;
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-}
-.my_info_menu_wrap button {
-    border: none;
-    background: none;
-    display: block;
-    margin-bottom: 1.8rem;
-    font-size: 1rem;
-    padding: 0;
-    cursor: pointer;
-    font-weight: 400;
-}
-.my_info_menu_wrap button:last-child {
-    margin-bottom: 0;
-}
-.my_info_menu_wrap button:last-child {
-    color: #C22D2D;
-    font-weight: 500;
-}
-.my_info_menu_wrap hr {
-    margin: 3rem 0;
-}
-label.delete_user {
-    color: #919191;
-    cursor: pointer;
-}
-.my_info_container .my_info_menu_wrap:last-child {
-    padding: 2rem 3rem;
-    margin-top: 2.5rem;
-}
-.info_container {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-}
-.user_intro div:first-child p {
-    font-size: 2rem;
-}
-.user_intro p {
-    display: inline-block;
-    font-size: 1.2rem;
-    line-height: 1.3em;
-}
-.user_intro img {
-    width: 40px;
-}
-.user_intro div {
-    display: flex;
-    align-items: center;
-	margin-bottom: 0.5rem;
-}
-.info_detail_wrap {
-    padding: 3rem;
-    margin-top: 2rem;
-    box-shadow: 4px 4px 20px #f1f1f1;
-    border-radius: 17px;
-}
-.info_detail_wrap hr {
-    height: 1px;
-    background: #e1e1e1;
-    border: 0;
-}
-.info_detail_wrap table tr {
-    display: block;
-    padding-bottom: 2rem;
-}
-.info_detail_wrap table {
-    margin-top: 3.5rem;
-    width: 100%;
-}
-.info_detail_wrap tbody tr:last-child {
-    padding-bottom: 0;
-}
-.info_detail_wrap table tr td:first-child {
-    width: 20%;
-}
-.info_detail_wrap table tr td:first-child {
-    width: 110px;
-}
-.main_menu_wrap a {
-	color: #1a1a1a !important;
-}
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<link href="/css/reset.css" rel="stylesheet" type="text/css">
+	<link href="/css/common.css" rel="stylesheet" type="text/css">
+	<link href="/css/navBar.css" rel="stylesheet" type="text/css">
+	<link href="/css/page.css" rel="stylesheet" type="text/css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<style>
+		.page_container {
+			padding-top: 12rem;
+		}
+		.my_info_container {
+			width: 25%;
+			min-width: 240px;
+			margin-right: 72px;
+		}
+		.my_info_wrap {
+			width: 100%;
+		}
+		.my_info_menu_wrap {
+			background: #f9f9f9;
+			padding: 3rem;
+			border-radius: 17px;
+		}
+		p.text_color.my_info_title {
+			cursor: pointer;
+			color: #1D9206;
+			font-size: 1.2rem;
+			margin-bottom: 2rem;
+		}
+		.my_info_menu_wrap button {
+			border: none;
+			background: none;
+			display: block;
+			margin-bottom: 1.8rem;
+			font-size: 1rem;
+			padding: 0;
+			cursor: pointer;
+			font-weight: 400;
+		}
+		.my_info_menu_wrap button:last-child {
+			margin-bottom: 0;
+		}
+		.my_info_menu_wrap button:last-child {
+			color: #C22D2D;
+			font-weight: 500;
+		}
+		.my_info_menu_wrap hr {
+			margin: 3rem 0;
+		}
+		label.delete_user {
+			color: #919191;
+			cursor: pointer;
+		}
+		.my_info_container .my_info_menu_wrap:last-child {
+			padding: 2rem 3rem;
+			margin-top: 2.5rem;
+		}
+		.info_container {
+			display: flex;
+			flex-direction: row;
+			align-items: flex-start;
+		}
+		.user_intro div:first-child p {
+			font-size: 2rem;
+		}
+		.user_intro p {
+			display: inline-block;
+			font-size: 1.2rem;
+			line-height: 1.3em;
+		}
+		.user_intro img {
+			width: 40px;
+		}
+		.user_intro div {
+			display: flex;
+			align-items: center;
+			margin-bottom: 0.5rem;
+		}
+		.info_detail_wrap {
+			padding: 3rem;
+			margin-top: 2rem;
+			box-shadow: 4px 4px 20px #f1f1f1;
+			border-radius: 17px;
+		}
+		.info_detail_wrap hr {
+			height: 1px;
+			background: #e1e1e1;
+			border: 0;
+		}
+		.info_detail_wrap table tr {
+			display: block;
+			padding-bottom: 2rem;
+			margin-left: 0;
+		}
+		.info_detail_wrap table {
+			margin-top: 3.5rem;
+			width: 100%;
+		}
+		.info_detail_wrap tbody tr:last-child {
+			padding-bottom: 0;
+		}
+		.info_detail_wrap table tr td:first-child {
+			width: 15%;
+			display: inline-block;
+		}
+		.main_menu_wrap a {
+			color: #1a1a1a !important;
+		}
+		.page_container table td {
+			display: inline-block !important;
+		}
+
+		.login_wrap button {
+			background: none;
+			color: #1a1a1a !important;
+			border: none;
+			font-size: 1rem;
+			font-weight: 500;
+			cursor: pointer;
+		}
+
+		#buttonDiv {
+			margin-top: 3rem;
+		}
+
+		#buttonDiv>button {
+			width: 45%;
+			background: #5cc78d;
+			border: 0 solid #fff;
+			border-radius: 19px;
+			color: white;
+			font-size: 1.2rem;
+			padding: 1rem;
+		}
+		#buttonDiv>button:first-child {
+			margin-right: 5%;
+		}
+
+		table {
+			display: flex;
+			margin-top: 30px;
+		}
+
+		table td {
+			padding: 3px;
+			margin-top: 10px;
+		}
+
+		tr>td:nth-child(1) {
+			width: 300px;
+		}
+
+		td>button {
+			background: #edb1b2;
+			color: red;
+			border: 0 solid #fff;
+			border-radius: 3px;
+			width: 40px;
+			height: 25px;
+		}
+
+		.main_menu_wrap a {
+			color: #1a1a1a !important;
+		}
 
 
-.login_wrap button {
-	background: none;
-	color: #1a1a1a !important;
-	border: none;
-	font-size: 1rem;
-	font-weight: 500;
-	cursor: pointer;
-}
+		.login_wrap button {
+			background: none;
+			color: #1a1a1a !important;
+			border: none;
+			font-size: 1rem;
+			font-weight: 500;
+			cursor: pointer;
+		}
 
 
-#buttonDiv {
-	margin-left: 70px;
-	margin-top: 20px;
-}
+		.col {
+			display: flex;
+			flex-direction: column;
+			padding: 10px;
+		}
 
-#buttonDiv>button {
-	height: 41px;
-	width: 280px;
-	background: #34D28B;
-	border: 0 solid #fff;
-	border-radius: 14px;
-	color: white;
-	font-size: 12pt;
-	margin-left: 10px;
-	margin-right: 10px;
-}
+		#labelCol>* {
+			font-size: 13pt;
+			margin: 10px;
+			margin-top: 22px;
+		}
 
-table {
-	display: flex;
-	margin-top: 30px;
-	margin-left: 40px;
-}
+		#labelCol>label:nth-child(3) {
+			margin-top: 28px;
+		}
 
-table td {
-	padding: 3px;
-	margin-top: 10px;
-}
+		#inputCol input {
+			margin-top: 14px;
+		}
 
-tr>td:nth-child(1) {
-	width: 300px;
-}
+		.row {
+			margin-top: 1.5rem;
+			display: flex;
+			flex-direction: column;
+		}
 
-tr>td:nth-child(2) {
-	width: 80px;
-}
+		#inputCol>input[name=address] {
+			margin-top: 2px;
+		}
 
-tr>td:nth-child(3) {
-	width: 90px;
-}
+		span {
+			color: #2ab54c;
+			visibility: hidden;
+			margin-left: 16%;
+			font-size: 13px;
+			margin-top: 0.5rem;
+		}
+		.text_style button {
+			background: transparent;
+			color: #4caf75;
+			border: 1px solid #4caf75;
+			border-radius: 9px;
+			padding: 0.8rem 0.8rem;
+			margin-left: 1rem;
+		}
+		.text_style {
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			flex-direction: row;
+		}
 
-tr>td:nth-child(4) {
-	width: 150px;
-}
+		.my_info_wrap form {
+			display: block;
+		}
+		.text_style label {
+			width: 15%;
+		}
+		.text_style {
+			margin-top: 1.5rem;
+		}
+		.my_info_wrap button.submitBtn {
+			margin-top: 2.5rem;
+			padding: 0.8rem 4rem;
+		}
+		#tableDiv table.table {
+			display: flex;
+			flex-direction: column;
+		}
+		.info_detail_wrap tbody {
+			width: 100%;
+		}
 
-td>button {
-	background: #edb1b2;
-	color: red;
-	border: 0 solid #fff;
-	border-radius: 3px;
-	width: 40px;
-	height: 25px;
-}
+		#myDonaTbody td {
+			text-align: left;
+			width: 100%;
+			box-sizing: border-box;
 
-.main_menu_wrap a {
-	color: #1a1a1a !important;
-}
+		}
+
+		/*#myDonaTbody tr:hover {*/
+		/*	background-color: #f2f2f2; */
+		/*	cursor: pointer; */
+		/*}*/
+
+		#myDonaTbody tr {
+			display: flex !important;
+			flex-direction: column;
+			flex-wrap: wrap;
+			width: 45%;
+			float: left;
+			border: 1px solid #dfdfdf;
+			border-radius: 19px;
+			padding: 1.6rem 1.8rem;
+			box-sizing: border-box;
+			text-align: justify;
+			margin-bottom: 4rem;
+		}
+		#myDonaTbody tr td:first-child {
+			width: 100%;
+		}
+		#myDonaTbody tr:nth-child(odd) {
+			margin-right: 5.5%;
+		}
 
 
-.login_wrap button {
-	background: none;
-	color: #1a1a1a !important;
-	border: none;
-	font-size: 1rem;
-	font-weight: 500;
-	cursor: pointer;
-}
 
 
-
-
-
-
-
-form {
-	display: flex;
-	flex-direction: column;
-}
-
-.col {
-	display: flex;
-	flex-direction: column;
-	padding: 10px;
-}
-
-#labelCol>* {
-	font-size: 13pt;
-	margin: 10px;
-	margin-top: 22px;
-}
-
-#labelCol>label:nth-child(3) {
-	margin-top: 28px;
-}
-
-#inputCol input {
-	margin-top: 14px;
-}
-
-.row {
-	display: flex;
-	flex-direction: row;
-}
-
-form>button {
-	height: 41px;
-	width: 280px;
-	background: #34D28B;
-	border: 0 solid #fff;
-	border-radius: 14px;
-	color: white;
-	font-size: 12pt;
-	margin-left: 80px;
-	margin-top: 20px;
-}
-
-#emailDiv>button {
-	border: 1px solid #34D28B;
-	border-radius: 10px;
-	color: #34D28B;
-	background: white;
-	height: 40px;
-	width: 80px;
-	margin-left: 15px;
-}
-
-input {
-	height: 28px;
-	padding: 5px;
-	border: 1px solid gray;
-	border-radius: 10px;
-	width: 240px;
-	text-align: justify;
-}
-
-input[name^=rrn] {
-	width: 105px;
-}
-
-#inputCol>input[name=address] {
-	margin-top: 2px;
-}
-
-span {
-	font-size: 9pt;
-	color: #2ab54c;
-	margin-top: 0;
-	margin-left: 4px;
-	visibility: hidden;
-}
-</style>
+	</style>
 </head>
 <body>
-<div th:replace="common/navbar.html"></div>
+<div th:replace="~{common/navbar.html :: navbar}"></div>
 <script src="/js/common.js"></script>
 
-	<div class="container info_container page_container">
+<div class="container info_container page_container">
 
-		<div class="my_info_container">
-			<div class="my_info_menu_wrap">
-				<p id="myProfile" class="text_color my_info_title infoMenu">My Profile</p>
-				<button id="editMyInfo" class="infoMenu">내 정보 수정</button>
-				<button id="myDonaList" class="infoMenu">기부 내역 조회</button>
-				<hr>
-<!--				<button onclick="location.href='redirect:/'">Log out</button>-->
-			</div>
-			<div class="my_info_menu_wrap">
-				<label class="delete_user" onclick="location.href='/member/delete'">탈퇴하기</label>
-			</div>
+	<div class="my_info_container">
+		<div class="my_info_menu_wrap">
+			<p id="myProfile" class="text_color my_info_title infoMenu">My Profile</p>
+			<button id="editMyInfo" class="infoMenu">내 정보 수정</button>
+			<button id="myDonaList" class="infoMenu">기부 내역 조회</button>
+			<button id="organizerDonaList" class="infoMenu" th:if="${session.loginUser.memType == '1'}">받은 기부 조회</button>
+			<hr>
 		</div>
-
-		<div class="my_info_wrap" id="myInfo">
-			<div class="user_intro">
-				<div><img src="/img/test_icon.png"><p>[[${session.loginUser.memName}]]<p>님, 반갑습니다.</div>
-				<p>하모니와 함께 아름다운 세상을 만들어갑니다.</p>
-			</div>
-			<div class="info_detail_wrap">
-				<p class="text_color my_info_title">My Profile</p>
-				<hr>
-				<table>
-					<tr>
-						<td>등급</td>
-						<td>[[${session.loginUser.memGrade}]]</td>
-					</tr>
-					<tr>
-						<td>이름</td>
-						<td>[[${session.loginUser.memName}]]</td>
-					</tr>
-					<tr>
-						<td>아이디</td>
-						<td>[[${session.loginUser.memId}]]</td>
-					</tr>
-					<tr>
-						<td>주소</td>
-						<td>[[${session.loginUser.memAddress}]]</td>
-					</tr>
-				</table>
-			</div>		
+		<div class="my_info_menu_wrap">
+			<label class="delete_user" onclick="confirmDelete()">탈퇴하기</label>
 		</div>
+	</div>
 
-		<div class="my_info_wrap" id="editInfo">
-			<div class="user_intro">
-				<div><img src="/img/test_icon.png"><p>[[${session.loginUser.memName}]]<p>님, 반갑습니다.</div>
-				<p>하모니와 함께 아름다운 세상을 만들어갑니다.</p>
+	<div class="my_info_wrap" id="myInfo">
+		<div class="user_intro">
+			<div>
+				<img th:src="@{'/img/grade_' + ${session.loginUser.memGrade} + '.svg'}">
+				<p>[[${session.loginUser.memName}]]<p>님, 반갑습니다.
 			</div>
-			<h1>내 정보 수정</h1>
+			<p>하모니와 함께 아름다운 세상을 만들어갑니다.</p>
+		</div>
+		<div class="info_detail_wrap">
+			<p class="text_color my_info_title">My Profile</p>
+			<hr>
+			<table>
+				<tr>
+					<td>등급</td>
+					<td>[[${session.loginUser.memGrade}]]</td>
+				</tr>
+				<tr>
+					<td>이름</td>
+					<td>[[${session.loginUser.memName}]]</td>
+				</tr>
+				<tr>
+					<td>아이디</td>
+					<td>[[${session.loginUser.memId}]]</td>
+				</tr>
+				<tr>
+					<td>주소</td>
+					<td>[[${session.loginUser.memAddress}]]</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<div class="my_info_wrap" id="editInfo">
+		<div class="user_intro">
+			<div><img th:src="@{'/img/grade_' + ${session.loginUser.memGrade} + '.svg'}"><p>[[${session.loginUser.memName}]]<p>님, 반갑습니다.</div>
+			<p>하모니와 함께 아름다운 세상을 만들어갑니다.</p>
+		</div>
+		<div class="info_detail_wrap">
+			<p class="text_color my_info_title">내 정보 수정</p>
+			<hr>
 			<form action="editMyInfo" method="post">
 				<div class="row">
-					<div class="col" id="labelCol">
-						<label>이름</label><label>아이디</label> <label>주소</label> <label>비밀번호</label>
-						<label>비밀번호 확인</label>
+					<div class="text_style">
+						<label for="memName">이름</label>
+						<input type="text" id="memName" name="memName" th:value="${session.loginUser.memName}">
 					</div>
-					<div class="col" id="inputCol">
-						<label>
-							<input type="text" name="memName" th:value="${session.loginUser.memName}">
-						</label>
-						<div id="emailDiv">
-							<label for="email"></label><input type="email" name="memId" id="email" th:value="${session.loginUser.memId}">
-							<button onclick="checkEmail(event)">중복확인</button>
 
+					<div class="text_style">
+						<label for="text">아이디</label>
+						<div id="emailDiv">
+							<input type="text" name="memId" id="memId" th:value="${session.loginUser.memId}">
+							<button type="button" onclick="checkEmail(event)">중복확인</button>
 						</div>
-						<span id="emailCheckSpan">사용하실수 있는 아이디 입니다.</span>
-						<label>
-							<input type="text" name="memAddress" th:value="${session.loginUser.memAddress}">
-						</label>
-						<label for="pwd"></label><input type="password" id="pwd" name="memPwd">
-						<label for="pwdConfirm"></label><input type="password" name="pwdConfirm" id="pwdConfirm" >
-						<span id="pwdCheckSpan">비밀번호가 일치합니다</span>
 					</div>
+					<span id="emailCheckSpan">사용하실 수 있는 아이디입니다.</span>
+
+					<div class="text_style">
+						<label for="memAddress">주소</label>
+						<input type="text" id="memAddress" name="memAddress" th:value="${session.loginUser.memAddress}">
+					</div>
+
+					<div class="text_style">
+						<label for="pwd">비밀번호</label>
+						<input type="password" id="pwd" name="memPwd">
+					</div>
+
+					<div class="text_style">
+						<label for="pwdConfirm">비밀번호 확인</label>
+						<input type="password" id="pwdConfirm" name="pwdConfirm">
+					</div>
+					<span id="pwdCheckSpan">비밀번호가 일치합니다.</span>
 				</div>
-				<button>확인</button>
+				<button class="submitBtn">확인</button>
 			</form>
 		</div>
+	</div>
 
-		<div class="my_info_wrap" id="donaList">
+	<div class="my_info_wrap" id="donaList">
+		<div class="user_intro">
+			<div><img th:src="@{'/img/grade_' + ${session.loginUser.memGrade} + '.svg'}"><p>[[${session.loginUser.memName}]]<p>님, 반갑습니다.</div>
+			<p>하모니와 함께 아름다운 세상을 만들어갑니다.</p>
+		</div>
+		<div class="info_detail_wrap">
+			<p class="text_color my_info_title">기부 내역 조회</p>
+			<hr>
 			<div id="buttonDiv">
 				<button onclick="ongoingList()">진행중인 후원</button>
 				<button onclick="finishedList()">완료된 후원</button>
 			</div>
 			<div id="tableDiv">
-				<table class="table">
-					<thead>
-						<tr>
-							<td>제목</td>
-							<td>이름</td>
-							<td>후원 금액</td>
-							<td>후원한 날짜</td>
-							<td>결제 취소</td>
-						</tr>
-					</thead>
+				<table class="table ">
 					<tbody id="myDonaTbody">
-						<tr th:each="p:${list}">
-							<td th:text="${p.doTitle}"></td>
-							<td th:text="${p.memName}"></td>
-							<td th:text="${p.payAmount}+'원'"></td>
-							<td th:text="${#dates.format(p.payCreatedate, 'yyyy년 MM월 dd일')}"></td>
-							<td th:if="${p.payStatus == 'Y'}"><button onclick="cancleDonation()">취소</button></td>
-						</tr>
+
 					</tbody>
 				</table>
 			</div>
 		</div>
 	</div>
-	<script>
-		function checkEmail(event){
-			console.log("checkEmail 실행됨"); // 실행 여부 확인용
-			const email = document.getElementById("email").value;
-			event.preventDefault();
-			$.ajax({
-				url:"/checkEmail",
-				data : {email:email},
-				success : data=>{
-					console.log(data);
-					if (data!=0){
-						//아이디가 있는 경우
-						emailCheckSpan.innerText="이미 사용중인 아이디 입니다.";
-						emailCheckSpan.style.color="red";
-						emailCheckSpan.style.visibility="visible";
-					}else{
-						//아이디가 없는 경우
-						emailCheckSpan.innerText="사용하실수 있는 아이디 입니다.";
-						emailCheckSpan.style.color="#2ab54c";
-						emailCheckSpan.style.visibility="visible";
-					}
-				},
-				error : data=>{
-					console.log("실패");
+
+	<div class="my_info_wrap" id="orDonaList">
+		<div class="user_intro">
+			<div><img th:src="@{'/img/grade_' + ${session.loginUser.memGrade} + '.svg'}"><p>[[${session.loginUser.memName}]]<p>님, 반갑습니다.</div>
+			<p>하모니와 함께 아름다운 세상을 만들어갑니다.</p>
+		</div>
+		<div class="info_detail_wrap">
+			<p class="text_color my_info_title">받은 기부 조회</p>
+			<hr>
+			<div>
+				<table class="table ">
+					<tbody id="myDonaTbody">
+					<tr th:each="p:${list}">
+						<td th:text="${p.doTitle}"></td>
+						<td th:text="${p.memName}"></td>
+						<td th:text="${p.payAmount}+'원'"></td>
+						<td th:text="${#dates.format(p.payCreatedate, 'yyyy년 MM월 dd일')}"></td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	function checkEmail(event){
+		console.log("checkEmail 실행됨"); // 실행 여부 확인용
+		const email = document.getElementById("email").value;
+		event.preventDefault();
+		$.ajax({
+			url:"/checkEmail",
+			data : {email:email},
+			success : data=>{
+				console.log(data);
+				if (data!=0){
+					//아이디가 있는 경우
+					emailCheckSpan.innerText="이미 사용중인 아이디 입니다.";
+					emailCheckSpan.style.color="red";
+					emailCheckSpan.style.visibility="visible";
+				}else{
+					//아이디가 없는 경우
+					emailCheckSpan.innerText="사용하실수 있는 아이디 입니다.";
+					emailCheckSpan.style.color="#2ab54c";
+					emailCheckSpan.style.visibility="visible";
 				}
-			});
-		}
-
-		document.addEventListener('DOMContentLoaded', function() {
-			const infoContents = document.querySelectorAll('.my_info_wrap');
-
-			// 기본적으로 첫 번째 정보 창만 표시
-			infoContents.forEach((ic, index) => {
-				ic.style.display = index === 0 ? 'block' : 'none';
-			});
-
-			const infoMenu = document.querySelectorAll('.infoMenu');
-
-			// "My Profile" 클릭 시 첫 번째 정보 보이기
-			infoMenu[0].addEventListener('click', function() {
-				infoContents[0].style.display = 'block';
-				infoContents[1].style.display = 'none';
-				infoContents[2].style.display = 'none';
-			});
-
-			// "내 정보 수정" 클릭 시 두 번째 정보 보이기
-			infoMenu[1].addEventListener('click', function() {
-				infoContents[0].style.display = 'none';
-				infoContents[1].style.display = 'block';
-				infoContents[2].style.display = 'none';
-			});
-
-			// "기부 내역 조회" 클릭 시 세 번째 정보 보이기
-			infoMenu[2].addEventListener('click', function() {
-				infoContents[0].style.display = 'none';
-				infoContents[1].style.display = 'none';
-				infoContents[2].style.display = 'block';
-			});
-		});
-
-		const emailCheckSpan= document.getElementById("emailCheckSpan");
-		const pwdCheckSpan= document.getElementById("pwdCheckSpan");
-		const pwd = document.getElementById("pwd");
-		const pwdConfirm = document.getElementById("pwdConfirm");
-
-		pwdConfirm.addEventListener("blur", function(){
-			if(pwd.value == pwdConfirm.value){
-				pwdCheckSpan.innerText="비밀번호가 일치합니다.";
-				pwdCheckSpan.style.color="#2ab54c";
-				pwdCheckSpan.style.visibility="visible";
-			} else{
-				pwdCheckSpan.innerText="비밀번호가 일치하지 않습니다.";
-				pwdCheckSpan.style.color="red";
-				pwdCheckSpan.style.visibility="visible";
+			},
+			error : data=>{
+				console.log("실패");
 			}
 		});
-		pwd.addEventListener("blur", function(){
-			if(pwd.value == pwdConfirm.value){
-				pwdCheckSpan.innerText="비밀번호가 일치합니다.";
-				pwdCheckSpan.style.color="#2ab54c";
-				pwdCheckSpan.style.visibility="visible";
-			} else{
-				pwdCheckSpan.innerText="비밀번호가 일치하지 않습니다.";
-				pwdCheckSpan.style.color="red";
-				pwdCheckSpan.style.visibility="visible";
-			}
+	}
+
+	document.addEventListener('DOMContentLoaded', function() {
+		const infoContents = document.querySelectorAll('.my_info_wrap');
+
+		// 기본적으로 첫 번째 정보 창만 표시
+		infoContents.forEach((ic, index) => {
+			ic.style.display = index === 0 ? 'block' : 'none';
 		});
 
-		const ongoingList = () =>{
-			$.ajax({
-				url:'/ongoingList',
-				data: {no:/*[[${session.loginUser.memNo}]]*/100},
-				success:data=>{
-					const tbody = document.querySelector('#myDonaTbody');
-					tbody.innerHTML = ''; // 기존 내용 초기화
-					for (const p of data) {
-						const tr = document.createElement('tr');
+		const infoMenu = document.querySelectorAll('.infoMenu');
 
-						const td1 = document.createElement('td');
-						td1.appendChild(document.createTextNode(p.doTitle));
+		// "My Profile" 클릭 시 첫 번째 정보 보이기
+		infoMenu[0].addEventListener('click', function() {
+			infoContents[0].style.display = 'block';
+			infoContents[1].style.display = 'none';
+			infoContents[2].style.display = 'none';
+			infoContents[3].style.display = 'none';
+		});
 
-						const td2 = document.createElement('td');
-						td2.appendChild(document.createTextNode(p.memName));
+		// "내 정보 수정" 클릭 시 두 번째 정보 보이기
+		infoMenu[1].addEventListener('click', function() {
+			infoContents[0].style.display = 'none';
+			infoContents[1].style.display = 'block';
+			infoContents[2].style.display = 'none';
+			infoContents[3].style.display = 'none';
+		});
 
-						const td3 = document.createElement('td');
-						td3.appendChild(document.createTextNode(p.payAmount+'원'));
+		// "기부 내역 조회" 클릭 시 세 번째 정보 보이기
+		infoMenu[2].addEventListener('click', function() {
+			ongoingList();
+			infoContents[0].style.display = 'none';
+			infoContents[1].style.display = 'none';
+			infoContents[2].style.display = 'block';
+			infoContents[3].style.display = 'none';
+		});
 
-						let objectDate = new Date(p.payCreatedate);
-						console.log(objectDate);
+		// "받은 기부 조회" 클릭 시 세 번째 정보 보이기
+		infoMenu[3].addEventListener('click', function() {
+			infoContents[0].style.display = 'none';
+			infoContents[1].style.display = 'none';
+			infoContents[2].style.display = 'none';
+			infoContents[3].style.display = 'block';
+		});
+	});
 
-						let day = objectDate.getDate();
-						let month = objectDate.getMonth() + 1;
-						let year = objectDate.getFullYear();
+	const emailCheckSpan= document.getElementById("emailCheckSpan");
+	const pwdCheckSpan= document.getElementById("pwdCheckSpan");
+	const pwd = document.getElementById("pwd");
+	const pwdConfirm = document.getElementById("pwdConfirm");
 
-						const td4 = document.createElement('td');
-						td4.appendChild(document.createTextNode(year + '년 ' + month + '월 ' + day + '일'));
-
-						const td5 = document.createElement('td');
-						if (p.payStatus == 'Y'){
-							td5.innerHTML = '<td><button onClick="cancleDonation()">취소</button></td>'
-						}
-
-						tr.appendChild(td1);
-						tr.appendChild(td2);
-						tr.appendChild(td3);
-						tr.appendChild(td4);
-						tr.appendChild(td5);
-
-						tbody.appendChild(tr);
-					}
-				},
-				error:data=>console.log(data)
-			});
+	pwdConfirm.addEventListener("blur", function(){
+		if(pwd.value == pwdConfirm.value){
+			pwdCheckSpan.innerText="비밀번호가 일치합니다.";
+			pwdCheckSpan.style.color="#2ab54c";
+			pwdCheckSpan.style.visibility="visible";
+		} else{
+			pwdCheckSpan.innerText="비밀번호가 일치하지 않습니다.";
+			pwdCheckSpan.style.color="red";
+			pwdCheckSpan.style.visibility="visible";
 		}
-
-		const finishedList = () =>{
-			$.ajax({
-				url:'/finishedList',
-				data: {no:/*[[${session.loginUser.memNo}]]*/100},
-				success:data=>{
-					const tbody = document.querySelector('#myDonaTbody');
-					tbody.innerHTML = ''; // 기존 내용 초기화
-					for (const p of data) {
-						const tr = document.createElement('tr');
-
-						const td1 = document.createElement('td');
-						td1.appendChild(document.createTextNode(p.doTitle));
-
-						const td2 = document.createElement('td');
-						td2.appendChild(document.createTextNode(p.memName));
-
-						const td3 = document.createElement('td');
-						td3.appendChild(document.createTextNode(p.payAmount+'원'));
-
-						let objectDate = new Date(p.payCreatedate);
-						console.log(objectDate);
-
-						let day = objectDate.getDate();
-						let month = objectDate.getMonth() + 1;
-						let year = objectDate.getFullYear();
-
-						const td4 = document.createElement('td');
-						td4.appendChild(document.createTextNode(year + '년 ' + month + '월 ' + day + '일'));
-
-						tr.appendChild(td1);
-						tr.appendChild(td2);
-						tr.appendChild(td3);
-						tr.appendChild(td4);
-
-						tbody.appendChild(tr);
-					}
-				},
-				error:data=>console.log(data)
-			});
+	});
+	pwd.addEventListener("blur", function(){
+		if(pwd.value == pwdConfirm.value){
+			pwdCheckSpan.innerText="비밀번호가 일치합니다.";
+			pwdCheckSpan.style.color="#2ab54c";
+			pwdCheckSpan.style.visibility="visible";
+		} else{
+			pwdCheckSpan.innerText="비밀번호가 일치하지 않습니다.";
+			pwdCheckSpan.style.color="red";
+			pwdCheckSpan.style.visibility="visible";
 		}
-	</script>
+	});
+
+	const ongoingList = () =>{
+		$.ajax({
+			url:'/ongoingList',
+			data: {no:/*[[${session.loginUser.memNo}]]*/100},
+			success:data=>{
+				const tbody = document.querySelectorAll('#myDonaTbody')[0];
+				tbody.innerHTML = ''; // 기존 내용 초기화
+				for (const p of data) {
+					const tr = document.createElement('tr');
+
+					const td1 = document.createElement('td');
+					td1.appendChild(document.createTextNode(p.doTitle));
+
+					const td2 = document.createElement('td');
+					td2.appendChild(document.createTextNode(p.payAmount+'원'));
+
+					let objectDate = new Date(p.payCreatedate);
+					console.log(objectDate);
+
+					let day = objectDate.getDate();
+					let month = objectDate.getMonth() + 1;
+					let year = objectDate.getFullYear();
+
+					const td3 = document.createElement('td');
+					td3.appendChild(document.createTextNode(year + '년 ' + month + '월 ' + day + '일'));
+
+					tr.appendChild(td1);
+					tr.appendChild(td2);
+					tr.appendChild(td3);
+
+					tbody.appendChild(tr);
+				}
+			},
+			error:data=>console.log(data)
+		});
+	}
+
+	const finishedList = () =>{
+		$.ajax({
+			url:'/finishedList',
+			data: {no:/*[[${session.loginUser.memNo}]]*/100},
+			success:data=>{
+				const tbody = document.querySelectorAll('#myDonaTbody')[0];
+				tbody.innerHTML = ''; // 기존 내용 초기화
+				for (const p of data) {
+					const tr = document.createElement('tr');
+
+					const td1 = document.createElement('td');
+					td1.appendChild(document.createTextNode(p.doTitle));
+
+					const td2 = document.createElement('td');
+					td2.appendChild(document.createTextNode(p.payAmount+'원'));
+
+					let objectDate = new Date(p.payCreatedate);
+					console.log(objectDate);
+
+					let day = objectDate.getDate();
+					let month = objectDate.getMonth() + 1;
+					let year = objectDate.getFullYear();
+
+					const td3 = document.createElement('td');
+					td3.appendChild(document.createTextNode(year + '년 ' + month + '월 ' + day + '일'));
+
+					tr.appendChild(td1);
+					tr.appendChild(td2);
+					tr.appendChild(td3);
+
+					tbody.appendChild(tr);
+				}
+			},
+			error:data=>console.log(data)
+		});
+	}
+	function confirmDelete() {
+		if (confirm("정말 탈퇴하시겠습니까?")) {
+			location.href = '/member/delete';
+		}
+		// 취소 시 아무 동작도 하지 않음
+	}
+</script>
 <footer>
-	<div th:replace="common/footer.html"></div>
+	<div th:replace="~{common/footer.html :: footer_bar}"></div>
 </footer>
-	
+
 </body>
 </html>

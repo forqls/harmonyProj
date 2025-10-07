@@ -1,67 +1,58 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>소식 게시판</title>
+    <meta charset="UTF-8">
+    <title>소식 게시판 조회페이지</title>
     <link href="/css/reset.css" rel="stylesheet" type="text/css">
     <link href="/css/common.css" rel="stylesheet" type="text/css">
     <link href="/css/navBar.css" rel="stylesheet" type="text/css">
-    <link href="/css/news.css" rel="stylesheet" type="text/css">
-    <style>
-        .main_menu_wrap a {
-            color: #1a1a1a !important;
-        }
-
-
-        .login_wrap button {
-            background: none;
-            color: #1a1a1a !important;
-            border: none;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-        }
-
-    </style>
+    <link href="/css/donationList.css" rel="stylesheet" type="text/css">
 </head>
+<style>
+
+</style>
 <body>
-<div th:replace="common/navbar.html"></div>
-    <script src="/js/common.js"></script>
-    <div class="container" style="margin-left: 0">
-        <div class="content" style="margin-left: 200px">
-            <br><br><br><br><br><br>
-            <h1 class="admin_title">소식 목록</h1>
-            <div class="donationList">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>번호</th>
-                            <th>새소식 제목</th>
-                            <th>프로잭트 이름</th>
-                            <th>올린 날짜</th>
-                            <th>프로잭트 팀</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr align="center" class="selectlist" th:each="n : ${list}">
-                            <td th:text="${n.newsNo}"></td>
-                            <td th:text="${n.newsTitle}"></td>
-                            <td th:text="${n.doTitle}"></td>
-                            <td th:text="${n.newsCreateDate}"></td>
-                            <td th:text="${n.memName}"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+<div th:replace="~{common/navbar.html :: navbar}"></div>
+<script src="/js/common.js"></script>
+
+<section class="doantion_list_wrap">
+    <div class="list_container">
+        <div class="dCategory">
+            <h1>소식 목록</h1>
         </div>
-<<<<<<< HEAD
-<button onclick="window.location.href='/news/write'">news write</button>
-=======
+
+
+        <div class="list_wrap">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th width="50px"><!--글 번호 --></th>
+                    <th> <!--글제목 --></th>
+                    <th width="200px"><!--작성자--></th>
+                    <th width="200px"><!--작성일자--></th>
+                    <th width="100px"><!--조회수--></th>
+                </tr>
+                </thead>
+                <tbody class="list_custom newsList_custom">
+                <tr th:each="n : ${nlist}">
+                    <td><input type="hidden" th:value="${n.newsNo}"></td>
+                    <td class="img_custom" th:style="|background-image: url(${n.thumbnailPath});|">
+                        <img th:src="${n.thumbnailPath}" width="100%" height="100%"/></td>
+                    <td class="list_title_custom">[[${n.newsTitle}]]</td>
+                    <td>[[${n.memName}]]</td>
+                    <td class="dona_date">[[${n.newsCreateDate}]]</td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
     </div>
-
-<button id="toWrite" onclick="window.location.href='/news/write'">뉴스 작성</button>
->>>>>>> refs/heads/main
-
+</section>
+<footer>
+    <div th:replace="~{common/footer.html :: footer_bar}"></div>
+</footer>
+</body>
 
 <script th:inline="javascript">
     window.onload = () => {
@@ -75,10 +66,10 @@
             }
 
             // 클릭된 <tr>의 첫 번째 셀(번호)에서 newsNo 가져오기
-            const newsNo = target.cells[0].innerText.trim();
+            const newsNo = target.querySelector("input[type='hidden']").value;
 
             // newsNo 값을 포함하여 페이지 이동
-            location.href = "/news/newsdetail/" + newsNo;
+            location.href = "/news/newsDetail/" + newsNo;
         });
     }
 
@@ -89,7 +80,5 @@
 
 
 
-
 </script>
-</body>
 </html>

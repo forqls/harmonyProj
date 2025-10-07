@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
     <link href="/css/reset.css" rel="stylesheet" type="text/css">
     <link href="/css/common.css" rel="stylesheet" type="text/css">
     <link href="/css/navBar.css" rel="stylesheet" type="text/css">
-    <link href="/css/footer.css" rel="stylesheet" type="text/css">
+    <link href="/css/donationDetailPage.css" rel="stylesheet" type="text/css">
     <style>
         .main_menu_wrap a {
             color: #1a1a1a !important;
@@ -21,50 +21,145 @@
             font-weight: 500;
             cursor: pointer;
         }
-
+        .modal-container{
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 3;
+        }
+        .modal-content{
+            background-color: white;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+        }
     </style>
 </head>
 <body>
-<div th:replace="common/navbar.html"></div>
+<div th:replace="~{common/navbar.html :: navbar}"></div>
 <script src="/js/common.js"></script>
 
 <section>
     <div class="container">
         <div class="detail_title_wrap">
-            <p class="title_sub_text">후원</p>
-            <h1 class="donation_detail_text">[[${n.doTitle}]]</h1>
+            <p class="title_sub_text">소식</p>
+            <h1 class="donation_detail_text">[[${n.newsTitle}]]</h1>
         </div>
 
+        <p id="doNo" hidden>[[${n.doNo}]]</p>
+        <p id="newsNo" hidden>[[${n.newsNo}]]</p>
+        <p hidden>[[${session.loginUser != null ? session.loginUser.memNo : ''}]]</p>
+
         <div class="donation_info">
+            <div class="donation_img_wrap">
+                <img th:src="@{${n.thumbnailPath}}" alt="">
+            </div>
             <div class="donation_info_text_wrap">
                 <ul>
                     <li>
-                        <p>새소식</p>
-                        <span display="inline-block"><p class="donation_data" th:text="${n.newsTitle}"></span>
+                        <p>후원 프로젝트</p>
+                        <p class="donation_data" th:text="${n.doTitle}"></p>
                     </li>
                     <li>
-                        <p>프로젝트 팀</p>
+                        <p>후원자</p>
                         <p class="donation_data" th:text="${n.memName}"></p>
-                    </li>
-                    <li>
-                        <p>내용</p>
-                        <p class="donation_data" th:text="${n.newsContent}"></p>
                     </li>
                 </ul>
 
             </div>
         </div>
+        <div style="text-align: center" class="bar-label"></div>
+        <div class="bar-container">
+        </div>
+        <!-- ajax -->
+        <!--			<script type="text/javascript">-->
+        <!--				$(document).ready(function() {-->
+        <!--					document.getElementById("Content_bar").style.width = '20%';-->
+        <!--				});-->
+        <!--			</script>-->
+        <br><br>
+        <div class="doantion_content" th:utext="${n.newsContent}">
+
+        </div>
+        <br><br>
+        <div class="content_board_wrap">
+            <table class="content_board">
+            </table>
+        </div>
+
+        <th:block th:if="${session.loginUser != null}">
+            <div class="news_write_wrap">
+                <button class="editBtn" th:if="${session.loginUser.memNo == n.memNo}" id="editBtn" type="button" onclick="doEdit()">
+                    수정
+                </button>
+                <button class="delete_btn" th:if="${session.loginUser.memNo == n.memNo}" id="deleteBtn" type="button" onclick="doDelete()">
+                    삭제
+                </button>
+            </div>
+
+        </th:block>
     </div>
 </section>
-
-
-
-
-
-
-
+<div id="deleteModal" class="modal-container" data-modal>
+    <div class="modal-content">
+        <h1 class="donation_detail_text">경고</h1>
+        <p class="donation_data_small">정말로 삭제하시겠습니까?</p>
+        <div class="buttonDiv">
+            <button onclick="doDelete()">확인</button>
+            <button onclick="closeModal('deleteModal')">취소</button>
+        </div>
+    </div>
+</div>
 <footer>
-    <div th:replace="common/footer.html"></div>
+    <div th:replace="~{common/footer.html :: footer_bar}"></div>
 </footer>
+<script>
+    const doEdit = () =>{
+        const newsNo = document.getElementById("newsNo").textContent;
+        window.location.href="/news/edit/"+newsNo;
+    }
+    class Modal{
+        constructor(modalId){
+            this.modal = document.getElementById(modalId);
+            this.isOpen = false;
+        }
+        open(){
+            this.modal.style.display="flex";
+            this.isOpen = true;
+        }
+        close(){
+            this.modal.style.display="none";
+            this.isOpen=false;
+        }
+    }
+    const modals = new Map();
+    document.querySelectorAll('[data-modal]').forEach(element => {
+        const modalId = element.id;
+        modals.set(modalId, new Modal(modalId));
+    });
+
+    const openModal= function(modalId){
+        //const modal = document.getElementById(modalId);
+        const modal = modals.get(modalId);
+        modal.open();
+    }
+    const closeModal=function(modalId){
+        const modal = modals.get(modalId);
+        modal.close();
+    }
+
+    const doDelete=()=>{
+        const newsNo = document.getElementById("newsNo").textContent;
+        window.location.href="/news/delete/"+newsNo;
+    }
+</script>
 </body>
 </html>

@@ -1,133 +1,133 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>기부 내역 조회</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>기부 내역 조회</title>
 	<link href="/css/reset.css" rel="stylesheet" type="text/css">
 	<link href="/css/common.css" rel="stylesheet" type="text/css">
 	<link href="/css/navBar.css" rel="stylesheet" type="text/css">
 	<link href="/css/footer.css" rel="stylesheet" type="text/css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-	href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
-	rel="stylesheet">
-<style>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+			href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+			rel="stylesheet">
+	<style>
 
-#buttonDiv {
-	margin-left: 70px;
-	margin-top: 20px;
-}
+		#buttonDiv {
+			margin-left: 70px;
+			margin-top: 20px;
+		}
 
-#buttonDiv>button {
-	height: 41px;
-	width: 280px;
-	background: #34D28B;
-	border: 0 solid #fff;
-	border-radius: 14px;
-	color: white;
-	font-size: 12pt;
-	margin-left: 10px;
-	margin-right: 10px;
-}
+		#buttonDiv>button {
+			height: 41px;
+			width: 280px;
+			background: #34D28B;
+			border: 0 solid #fff;
+			border-radius: 14px;
+			color: white;
+			font-size: 12pt;
+			margin-left: 10px;
+			margin-right: 10px;
+		}
 
-table {
-	display: flex;
-	margin-top: 30px;
-	margin-left: 40px;
-}
+		table {
+			display: flex;
+			margin-top: 30px;
+			margin-left: 40px;
+		}
 
-table td {
-	padding: 3px;
-	margin-top: 10px;
-}
+		table td {
+			padding: 3px;
+			margin-top: 10px;
+		}
 
-tr>td:nth-child(1) {
-	width: 300px;
-}
+		tr>td:nth-child(1) {
+			width: 300px;
+		}
 
-tr>td:nth-child(2) {
-	width: 80px;
-}
+		tr>td:nth-child(2) {
+			width: 80px;
+		}
 
-tr>td:nth-child(3) {
-	width: 90px;
-}
+		tr>td:nth-child(3) {
+			width: 90px;
+		}
 
-tr>td:nth-child(4) {
-	width: 150px;
-}
+		tr>td:nth-child(4) {
+			width: 150px;
+		}
 
-td>button {
-	background: #edb1b2;
-	color: red;
-	border: 0 solid #fff;
-	border-radius: 3px;
-	width: 40px;
-	height: 25px;
-}
+		td>button {
+			background: #edb1b2;
+			color: red;
+			border: 0 solid #fff;
+			border-radius: 3px;
+			width: 40px;
+			height: 25px;
+		}
 
-.main_menu_wrap a {
-	color: #1a1a1a !important;
-}
+		.main_menu_wrap a {
+			color: #1a1a1a !important;
+		}
 
 
-.login_wrap button {
-	background: none;
-	color: #1a1a1a !important;
-	border: none;
-	font-size: 1rem;
-	font-weight: 500;
-	cursor: pointer;
-}
-</style>
+		.login_wrap button {
+			background: none;
+			color: #1a1a1a !important;
+			border: none;
+			font-size: 1rem;
+			font-weight: 500;
+			cursor: pointer;
+		}
+	</style>
 </head>
 <body>
-<div th:replace="common/navbar.html"></div>
+<div th:replace="~{common/navbar.html :: navbar}"></div>
 <script src="/js/common.js"></script>
-	<div id="buttonDiv">
-		<button onclick="ongoingList()">진행중인 후원</button>
-		<button onclick="finishedList()">완료된 후원</button>
-	</div>
-	<div id="tableDiv">
-		<table>
-			<tr>
-				<td>후원 프로젝트 제목입니다</td>
-				<td>주최자</td>
-				<td>5000원</td>
-				<td>2024년 12월 27일</td>
-				<td><button onclick="cancleDonation()">취소</button></td>
-			</tr>
-		</table>
-	</div>
+<div id="buttonDiv">
+	<button onclick="ongoingList()">진행중인 후원</button>
+	<button onclick="finishedList()">완료된 후원</button>
+</div>
+<div id="tableDiv">
+	<table>
+		<tr>
+			<td>후원 프로젝트 제목입니다</td>
+			<td>주최자</td>
+			<td>5000원</td>
+			<td>2024년 12월 27일</td>
+			<td><button onclick="cancleDonation()">취소</button></td>
+		</tr>
+	</table>
+</div>
 <footer>
-	<div th:replace="common/footer.html"></div>
+	<div th:replace="~{common/footer.html :: footer_bar}"></div>
 </footer>
-			<script type="text/javascript">
-			
-				function ongoingList() {
-					//select * from donation 
-					//where status='Y' and mem_no=?
-					window.location="ongoingList";
-				}
+<script type="text/javascript">
 
-				function finishedList() {
-					//select * from donation
-					//where status='N' and mem_no=?
-					window.location="finishedList";
-					
-					//결과값이 없다면 <td colspan=5>로 조회결과 없다 통지
-					//결과값이 있다면 for each로
-					//<tr>과 <td>를 만들고
-					//취소버튼 : ongoingList에서만 있음
-				}
-				
-				function cancleDonation(){
-					//pay_no 찾아서 status 'N'으로
-					//pay_no는 hidden td에 넣어두
-				}
-				
-			</script>
+	function ongoingList() {
+		//select * from donation
+		//where status='Y' and mem_no=?
+		window.location="ongoingList";
+	}
+
+	function finishedList() {
+		//select * from donation
+		//where status='N' and mem_no=?
+		window.location="finishedList";
+
+		//결과값이 없다면 <td colspan=5>로 조회결과 없다 통지
+		//결과값이 있다면 for each로
+		//<tr>과 <td>를 만들고
+		//취소버튼 : ongoingList에서만 있음
+	}
+
+	function cancleDonation(){
+		//pay_no 찾아서 status 'N'으로
+		//pay_no는 hidden td에 넣어두
+	}
+
+</script>
 </body>
 </html>

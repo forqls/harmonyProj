@@ -1,110 +1,110 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
-<meta charset="utf-8">
-<title>마이페이지</title>
-<link href="/css/reset.css" rel="stylesheet" type="text/css">
-<link href="/css/common.css" rel="stylesheet" type="text/css">
-<link href="/css/navBar.css" rel="stylesheet" type="text/css">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<meta charset="utf-8">
+	<title>마이페이지</title>
+	<link href="/css/reset.css" rel="stylesheet" type="text/css">
+	<link href="/css/common.css" rel="stylesheet" type="text/css">
+	<link href="/css/navBar.css" rel="stylesheet" type="text/css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="/css/reset.css" rel="stylesheet" type="text/css">
 	<link href="/css/common.css" rel="stylesheet" type="text/css">
 	<link href="/css/navBar.css" rel="stylesheet" type="text/css">
 	<link href="/css/footer.css" rel="stylesheet" type="text/css">
-<link
-	href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
-	rel="stylesheet">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<style>
-form {
-	display: flex;
-	flex-direction: column;
-}
+	<link
+			href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+			rel="stylesheet">
+	<script
+			src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<style>
+		form {
+			display: flex;
+			flex-direction: column;
+		}
 
-.col {
-	display: flex;
-	flex-direction: column;
-	padding: 10px;
-}
+		.col {
+			display: flex;
+			flex-direction: column;
+			padding: 10px;
+		}
 
-#labelCol>* {
-	font-size: 13pt;
-	margin: 10px;
-	margin-top: 22px;
-}
+		#labelCol>* {
+			font-size: 13pt;
+			margin: 10px;
+			margin-top: 22px;
+		}
 
-#labelCol>label:nth-child(3) {
-	margin-top: 28px;
-}
+		#labelCol>label:nth-child(3) {
+			margin-top: 28px;
+		}
 
-#inputCol input {
-	margin-top: 14px;
-}
+		#inputCol input {
+			margin-top: 14px;
+		}
 
-.row {
-	display: flex;
-	flex-direction: row;
-}
+		.row {
+			display: flex;
+			flex-direction: row;
+		}
 
-form>button {
-	height: 41px;
-	width: 280px;
-	background: #34D28B;
-	border: 0 solid #fff;
-	border-radius: 14px;
-	color: white;
-	font-size: 12pt;
-	margin-left: 80px;
-	margin-top: 20px;
-}
+		form>button {
+			height: 41px;
+			width: 280px;
+			background: #34D28B;
+			border: 0 solid #fff;
+			border-radius: 14px;
+			color: white;
+			font-size: 12pt;
+			margin-left: 80px;
+			margin-top: 20px;
+		}
 
-#emailDiv>button {
-	border: 1px solid #34D28B;
-	border-radius: 10px;
-	color: #34D28B;
-	background: white;
-	height: 40px;
-	width: 80px;
-	margin-left: 15px;
-}
+		#emailDiv>button {
+			border: 1px solid #34D28B;
+			border-radius: 10px;
+			color: #34D28B;
+			background: white;
+			height: 40px;
+			width: 80px;
+			margin-left: 15px;
+		}
 
-input {
-	height: 28px;
-	padding: 5px;
-	border: 1px solid gray;
-	border-radius: 10px;
-	width: 240px;
-	text-align: justify;
-}
+		input {
+			height: 28px;
+			padding: 5px;
+			border: 1px solid gray;
+			border-radius: 10px;
+			width: 240px;
+			text-align: justify;
+		}
 
-input[name^=rrn] {
-	width: 105px;
-}
+		input[name^=rrn] {
+			width: 105px;
+		}
 
-#inputCol>input[name=address] {
-	margin-top: 2px;
-}
+		#inputCol>input[name=address] {
+			margin-top: 2px;
+		}
 
-span {
-	font-size: 9pt;
-	color: #2ab54c;
-	margin-top: 0;
-	margin-left: 4px;
-	visibility: hidden;
-}
+		span {
+			font-size: 9pt;
+			color: #2ab54c;
+			margin-top: 0;
+			margin-left: 4px;
+			visibility: hidden;
+		}
 
 
-</style>
+	</style>
 </head>
 <body>
-<div th:replace="common/navbar.html"></div>
+<div th:replace="~{common/navbar.html :: navbar}"></div>
 <script src="/js/common.js"></script>
 
-	<h1>내 정보 수정</h1>
-	<div class="container container_center">
+<h1>내 정보 수정</h1>
+<div class="container container_center">
 	<form action="editMyInfo" method="post">
 		<div class="row">
 			<div class="col" id="labelCol">
@@ -130,66 +130,66 @@ span {
 		</div>
 		<button>확인</button>
 	</form>
-	</div>
-	<footer>
-		<div th:replace="common/footer.html"></div>
-	</footer>
-	<script>	
-		function checkEmail(event){
-			const email = document.getElementById("email").value;
-			event.preventDefault();
-			$.ajax({
-				url:"/checkEmail",
-				data : {email:email},
-				success : data=>{
-					console.log(data);
-					if (data!=0){
-						//아이디가 있는 경우
-						emailCheckSpan.innerText="이미 사용중인 아이디 입니다.";
-						emailCheckSpan.style.color="red";
-						emailCheckSpan.style.visibility="visible";
-					}else{
-						//아이디가 없는 경우
-						emailCheckSpan.innerText="사용하실수 있는 아이디 입니다.";
-						emailCheckSpan.style.color="#2ab54c";
-						emailCheckSpan.style.visibility="visible";
-					}
-				},
-				error : data=>{
-					console.log("실패");
+</div>
+<footer>
+	<div th:replace="~{common/footer.html :: footer_bar}"></div>
+</footer>
+<script>
+	function checkEmail(event){
+		const email = document.getElementById("email").value;
+		event.preventDefault();
+		$.ajax({
+			url:"/checkEmail",
+			data : {email:email},
+			success : data=>{
+				console.log(data);
+				if (data!=0){
+					//아이디가 있는 경우
+					emailCheckSpan.innerText="이미 사용중인 아이디 입니다.";
+					emailCheckSpan.style.color="red";
+					emailCheckSpan.style.visibility="visible";
+				}else{
+					//아이디가 없는 경우
+					emailCheckSpan.innerText="사용하실수 있는 아이디 입니다.";
+					emailCheckSpan.style.color="#2ab54c";
+					emailCheckSpan.style.visibility="visible";
 				}
-			});
-		}
-		window.onload=()=>{
-			const emailCheckSpan= document.getElementById("emailCheckSpan");
-			const pwdCheckSpan= document.getElementById("pwdCheckSpan");
-			const pwd = document.getElementById("pwd");
-			const pwdConfirm = document.getElementById("pwdConfirm");
-			
-			pwdConfirm.addEventListener("blur", function(){
-				if(pwd.value == pwdConfirm.value){
-					pwdCheckSpan.innerText="비밀번호가 일치합니다.";
-					pwdCheckSpan.style.color="#2ab54c";
-					pwdCheckSpan.style.visibility="visible";
-				} else{
-					pwdCheckSpan.innerText="비밀번호가 일치하지 않습니다.";
-					pwdCheckSpan.style.color="red";
-					pwdCheckSpan.style.visibility="visible";
-				}
-			});
-			pwd.addEventListener("blur", function(){
-				if(pwd.value == pwdConfirm.value){
-					pwdCheckSpan.innerText="비밀번호가 일치합니다.";
-					pwdCheckSpan.style.color="#2ab54c";
-					pwdCheckSpan.style.visibility="visible";
-				} else{
-					pwdCheckSpan.innerText="비밀번호가 일치하지 않습니다.";
-					pwdCheckSpan.style.color="red";
-					pwdCheckSpan.style.visibility="visible";
-				}
-			});
-		}
+			},
+			error : data=>{
+				console.log("실패");
+			}
+		});
+	}
+	window.onload=()=>{
+		const emailCheckSpan= document.getElementById("emailCheckSpan");
+		const pwdCheckSpan= document.getElementById("pwdCheckSpan");
+		const pwd = document.getElementById("pwd");
+		const pwdConfirm = document.getElementById("pwdConfirm");
 
-	</script>
+		pwdConfirm.addEventListener("blur", function(){
+			if(pwd.value == pwdConfirm.value){
+				pwdCheckSpan.innerText="비밀번호가 일치합니다.";
+				pwdCheckSpan.style.color="#2ab54c";
+				pwdCheckSpan.style.visibility="visible";
+			} else{
+				pwdCheckSpan.innerText="비밀번호가 일치하지 않습니다.";
+				pwdCheckSpan.style.color="red";
+				pwdCheckSpan.style.visibility="visible";
+			}
+		});
+		pwd.addEventListener("blur", function(){
+			if(pwd.value == pwdConfirm.value){
+				pwdCheckSpan.innerText="비밀번호가 일치합니다.";
+				pwdCheckSpan.style.color="#2ab54c";
+				pwdCheckSpan.style.visibility="visible";
+			} else{
+				pwdCheckSpan.innerText="비밀번호가 일치하지 않습니다.";
+				pwdCheckSpan.style.color="red";
+				pwdCheckSpan.style.visibility="visible";
+			}
+		});
+	}
+
+</script>
 </body>
 </html>

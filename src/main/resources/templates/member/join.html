@@ -3,219 +3,158 @@
 <link href="/css/reset.css" rel="stylesheet" type="text/css">
 <link href="/css/common.css" rel="stylesheet" type="text/css">
 <link href="/css/navBar.css" rel="stylesheet" type="text/css">
-<link href="/css/footer.css" rel="stylesheet" type="text/css">
+<link href="/css/page.css" rel="stylesheet" type="text/css">
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <head>
-    <style>
-        form {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 80vh;
-        }
-
-
-        #loginTop {
-            margin-bottom: 10px;
-            font-size: 24px;
-            color: #333;
-            text-align: center;
-        }
-
-
-        .subtitle {
-            font-size: 14px;
-            color: #888;
-            margin-bottom: 20px;
-        }
-
-
-        th {
-            font-size: 14px;
-            color: #555;
-            padding-bottom: 10px;
-
-        }
-
-        #mem_id,
-        #mem_name,
-        #mem_email,
-        #mem_address,
-        #mem_pwd,
-        #passwordConfirm {
-            width: 100%;
-            padding: 10px;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            margin-bottom: 10px;
-        }
-
-
-        table button {
-            padding: 10px 20px;
-            font-size: 14px;
-            background-color: #5cc78d;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        table button:hover {
-            background-color: #4caf75;
-        }
-
-
-        .main_menu_wrap a {
-            color: #1a1a1a !important;
-        }
-
-
-        .login_wrap button {
-            background: none;
-            color: #1a1a1a !important;
-            border: none;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-        }
-
-    </style>
     <meta charset="UTF-8">
     <title>Insert title here</title>
 </head>
 <body>
-<div th:replace="common/navbar.html"></div>
+<div th:replace="~{common/navbar.html :: navbar}"></div>
 <script src="/js/common.js"></script>
-<form id="joinForm" method="post" action="/member/join">
-    <table align="center" style="margin-top: 100px;">
-        <tr>
-            <td colspan="3" align="center">
-                <h2 id="joinTop">회원가입</h2>
-                <p class="subtitle">회원가입 시 입력한 정보로 비밀번호를 찾을 수 있습니다.</p>
-            </td>
-        </tr>
+<div class="container page_container">
+    <form id="joinForm" method="post" action="/member/join">
+        <table align="center">
+            <tr>
+                <td colspan="3" align="center">
+                    <h2 id="joinTop">회원가입</h2>
+                    <p class="subtitle">회원가입 시 입력한 정보로 비밀번호를 찾을 수 있습니다.</p>
+                </td>
+            </tr>
 
-        <tr>
-            <th>가입유형</th>
-            <td colspan="2">
-                <input type="radio" id="ck1" name="memType" value="0" checked><label for="ck1">일반 회원</label>
-                <input type="radio" id="ck2" name="memType" value="1"><label for="ck2">주최자</label>
-            </td>
-        </tr>
+            <tr>
+                <th>가입유형</th>
+                <td colspan="2">
+                    <input type="radio" id="ck1" name="memType" value="0" checked><label for="ck1">일반 회원</label>
+                    <input type="radio" id="ck2" name="memType" value="1"><label for="ck2">주최자</label>
+                </td>
+            </tr>
 
-        <tr>
-            <th>이름</th>
-            <td colspan="2">
-                <input type="text" id="mem_name" name="memName" placeholder="이름을 입력하세요" required>
-            </td>
-        </tr>
+            <tr>
+                <th>이름</th>
+                <td colspan="2" class="text_style">
+                    <input type="text" id="mem_name" name="memName" placeholder="이름을 입력하세요" required>
+                </td>
+            </tr>
 
-        <tr>
-            <th>아이디</th>
-            <td>
-                <input type="text" id="mem_id" name="memId" placeholder="사용 하실 아이디를 입력하세요." required>
-            </td>
-            <td>
-                <button type="button" id="checkId">아이디 중복확인</button>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                <label id="confirmId"></label>
-            </td>
-        </tr>
-        <tr>
-            <th>주소</th>
-            <td colspan="2">
-                <input type="text" id="mem_address" name="memAddress" placeholder="주소를 입력하세요" required>
-            </td>
-        </tr>
+            <tr>
+                <th>아이디</th>
+                <td class="text_style">
+                    <input type="text" id="mem_id" name="memId" placeholder="사용 하실 아이디를 입력하세요." required>
+                </td>
+                <td class="check_btn">
+                    <button type="button" id="checkId">아이디 중복확인</button>
+                </td>
+            </tr>
+            <tr class="confirm_text">
+                <td></td>
+                <td>
+                    <label id="confirmId"></label>
+                </td>
+            </tr>
+            <tr>
+                <th>주소</th>
+                <td colspan="2" class="text_style">
+                    <input type="text" id="mem_address" name="memAddress" placeholder="주소를 입력하세요" required>
+                </td>
+            </tr>
 
-        <tr>
-            <th>비밀번호</th>
-            <td colspan="2">
-                <input type="password" id="mem_pwd" name="memPwd" placeholder="비밀번호를 입력하세요" required>
-            </td>
-        </tr>
+            <tr>
+                <th>비밀번호</th>
+                <td colspan="2" class="text_style">
+                    <input type="password" id="mem_pwd" name="memPwd" placeholder="비밀번호를 입력하세요" required>
+                </td>
+            </tr>
 
-        <tr>
-            <th>비밀번호 확인</th>
-            <td colspan="2">
-                <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="비밀번호를 한번 더 입력하세요"
-                       required>
-            </td>
-        </tr>
+            <tr>
+                <th>비밀번호 확인</th>
+                <td colspan="2" class="text_style">
+                    <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="비밀번호를 한번 더 입력하세요"
+                           required>
+                </td>
+            </tr>
 
-        <tr>
-            <td></td>
-            <td><label id="confirmText"></label></td>
-        </tr>
+            <tr class="confirm_text">
+                <td></td>
+                <td><label id="confirmText"></label></td>
+            </tr>
 
-        <tr>
-            <th>이메일</th>
-            <td colspan="2">
-                <input type="email" id="mem_email" name="memEmail" placeholder="이메일을 입력하세요" required>
-            </td>
-        </tr>
+            <tr>
+                <th>이메일</th>
+                <td colspan="2" class="text_style">
+                    <input type="email" id="mem_email" name="memEmail" placeholder="이메일을 입력하세요" required>
+                </td>
 
-        <tr>
-            <td colspan="3">
-                <fieldset>
-                    <legend>약관 동의</legend>
-                    <label>
-                        <input type="checkbox" id="allCheckbox" name="terms">
-                        전체 동의
-                    </label>
+                <td class="Emailcheck_btn check_btn">
+                    <button type="button" id="EmailCheckBtn" name="EmailCheckBtn">이메일 중복 확인</button>
+                </td>
+
+                <td class="check_btn">
+                    <button type="button" id="sendBtn" name="sendBtn">인증번호 받기</button>
+                </td>
+            </tr>
+            <tr class="confirm_text">
+                <td></td>
+                <td class="email_confirm">
+                    <label id="confirmEmail"></label>
+                </td>
+            </tr>
+
+            <tr>
+                <th></th>
+                <td colspan="2">
                     <br>
-                    <label>
-                        <input type="checkbox" id="termsCheckbox" name="terms" required>
-                        (필수) 온라인 서비스 이용약관
-                    </label>
-                    <br>
-                    <label>
-                        <input type="checkbox" id="agreeCheckbox" name="terms" required>
-                        (필수) 온라인 서비스 이용을 위한 개인정보 수집 이용 동의
-                    </label>
-                </fieldset>
-            </td>
-        </tr>
 
-        <tr>
-            <td colspan="3">
-                <br>
-                <button type="button" id="sendBtn" name="sendBtn">인증번호</button>
-                <div class="form-group" id="mail_number" name="mail_number" style="visibility: hidden">
-                    <input type="text" name="confirmNumber" id="confirmNumber" class="form-control" style="width:250px; margin-top: -10px" placeholder="인증번호 입력">
-                    <span id="mail-check-warn"></span>
-                    <button type="button" name="confirmBtn" id="confirmBtn" style="margin-top: 20px">이메일 인증</button>
-                    <br>
-                    <input type="hidden" id="Confirm" name="Confirm" value="">
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3" align="center">
-                <button type="button" onclick="joinBtn()" id="join">회원가입</button>
-            </td>
-        </tr>
+                    <div class="form-group" id="mail_number" name="mail_number" style="visibility: hidden">
+                        <input type="text" name="confirmNumber" id="confirmNumber" class="form-control" style="width:250px; margin-top: -10px" placeholder="인증번호 입력">
+                        <span id="mail-check-warn"></span>
+                        <button type="button" name="confirmBtn" id="confirmBtn" style="margin-top: 20px">이메일 인증</button>
+                        <br>
+                    </div>
+                </td>
+            </tr>
 
-    </table>
-</form>
+            <tr>
+                <td colspan="3">
+                    <fieldset class="terms-container">
+                        <legend>약관 동의</legend>
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="allCheckbox" name="terms">
+                            <span class="checkmark"></span> 전체 동의
+                        </label>
+                        <br>
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="termsCheckbox" name="terms" required>
+                            <span class="checkmark"></span> (필수) 온라인 서비스 이용약관
+                        </label>
+                        <br>
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="agreeCheckbox" name="terms" required>
+                            <span class="checkmark"></span> (필수) 온라인 서비스 이용을 위한 개인정보 수집 이용 동의
+                        </label>
+                    </fieldset>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td colspan="3" align="center">
+                    <button type="button" onclick="joinBtn()" id="join" class="submitBtn">회원가입</button>
+                </td>
+            </tr>
+
+        </table>
+    </form>
+</div>
 <br><br><br><br><br>
 <footer>
-    <div th:replace="common/footer.html"></div>
+    <div th:replace="~{common/footer.html :: footer_bar}"></div>
 </footer>
 <script type="text/javascript">
     let idCheck = false;
     let pwdCheck = false;
     let confirmCheck = false;
+    let emailConfirm = '';
 
     document.getElementById('passwordConfirm').addEventListener('change', function () {
         const password = document.getElementById('mem_pwd').value;
@@ -235,14 +174,14 @@
     });
 
     document.querySelector('#mem_id').addEventListener('change', () => {
-        document.querySelector('#confirmId').innerText = '다시 확인하세요.';
+        document.querySelector('#confirmId').innerText = '아이디를 다시 확인해주세요.';
         document.querySelector('#confirmId').style.color = 'red';
         idCheck = false;
         confirmCheck = false;
     });
 
     document.querySelector('#mem_pwd').addEventListener('change', () => {
-        document.querySelector('#confirmText').innerText = '다시 확인하세요.';
+        document.querySelector('#confirmText').innerText = '비밀번호를 다시 확인해주세요.';
         document.querySelector('#confirmText').style.color = 'red';
         pwdCheck = false;
     });
@@ -275,6 +214,43 @@
         }
     });
 
+    document.getElementById('EmailCheckBtn').addEventListener('click', () => {
+        console.log("확인");
+        const email = document.querySelector('#mem_email').value;
+        const confirmEmail = document.getElementById('confirmEmail');
+
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (email.trim() === '') {
+            alert('이메일을 입력하세요.');
+        } else if (!emailPattern.test(email)) {
+            confirmEmail.innerText = '이메일 형식이 올바르지 않습니다.';
+            confirmEmail.style.color = 'red';
+        } else {
+            $.ajax({
+                url: '/member/join.email',
+                data: { email: email },
+                success: (data) => {
+                    if (data == 0) {
+                        confirmEmail.innerText = '사용 가능한 이메일입니다.';
+                        confirmEmail.style.color = 'green';
+                    } else {
+                        confirmEmail.innerText = '이미 회원가입 돼 있는 이메일입니다.';
+                        confirmEmail.style.color = 'red';
+                    }
+                },
+                error: (data) => {
+                    console.log(data);
+                }
+            });
+        }
+    });
+
+
+
+
+
+
     document.getElementById('allCheckbox').addEventListener('change', function () {
         const isChecked = this.checked;
         document.getElementById('termsCheckbox').checked = isChecked;
@@ -299,13 +275,13 @@
         if (document.querySelector('#mem_email').value.trim() === ''){
             alert('이메일을 입력해 주세요.');
         }else{
+            document.querySelector('#mail_number').style.visibility = 'visible';
             $.ajax({
                 url: '/emailCheck',
                 method:'post',
                 data:{email:document.querySelector('#mem_email').value},
                 success:data=>{
-                    document.querySelector('#Confirm').value = data;
-                    document.querySelector('#mail_number').style.visibility = 'visible';
+                    emailConfirm = data;
                 },
                 error:data => console.log(data)
             });
@@ -313,7 +289,7 @@
     });
 
     document.querySelector('#confirmBtn').addEventListener('click', ()=>{
-        if (document.querySelector('#confirmNumber').value == document.querySelector('#Confirm').value){
+        if (document.querySelector('#confirmNumber').value == emailConfirm){
             confirmCheck = true;
             alert('인증 완료');
         }else{

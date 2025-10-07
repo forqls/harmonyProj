@@ -4,23 +4,32 @@
 	<meta charset="UTF-8">
 	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 	<title>기부 게시판 조회페이지</title>
-<!--	 <link href="../../static/css/reset.css" rel="stylesheet" type="text/css"> -->
-<!--	 <link href="../../static/css/common.css" rel="stylesheet" type="text/css">-->
 	<link href="/css/reset.css" rel="stylesheet" type="text/css">
 	<link href="/css/common.css" rel="stylesheet" type="text/css">
 	<link href="/css/navBar.css" rel="stylesheet" type="text/css">
-	<link href="/css/footer.css" rel="stylesheet" type="text/css">
 	<link href="/css/donationList.css" rel="stylesheet" type="text/css">
 </head>
 <style>
 
 </style>
 <body>
-<div th:replace="common/navbar.html"></div>
+<div th:replace="~{common/navbar.html :: navbar}"></div>
 <script src="/js/common.js"></script>
 <section class="doantion_list_wrap">
+	<div class="list_container dona_list_container">
 		<div class="dCategory">
 			<h1>캠페인</h1>
+
+			<div id="searchContainer" class="searchContainer">
+				<div class="search_custom">
+					<select id="selectItem" name="selectItem" required>
+						<option value="doTitle">글 제목</option>
+						<option value="memName">작성자</option>
+					</select>
+					<input type="text" id="searchInput" name="searchInput" placeholder="검색어를 입력하세요">
+				</div>
+				<button id="searchButton">검색</button>
+			</div>
 
 			<div id="categoryBtn" class="categoryBtn">
 				<button id="all" data-category="all">전체</button>
@@ -34,16 +43,9 @@
 				<input type="hidden" id="dataSelect" value="all">
 			</div>
 
-			<div id="searchContainer" class="searchContainer">
-				<select id="selectItem" name="selectItem" required>
-					<option value="doTitle">글제목</option>
-					<option value="memName">작성자</option>
-				</select>
-				<input type="text" id="searchInput" name="searchInput" placeholder="검색어를 입력하세요">
-				<button id="searchButton">검색</button>
-			</div>
 
-			<div id="sortCategory" class="sortCategory">
+
+			<div id="sortCategory" class="sortCategory category_custom">
 				<input type="radio" id="recent" value="recent" name="type" checked/><label for="recent">최신순</label>
 				<input type="radio" id="popular" value="popular" name="type"/><label for="popular">인기순</label>
 				<input type="radio" id="urgent" value="urgent" name="type" /><label for="urgent">마감임박순</label>
@@ -54,38 +56,43 @@
 		<div class="list_wrap">
 			<table class="table">
 				<thead>
-					<tr>
-						<th></th>
-						<th width="50px">글 번호 </th>
-						<th> 글제목 </th>
-						<th width="200px">작성자</th>
-						<th width="200px">작성일자</th>
-						<th width="100px">조회수</th>
-					</tr>
+				<tr>
+					<th></th>
+					<th width="50px"><!--글 번호 --></th>
+					<th> <!--글제목 --></th>
+					<th width="200px"><!--작성자--></th>
+					<th width="200px"><!--작성일자--></th>
+					<th width="100px"><!--조회수--></th>
+				</tr>
 				</thead>
-				<tbody>
+				<tbody class="list_custom">
+
 				</tbody>
 			</table>
-			<button th:if="${session.loginUser != null}" id="login" type="button" onclick="location.href='/donation/donationWrite'">
+			<button th:if="${session.loginUser != null && session.loginUser.memType == '1'}" id="login" class="dona_write" type="button" onclick="location.href='/donation/donationWrite'">
 				후원글 작성
 			</button>
 		</div>
+	</div>
 </section>
 <footer>
-	<div th:replace="common/footer.html"></div>
+	<div th:replace="~{common/footer.html :: footer_bar}"></div>
 </footer>
 </body>
 
 <script th:inline="javascript">
-	//카테고리보기
+	//카테고리들 이름 잡아주기
 	let categorySelect = document.getElementById('dataSelect').value;
 	let searchItem = '';
 	let searchInput = null;
 	let optionSelect = 'recent';
 
 	window.onload = () => {
-		// '전체' 데이터를 가져와 렌더링
+		// 위에 설정한 데이터를 가져오기
 		donationList(categorySelect, searchItem, searchInput, optionSelect);
+
+
+
 
 		//디테일 페이지 이동
 		document.querySelector('tbody').addEventListener('click', function (event) {
@@ -96,13 +103,14 @@
 				if (!target) return; // 예외 처리 (이벤트 버블링 방지)
 			}
 
-			const doNo = target.cells[1].innerText.trim();
+			const doNo = target.cells[0].children[0].value;
 			location.href = "/donation/donationdetail/" + doNo;
 		});
 
+		// 버튼으로 카테고리 선택
 		document.getElementById('categoryBtn').addEventListener('click', (e) => {
 			if (e.target.tagName === 'BUTTON') {
-				document.getElementById('dataSelect').value = e.target.getAttribute('data-category');
+				document.getElementById('dataSelect').value = e.target.getAttribute('data-category'); // 클릭함으로서 카테고리를 선택
 				categorySelect = document.getElementById('dataSelect').value;
 				if (categorySelect == 'all'){
 					searchInput = '';
@@ -112,7 +120,7 @@
 			}
 		});
 
-		// 인기순/ 과거 현재순으로 정렬
+		// 최신 인기 마감임박순정렬
 		document.querySelectorAll('input[name="type"]').forEach((radio) => {
 			radio.addEventListener('change', (e) => {
 				optionSelect = e.target.value; // 선택된 라디오 버튼의 value
@@ -140,17 +148,32 @@
 			success: (data) => {
 				const tbody = document.querySelector('tbody');
 				if (data != null) {
-					tbody.innerHTML = ''; // 기존 내용 초기화
+					tbody.innerHTML = '';
 					for (const d of data) {
+						// 카테고리 값을 한글로 변환
+						const categoryMapping = {
+							"all": "전체",
+							"child": "아동/청소년",
+							"old": "어르신",
+							"handicap": "장애인",
+							"family": "가족",
+							"animal": "동물",
+							"environment": "환경",
+							"etc": "기타"
+						};
+
+						const categoryInKorean = categoryMapping[d.doCategory] || d.doCategory;  // 영어가 오면 그대로 사용
+
 						const tr = document.createElement('tr');
 						tr.innerHTML = `
-										<td><img src="` + d.thumbnailPath + `" width="100%" height="100%"/></td>
-										<td>${d.doNo}</td>
-										<td>${d.doTitle}</td>
-										<td>${d.memName}</td>
-										<td>${d.doCreateDate}</td>
-										<td>${d.doViews}</td>
-									`;
+                        <td><input type="hidden" value="` + d.doNo + `"></td>
+                        <td class="img_custom" style="background-image: url('${d.thumbnailPath}');"><img src="` + d.thumbnailPath + `" width="100%" height="100%"/></td>
+                        <td class="list_category_custom">${categoryInKorean}</td>
+                        <td class="list_title_custom">${d.doTitle}</td>
+                        <td>${d.memName}</td>
+                        <td class="dona_date">${d.doCreateDate}~${d.doEndDate}</td>
+                        <td class="views_custom">조회수 ${d.doViews}</td>
+                    `;
 						tbody.appendChild(tr);
 					}
 				} else {
@@ -160,10 +183,42 @@
 					tbody.appendChild(tr);
 				}
 			},
-			error: (xhr, status, error) => {
+			error: (error) => {
 				console.error('오류:', error);
 			}
 		});
 	};
+
+
+
+
+	document.addEventListener("DOMContentLoaded", () => {
+		const buttons = document.querySelectorAll(".categoryBtn button");
+		const dataSelect = document.getElementById("dataSelect");
+
+		buttons.forEach(button => {
+			button.addEventListener("click", () => {
+				// 모든 버튼의 'active' 클래스 제거
+				buttons.forEach(btn => btn.classList.remove("active"));
+
+				// 클릭된 버튼에 'active' 클래스 추가
+				button.classList.add("active");
+
+				// 선택된 카테고리를 input 값에 저장
+				dataSelect.value = button.dataset.category;
+			});
+		});
+	});
+
+	document.getElementById('searchInput').addEventListener('keydown', (event) => {
+		if (event.key === 'Enter') {
+			event.preventDefault(); // 기본 제출 방지
+			document.getElementById('searchButton').click();
+		}
+	});
+
+
+
+
 </script>
 </html>
