@@ -19,53 +19,38 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         String[] permitAllUrls = {
-                "/resources/**",
-                "/css/**",
-                "/js/**",
-                "/img/**",
+                "/resources/**", "/css/**", "/js/**", "/img/**",
+                "/", "/member/join", "/member/join.id", "/member/join.email",
+                "/member/login", "/member/join-success", "/member/logout",
 
-                // 메인 및 회원 관련
-                "/",
-                "/member/join",
-                "/member/join.id",
-                "/member/join.email",
-                "/member/login",
-                "/member/join-success",
-                "/member/logout",
-                "/admin/main",
-                "/admin/memberUpdate",
-                "/admin/donaList",
-                "/admin/newsList",
-                "/admin/memberUpdate",
+                // 이메일 및 찾기 관련
+                "/emailCheck", "/findIdemailCheck", "/findPwdemailCheck",
+                "/member/findMyId", "/member/findpassword", "/temporaryPwd",
+                "/findmyidsuccess", "/findmypasswordsuccess",
 
-                // 이메일 및 비밀번호 찾기 관련
-                "/emailCheck",
-                "/findIdemailCheck",
-                "/findPwdemailCheck",
-                "/member/findMyId",
-                "/member/findpassword",
-                "/temporaryPwd",
-                "/findmyidsuccess",
-                "/findmypasswordsuccess",
-
-                // 기타 목록 및 페이지
-                "/page/PaymentPage",
-                "/donation/donationlist",
-                "/donation/donationdetail",
-                "/news/newsList",
-                "/news/newsDetail",
-                "/donationlist",
-                "/newsList"
+                // 기타 목록
+                "/page/PaymentPage", "/donation/donationlist", "/donation/donationdetail",
+                "/news/newsList", "/news/newsDetail", "/donationlist", "/newsList"
         };
 
         http
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(permitAllUrls).permitAll()
 
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
-                .formLogin(formLogin -> formLogin.disable())
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/member/login")
+                        .loginProcessingUrl("/member/login")
+                        .defaultSuccessUrl("/", true)
+                        .failureUrl("/member/login?error=true")
+                        .permitAll()
+                )
+                .logout(logout -> logout.permitAll())
                 .csrf(csrf -> csrf.disable());
+
         return http.build();
     }
 
