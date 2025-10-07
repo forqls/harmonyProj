@@ -232,7 +232,7 @@
 
     window.onload = () => {
         if('W' == /*[[${session.loginUser != null ? session.loginUser.memConfirm : ''}]]*/){
-            alert('아직 승인 대기중입니다.');
+            alert('관리자의 승인이 대기 중입니다. 승인 완료 후 후원글 작성 권한이 부여됩니다.');
         }
 
         $.ajax({

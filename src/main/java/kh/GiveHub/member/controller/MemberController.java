@@ -66,10 +66,10 @@ public class MemberController {
     // 회원가입
     @GetMapping("/member/join")
     public String Join() {
-        String rawPassword = "harmony";
-        String encodedPassword = bcrypt.encode(rawPassword);
-
-        System.out.println("생성된 BCrypt 비밀번호: " + encodedPassword);
+//        String rawPassword = "harmony";
+//        String encodedPassword = bcrypt.encode(rawPassword);
+//
+//        System.out.println("생성된 BCrypt 비밀번호: " + encodedPassword);
         return "member/join";
     }
 
