@@ -82,7 +82,7 @@ public class ImageService {
 //				return false;
 //			}
 //		}
-//		return true;
+		return true;
 	}
 //
 //	public List<String> compareContent(String content, String oldcontent) {
