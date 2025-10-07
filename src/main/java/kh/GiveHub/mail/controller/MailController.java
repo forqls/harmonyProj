@@ -1,24 +1,14 @@
 package kh.GiveHub.mail.controller;
 
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.mail.MessagingException;
 import kh.GiveHub.mail.model.service.MailService;
 import lombok.RequiredArgsConstructor;
 
-
-
-
-
-
-
-import org.springframework.web.bind.annotation.*;
-
-import java.io.UnsupportedEncodingException;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,7 +22,7 @@ public class MailController {
         try {
             return mailService.sendSimpleMessage(mail);
 
-        } catch (MessagingException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return "EMAIL_FAIL";
         } catch (Exception e) {
@@ -46,7 +36,7 @@ public class MailController {
     public String emailCheck2(@RequestParam("email") String mail) {
         try {
             return mailService.sendSimpleMessage(mail);
-        } catch (MessagingException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return "EMAIL_FAIL";
         } catch (Exception e) {
@@ -60,7 +50,7 @@ public class MailController {
     public String emailCheck3(@RequestParam("email") String mail) {
         try {
             return mailService.sendSimpleMessage(mail);
-        } catch (MessagingException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return "EMAIL_FAIL";
         } catch (Exception e) {
