@@ -46,6 +46,7 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/news/newsDetail")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/donationlist")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/newsList")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/member/join-success")).permitAll()
 
                         // 이 외의 모든 요청은 인증 필요
                         .anyRequest().authenticated()

@@ -20,7 +20,6 @@ public class MemberService {
 		return mapper.selectMemberList();
 	}
 
-	//로그인
 	public Member login(Member m) {
 		return mapper.login(m);
 	}
