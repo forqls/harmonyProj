@@ -36,6 +36,7 @@ public class SecurityConfig {
                 "/admin/memberUpdate",
                 "/admin/donaList",
                 "/admin/newsList",
+                "/admin/memberUpdate",
 
                 // 이메일 및 비밀번호 찾기 관련
                 "/emailCheck",
