@@ -32,6 +32,7 @@ public class SecurityConfig {
                 "/member/login",
                 "/member/join-success",
                 "/member/logout",
+                "/admin/main",
 
                 // 이메일 및 비밀번호 찾기 관련
                 "/emailCheck",
