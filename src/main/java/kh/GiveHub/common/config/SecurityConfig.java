@@ -16,6 +16,12 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
 
     @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        // 정적 리소스(css, js, img 등)는 아예 보안 검사를 무시하도록 설정
+        return (web) -> web.ignoring().requestMatchers("/css/**", "/js/**", "/img/**", "/error/**");//나중에 "/favicon.ico", 추가하기
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         String[] permitAllUrls = {
