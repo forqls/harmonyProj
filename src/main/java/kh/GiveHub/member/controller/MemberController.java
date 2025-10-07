@@ -36,7 +36,7 @@ public class MemberController {
     //로그인 화면 연결
     @GetMapping("/member/login")
     public String logIn() {
-        return "/member/login";
+        return "member/login";
     }
 
     @PostMapping("/member/login")
@@ -53,7 +53,7 @@ public class MemberController {
 
         model.addAttribute("loginError", "로그인 실패");
 
-        return "/member/login";
+        return "member/login";
     }
 
     //로그아웃
@@ -66,7 +66,7 @@ public class MemberController {
     // 회원가입
     @GetMapping("/member/join")
     public String Join() {
-        return "/member/join";
+        return "member/join";
     }
 
     @PostMapping("/member/join")
@@ -82,7 +82,7 @@ public class MemberController {
         int result = mService.memberJoin(m);
         if (result > 0) {
             pService.memberJoin(m.getMemNo());
-            return "/member/join-success";
+            return "member/join-success";
         }
         System.out.println(bcrypt);
         throw new MemberException("실패");
@@ -98,7 +98,7 @@ public class MemberController {
     public String mypage(Model model) {
         int no = ((Member) model.getAttribute("loginUser")).getMemNo();
         model.addAttribute("list", mService.selectDonationList(no, 2));
-        return "/member/mypage";
+        return "member/mypage";
     }
 
     @GetMapping("/ongoingList")
@@ -121,7 +121,7 @@ public class MemberController {
         if (model.getAttribute("loginUser") != null) {
             ArrayList<Member> list = mService.selectMemberList();
             model.addAttribute("list", list);
-            return "/admin/main";
+            return "admin/main";
         }
         throw new MemberException("실패");
     }
@@ -186,7 +186,7 @@ public class MemberController {
 
     @GetMapping("/findmyid")
     public String findmyIdPage() {
-        return "/member/findmyid";
+        return "member/findmyid";
     }
 
     @PostMapping("/member/findMyId")
@@ -201,13 +201,13 @@ public class MemberController {
         System.out.println(memId);
         model.addAttribute("memId",memId);
 
-        return "/member/findmyidsuccess";
+        return "member/findmyidsuccess";
 
     }
 
     @GetMapping("/findpassword")
     public String findpasswordPage() {
-        return "/member/findpassword";
+        return "member/findpassword";
     }
 
     @PostMapping("/temporaryPwd")
@@ -245,7 +245,7 @@ public class MemberController {
         model.addAttribute("memName",memName);
         model.addAttribute("memPwd",pwd);
 
-        return "/member/findpasswordsuccess";
+        return "member/findpasswordsuccess";
 
     }
 
