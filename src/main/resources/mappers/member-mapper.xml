@@ -8,9 +8,27 @@
 	<select id="selectNo"> select * from member where mem_no = #{no} </select>
 	<update id="adminMemberUpdate"> update member set mem_type = #{memType}, mem_grade = #{memGrade}, mem_confirm = #{memConfirm} where mem_no = #{memNo} </update>
 	<update id="adminMemberDelete"> update member set mem_status = 'N' where mem_no = #{memNo} </update>
-	<insert id="memberJoin">
-		<selectKey order="BEFORE" resultType="_int" keyProperty="memNo"> select seq_mem_no.nextval from dual </selectKey>
-		insert into member values(#{memNo}, #{memName}, #{memId}, #{memPwd}, #{memAddress}, #{memType}, #{memGrade}, default, #{memConfirm}, #{memEmail})
+	<insert id="memberJoin" useGeneratedKeys="true" keyProperty="memNo">
+		INSERT INTO member (
+		mem_name,
+		mem_id,
+		mem_pwd,
+		mem_address,
+		mem_type,
+		mem_grade,
+		mem_confirm,
+		mem_email
+		)
+		VALUES (
+		#{memName},
+		#{memId},
+		#{memPwd},
+		#{memAddress},
+		#{memType},
+		#{memGrade},
+		#{memConfirm},
+		#{memEmail}
+		)
 	</insert>
 	<select id="checkIdDuplication" resultType="_int" parameterType="string"> select count(*) from member where mem_id =#{email} and mem_status='Y' </select>
 	<update id="editMemberInfo"> update member set mem_name=#{memName} , mem_ID=#{memId},MEM_ADDRESS=#{memAddress},MEM_PWD=#{memPwd} where mem_no=#{memNo} </update>
