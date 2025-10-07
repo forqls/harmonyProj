@@ -76,6 +76,8 @@ public class SecurityConfig {
                 // 1. 현재 인증된 사용자의 권한 목록을 가져옵니다.
                 Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 
+                System.out.println("로그인 성공! 현재 사용자에게 부여된 권한: " + roles);
+
                 // 2. 권한 목록에 'ADMIN' 문자열이 포함된 권한
                 if (roles.contains("ROLE_ADMIN")) {
                     // 관리자 로그인 성공 -> 관리자 메인 페이지로 이동
