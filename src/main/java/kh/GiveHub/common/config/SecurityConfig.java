@@ -25,7 +25,7 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/img/**")).permitAll()
 
-                        // 메인 페이지와 회원가입/로그인/비밀번호 관련 모든 요청 허용
+                        // 허용 페이지
                         .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/member/join")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/member/join.id")).permitAll()
@@ -40,6 +40,12 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/findpassword")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/findmypasswordsuccess")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/page/PaymentPage")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/donation/donationlist")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/donation/donationdetail")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/news/newsList")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/news/newsDetail")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/donationlist")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/newsList")).permitAll()
 
                         // 이 외의 모든 요청은 인증 필요
                         .anyRequest().authenticated()
