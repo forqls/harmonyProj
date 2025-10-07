@@ -73,6 +73,12 @@ public class CloudflareR2Client {
 
         s3Client.copyObject(copyRequest);
 
+        DeleteObjectRequest deleteRequest = DeleteObjectRequest.builder()
+                .bucket("gh-temp") // 원본 버킷 이름
+                .key(key)
+                .build();
+        s3Client.deleteObject(deleteRequest);
+
     }
 
 //    public String generateUploadUrl(String bucket, String key) {

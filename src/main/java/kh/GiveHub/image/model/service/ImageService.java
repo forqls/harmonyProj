@@ -21,12 +21,15 @@ import kh.GiveHub.image.model.exception.ImageException;
 import kh.GiveHub.image.model.mapper.ImageMapper;
 import kh.GiveHub.image.model.vo.Image;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 
 @Service
 @RequiredArgsConstructor
 public class ImageService {
 	private final ImageMapper mapper;
 	private final CloudflareR2Client r2Client;
+	@Value("${cloudflare.r2.public.url}")
+	private String r2PublicUrl;
 //	private String basePath = WebMvcConfig.getBasePath();
 //	private String tempPath = basePath + "/temp/";
 //	private String uploadPath =basePath + "/upload/";
@@ -47,41 +50,34 @@ public class ImageService {
 		}
 
 		r2Client.uploadImage("gh-temp", rename, data);
-
-		return rename;
+		String imageUrl = r2PublicUrl + "/gh-temp/" + rename;
+		return imageUrl;
 	}
 
 	public boolean saveUpload(List<String> list, int bid, String boardType) {
-		for (String name : list){
-			String filename = name.substring(name.lastIndexOf("/")+1);
+		// 로컬 파일 처리 관련 주석은 모두 제거
 
+		for (String imageUrl : list) {
+			// DB에 저장된 URL에서 파일명(key)을 추출
+			String key = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+
+			// R2 클라이언트를 이용해 파일을 임시 버킷 -> 영구 버킷으로 복사/이동
+			// CloudflareR2Client.java에 moveImage(key, sourceBucket, destinationBucket) 메서드가 있다고 가정
+			r2Client.moveImage(key);
+
+			// DB에 저장할 최종 영구 URL 생성
+			String finalImageUrl = r2PublicUrl + "/gh-uploads/" + key;
+
+			// DB에 최종 URL과 파일 정보를 저장 (기존 주석 코드를 R2 맞게 수정)
+			Image img = new Image();
+			img.setImgPath(finalImageUrl); // 영구 URL을 저장
+			img.setImgName(key.substring(key.lastIndexOf("_") + 1));
+			img.setImgRename(key);
+			img.setImgType(key.startsWith("T") ? "0" : "1");
+			img.setRefNo(bid);
+			img.setBoardType(boardType.equals("donation") ? "D" : "N");
+			mapper.insertImage(img);
 		}
-//		File dir = new File(uploadPath);
-//		if (!dir.exists()) {
-//			dir.mkdirs();
-//		}
-//		for(String name : list) {
-//			String fileName = name.substring(name.lastIndexOf("/")+1);
-//			String sourcePath = tempPath+fileName;
-//			String destPath = uploadPath+fileName;
-//
-//			try {
-//				Files.copy(Paths.get(sourcePath), Paths.get(destPath),
-//						StandardCopyOption.REPLACE_EXISTING);
-//
-//				Image img = new Image();
-//				img.setImgPath(uploadPath);
-//				img.setImgName(fileName.substring(fileName.lastIndexOf("_")+1));
-//				img.setImgRename(fileName);
-//				img.setImgType(fileName.startsWith("T")? "0":"1");
-//				img.setRefNo(bid);
-//				img.setBoardType(boardType.equals("donation")? "D":"N");
-//				mapper.insertImage(img);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//				return false;
-//			}
-//		}
 		return true;
 	}
 //
