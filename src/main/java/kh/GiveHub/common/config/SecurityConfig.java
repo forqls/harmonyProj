@@ -67,7 +67,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // customAuthenticationSuccessHandler() Bean
     @Bean
     public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
         return new AuthenticationSuccessHandler() {
@@ -76,7 +75,10 @@ public class SecurityConfig {
 
                 Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 
-                if (roles.contains("ROLE_ADMIN")) {
+                boolean isAdmin = roles.stream()
+                        .anyMatch(role -> role.toUpperCase().contains("ADMIN"));
+
+                if (isAdmin) {
                     // 관리자 로그인 성공 -> 관리자 메인 페이지로 이동
                     response.sendRedirect("/admin/main");
                 } else {
