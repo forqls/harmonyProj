@@ -3,26 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Insert title here</title>
-
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <link href="/css/reset.css" rel="stylesheet" type="text/css">
     <link href="/css/common.css" rel="stylesheet" type="text/css">
     <link href="/css/index.css" rel="stylesheet" type="text/css">
     <link href="/css/navBar.css" rel="stylesheet" type="text/css">
-    <link href="/css/footer.css" rel="stylesheet" type="text/css">
-
+    <style>
+        .custom_board_contents{
+            cursor:pointer;
+        }
+    </style>
 </head>
 <body>
-<div th:replace="common/navbar.html"></div>
+<div th:replace="~{/common/navbar.html :: navbar}"></div>
 <script src="/js/common.js"></script>
 
 <section id="section_01">
     <div id="main" class="main_wrap">
         <div class="container">
             <div class="main_title_wrap">
-                <p>아름다운 기부</p>
-                <h1>행복한 세상을 만들어갑니다</h1>
+                <span class="text_animation_custom text_animation_p"><p>아름다운 기부</p></span>
+                <span class="text_animation_custom text_animation_h1"><h1>행복한 세상을 만들어갑니다</h1></span>
             </div>
-            <div class="dona_main_btn dona_btn">후원하기</div>
+            <div class="dona_main_btn dona_btn" onclick="location.href='/donation/donationlist';">후원하기</div>
         </div>
     </div>
 </section>
@@ -33,8 +36,8 @@
         <div class="title_wrap">
             <h2>100% 전달하는 기부</h2>
             <p>
-               <span class="display_block">장기적이고 지속적인 지원을 통해 <span /> <span
-                       class="display_block">도움이 필요한 곳에 안정적인 성장 발판을 마련합니다.<span />
+                <span class="display_block">장기적이고 지속적인 지원을 통해 </span>
+                <span class="display_block">도움이 필요한 곳에 안정적인 성장 발판을 마련합니다.</span>
             </p>
             <div class="slide_arrow_wrap">
                 <div class="right_arrow"></div>
@@ -44,123 +47,30 @@
 
     </div>
     <div class="right_container">
-
         <div id="slide_visual" class="visual_img">
             <div id="slide_wrap" class="slide_img_wrap">
-                <div class="img_wrap">
-                    <div class="slide_img">
-                        <img src="img/Baby_wearing_a_head_correction_helmet.jpg">
-                    </div>
-                    <div class="text_wrap">
-                        <p class="category category_white">아동/청소년</p>
-                        <h3 class="board_title">"엄마가 세상에서 제일 좋아요" 희귀암 투병중인 별이</h3>
-                        <a href="#">도움주러가기↗</a>
-                    </div>
-                </div>
-                <div class="img_wrap">
-                    <div class="slide_img">
-                        <img src="img/baby_looking_out_the_window.jpg">
-                    </div>
-                    <div class="text_wrap">
-                        <p class="category category_white">아동/청소년</p>
-                        <h3 class="board_title">"엄마가 세상에서 제일 좋아요" 희귀암 투병중인 별이</h3>
-                        <a href="#">도움주러가기↗</a>
-                    </div>
-                </div>
-                <div class="img_wrap">
-                    <div class="slide_img">
-                        <img src="img/Korean_War_Veteran_Grandpa.jpg">
-                    </div>
-                    <div class="text_wrap">
-                        <p class="category category_white">아동/청소년</p>
-                        <h3 class="board_title">"엄마가 세상에서 제일 좋아요" 희귀암 투병중인 별이</h3>
-                        <a href="#">도움주러가기↗</a>
-                    </div>
-                </div>
+                <!--ajax list 구현-->
             </div>
         </div>
     </div>
 </section>
+
+
 <section id="section_03">
     <div class="container">
         <div class="title_container">
             <div class="title_wrap">
                 <h2>세상의 행복을 더하는 나눔 소식</h2>
-                <div id="slide_arrow" class="slide_arrow_wrap">
-                    <div id="right" class="right_arrow"></div>
-                    <div id="left" class="left_arrow"></div>
-                </div>
+                <!--                <div id="slide_arrow" class="slide_arrow_wrap">-->
+                <!--                    <div id="right" class="right_arrow"></div>-->
+                <!--                    <div id="left" class="left_arrow"></div>-->
+                <!--                </div>-->
             </div>
 
         </div>
         <div id="board_visual" class="visual_board">
-            <div class="board_img_wrap">
-                <div class="board_contents">
-                    <div class="board_img">
-                        <img src="img/board_img01.jpg">
-                    </div>
-                    <div class="board_content_text_wrap">
-                        <div class="category category_green">아동/청소년</div>
-                        <div class="title">전교 1등 예은이와 아빠의 주먹밥</div>
-                        <div class="fun_period">2025.01.10~2025.04.20</div>
-                        <div class="organizer">주최자</div>
-                    </div>
-                </div>
-                <div class="board_contents">
-                    <div class="board_img">
-                        <img src="img/board_img02.jpg">
-                    </div>
-                    <div class="board_content_text_wrap">
-                        <div class="category category_green">아동/청소년</div>
-                        <div class="title">18살 다훈이와 할머니의 느리게 걷는길</div>
-                        <div class="fun_period">2025.01.02~2025.06.22</div>
-                        <div class="organizer">주최자</div>
-                    </div>
-                </div>
-                <div class="board_contents">
-                    <div class="board_img">
-                        <img src="img/board_img03.jpg">
-                    </div>
-                    <div class="board_content_text_wrap">
-                        <div class="category category_green">아동/청소년</div>
-                        <div class="title">아홉살 민재의 할머니를 지키는 시간</div>
-                        <div class="fun_period">2024.12.24~2025.08.10</div>
-                        <div class="organizer">주최자</div>
-                    </div>
-                </div>
-                <div class="board_contents">
-                    <div class="board_img">
-                        <img src="img/board_img04.jpg">
-                    </div>
-                    <div class="board_content_text_wrap">
-                        <div class="category category_green">아동/청소년</div>
-                        <div class="title">아빠의 작은천사 2살 아린이</div>
-                        <div class="fun_period">2025.01.10~2025.04.20</div>
-                        <div class="organizer">주최자</div>
-                    </div>
-                </div>
-                <div class="board_contents">
-                    <div class="board_img">
-                        <img src="img/board_img05.jpg">
-                    </div>
-                    <div class="board_content_text_wrap">
-                        <div class="category category_green">아동/청소년</div>
-                        <div class="title">전교 1등 예은이와 아빠의 주먹밥</div>
-                        <div class="fun_period">2025.01.10~2025.04.20</div>
-                        <div class="organizer">주최자</div>
-                    </div>
-                </div>
-                <div class="board_contents">
-                    <div class="board_img">
-                        <img src="img/board_img06.jpg">
-                    </div>
-                    <div class="board_content_text_wrap">
-                        <div class="category category_green">아동/청소년</div>
-                        <div class="title">전교 1등 예은이와 아빠의 주먹밥</div>
-                        <div class="fun_period">2025.01.10~2025.04.20</div>
-                        <div class="organizer">주최자</div>
-                    </div>
-                </div>
+            <div id="board_img_wrap" class="board_img_wrap">
+
             </div>
         </div>
     </div>
@@ -183,25 +93,227 @@
                         <div class="organizer">생태지평연구소</div>
                     </div>
                 </div>
-                <div class="custom_board_contents">
-                    <div class="custom_board_img">
-                        <img src="img/custom_board_img02.jpg">
-                    </div>
-                    <div class="board_content_text_wrap">
-                        <div class="category category_green">아동/청소년</div>
-                        <div class="title">무심코 버린 비닐봉지 거북이가 먹어버려요!</div>
-                        <div class="fun_period">2025.01.10~2025.04.20</div>
-                        <div class="organizer">환경재단</div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 </section>
+<p hidden="hidden" id="userId">[[${session.loginUser != null ? session.loginUser.memNo : ''}]]</p>
 <div id="floating_btn" class="dona_btn">
     <a href="/donation/donationlist">후원하기</a>
 </div>
-<script>
+
+<script th:inline="javascript">
+
+
+    $(document).ready(function () {
+        $.ajax({
+            url: '/donation/new',
+            dataType: 'json',
+            success: function (data) {
+                console.log("AJAX 데이터:", data);
+
+                const slideWrap = document.getElementById('slide_wrap');
+                slideWrap.innerHTML = ''; // 기존 데이터 제거 (중복 방지)
+
+                if (data && data.length > 0) {
+                    data.forEach(d => {
+                        const imgWrap = document.createElement('div');
+                        imgWrap.classList.add('img_wrap');
+                        imgWrap.innerHTML = `
+                    <a href="/donation/donationdetail/${d.doNo}">
+                        <div class="slide_img">
+                            <img src="${d.thumbnailPath}" alt="donation image">
+                        </div>
+                        <div class="text_wrap">
+                            <p class="category category_white">${d.doCategory}</p>
+                            <h3 class="board_title">${d.doTitle}</h3>
+                            <span class="link_text">도움주러가기↗</span>
+                        </div>
+                    </a>`;
+                        slideWrap.appendChild(imgWrap);
+                    });
+
+                    setTimeout(initSlider, 100); // DOM이 완전히 로딩된 후 실행
+                }
+            },
+            error: function (err) {
+                console.log("AJAX 오류:", err);
+            }
+        });
+
+        let currentIndex = 1;
+        let slideInterval;
+        let slideWidth = 0;
+        let slides;
+        let isSliding = false; // 슬라이드 중인지 여부 체크
+
+        function initSlider() {
+            const slideWrap = document.getElementById('slide_wrap');
+            slides = document.querySelectorAll('.img_wrap');
+
+            if (slides.length === 0) return;
+
+            // 기존 클론 제거 (중복 추가 방지)
+            document.querySelectorAll('.img_wrap.clone').forEach(clone => clone.remove());
+
+            slideWidth = slides[0].offsetWidth; // 각 슬라이드의 너비 저장
+
+            // 무한 루프를 위해 첫 번째와 마지막 요소 복제
+            const firstClone = slides[0].cloneNode(true);
+            const lastClone = slides[slides.length - 1].cloneNode(true);
+            firstClone.classList.add('clone');
+            lastClone.classList.add('clone');
+
+            slideWrap.appendChild(firstClone);
+            slideWrap.insertBefore(lastClone, slides[0]);
+
+            slides = document.querySelectorAll('.img_wrap');
+
+            slideWrap.style.width = `${slides.length * slideWidth}px`;
+            slideWrap.style.transition = 'none';
+            slideWrap.style.transform = `translateX(-${slideWidth}px)`;
+
+            document.querySelector('.right_arrow').removeEventListener('click', nextSlide);
+            document.querySelector('.left_arrow').removeEventListener('click', prevSlide);
+            document.querySelector('.right_arrow').addEventListener('click', nextSlide);
+            document.querySelector('.left_arrow').addEventListener('click', prevSlide);
+
+            startAutoSlide();
+        }
+
+        function nextSlide() {
+            if (isSliding) return; // 슬라이딩 중이면 클릭 방지
+            isSliding = true;
+
+            const slideWrap = document.getElementById('slide_wrap');
+            currentIndex++;
+            slideWrap.style.transition = 'transform 0.6s ease-in-out';
+            slideWrap.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+
+            slideWrap.addEventListener('transitionend', () => {
+                if (currentIndex >= slides.length - 1) {
+                    slideWrap.style.transition = 'none';
+                    currentIndex = 1;
+                    slideWrap.style.transform = `translateX(-${slideWidth}px)`;
+                }
+                isSliding = false; // 애니메이션 종료 후 클릭 가능
+            }, { once: true });
+        }
+
+        function prevSlide() {
+            if (isSliding) return; // 슬라이딩 중이면 클릭 방지
+            isSliding = true;
+
+            const slideWrap = document.getElementById('slide_wrap');
+            currentIndex--;
+            slideWrap.style.transition = 'transform 0.6s ease-in-out';
+            slideWrap.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+
+            slideWrap.addEventListener('transitionend', () => {
+                if (currentIndex <= 0) {
+                    slideWrap.style.transition = 'none';
+                    currentIndex = slides.length - 2;
+                    slideWrap.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+                }
+                isSliding = false; // 애니메이션 종료 후 클릭 가능
+            }, { once: true });
+        }
+
+        function startAutoSlide() {
+            clearInterval(slideInterval);
+            slideInterval = setInterval(nextSlide, 3300);
+
+            const slideVisual = document.getElementById('slide_visual');
+            slideVisual.addEventListener('mouseenter', () => clearInterval(slideInterval));
+            slideVisual.addEventListener('mouseleave', startAutoSlide);
+        }
+    });
+
+
+    window.onload = () => {
+        if('W' == /*[[${session.loginUser != null ? session.loginUser.memConfirm : ''}]]*/){
+            alert('아직 승인 대기중입니다.');
+        }
+
+        $.ajax({
+            url: '/donation/newNews',
+            dataType: 'json',
+            success: data => {
+                console.log(data);
+
+                const newsContainer = document.getElementById('board_img_wrap');
+                if (data != null) {
+                    newsContainer.innerHTML = '';
+
+                    for (const n of data) {
+                        const newsWrap = document.createElement('div');
+                        newsWrap.classList.add('board_contents');
+
+                        newsWrap.innerHTML = `
+                        <a href="/news/newsDetail/${n.newsNo}">
+                            <div class="board_img">
+                                <img src="${n.thumbnailPath}" alt="donation image">
+                            </div>
+                            <div class="board_content_text_wrap">
+                                <div class="category category_green">${n.doCategory}</div>
+                                <div class="title">${n.newsTitle}</div>
+                                <div class="fun_period">${n.newsCreateDate}</div>
+                                <div class="organizer">${n.memName}</div>
+                            </div>
+                        </a>`;
+                        newsContainer.appendChild(newsWrap);
+                    }
+                }
+            },
+            error: data => console.log(data)
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const slideWrap = document.getElementById("slide_wrap");
+            const slides = document.querySelectorAll(".img_wrap");
+            const rightArrow = document.querySelector(".right_arrow");
+            const leftArrow = document.querySelector(".left_arrow");
+
+            let currentIndex = 0;
+            let slideWidth = slides[0].offsetWidth; // 첫 번째 슬라이드의 너비 기준
+            let interval;
+
+            /** 슬라이드 이동 함수 */
+            function moveSlide(index) {
+                slideWidth = slides[0].offsetWidth; // 슬라이드 크기 다시 계산 (동적 대응)
+                slideWrap.style.transform = `translateX(${-index * slideWidth}px)`;
+                currentIndex = index;
+            }
+
+            /** 자동 슬라이드 (3초마다 이동) */
+            function startAutoSlide() {
+                interval = setInterval(() => {
+                    let nextIndex = (currentIndex + 1) % slides.length; // 무한 반복
+                    moveSlide(nextIndex);
+                }, 3000);
+            }
+
+            /** 화살표 클릭 이벤트 */
+            rightArrow.addEventListener("click", function () {
+                clearInterval(interval); // 자동 슬라이드 중지
+                let nextIndex = (currentIndex + 1) % slides.length;
+                moveSlide(nextIndex);
+                startAutoSlide(); // 다시 자동 슬라이드 시작
+            });
+
+            leftArrow.addEventListener("click", function () {
+                clearInterval(interval);
+                let prevIndex = (currentIndex - 1 + slides.length) % slides.length;
+                moveSlide(prevIndex);
+                startAutoSlide();
+            });
+
+            // 초기 실행
+            startAutoSlide();
+        });
+    };/*window.onload end*/
+
+
     document.addEventListener("DOMContentLoaded", function () {
         const floatingBtn = document.getElementById("floating_btn");
         const footer = document.querySelector("footer");
@@ -244,12 +356,66 @@
             }
         });
     });
+
+    var userId = document.getElementById("userId").textContent;
+    console.log("userId : " , userId);
+    $.ajax({
+        url: "/donation/customNews",
+        type: "GET",
+        data: { userId: userId },
+        dataType: "json",
+        success: function(rsp) {
+            console.log(userId);
+
+            var content = '';
+            rsp.forEach(function(donation) {
+                content += `
+                	<div class="custom_board_contents" data-url="/donation/donationdetail/${donation.doNo}">
+                    <div class="custom_board_img" style="background-image: url('${donation.thumbnailPath}');">
+                        <img src="${donation.thumbnailPath}" alt="Donation Image"/>
+                    </div>
+                    <div class="board_content_text_wrap">
+                        <div class="category category_green">${donation.doCategory}</div>
+                        <div class="title">${donation.doTitle}</div>
+                        <div class="fun_period">${donation.doStartDate} ~ ${donation.doEndDate}</div>
+                    </div>
+                </div>
+            `;
+            });
+
+            $(".custom_board_wrap").html(content);
+
+            $(document).on("click",".custom_board_contents",function(){
+                var url = $(this).data("url");
+                window.location.href=url;
+            });
+
+        }
+    });
+
+
+
+
+
+
+
+
+
+    // 슬라이드 구현
+
+
+
+
+
+
+
+    // 슬라이드 구현 end
+
 </script>
 
 <footer>
-    <div th:replace="common/footer.html"></div>
+    <div th:replace="~{/common/footer.html :: footer_bar}"></div>
 </footer>
-
 
 
 </body>
