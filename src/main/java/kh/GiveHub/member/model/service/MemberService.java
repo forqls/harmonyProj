@@ -2,6 +2,11 @@ package kh.GiveHub.member.model.service;
 
 import kh.GiveHub.member.model.vo.Member;
 import kh.GiveHub.payment.model.vo.Payment;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import kh.GiveHub.member.model.mapper.MemberMapper;
@@ -9,12 +14,52 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class MemberService {
+public class MemberService implements UserDetailsService {
 
 	private final MemberMapper mapper;
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+		Member m = new Member();
+		m.setMemId(username);
+
+		Member loginMember = mapper.login(m);
+
+		if (loginMember == null) {
+			// 사용자가 없으면 UsernameNotFoundException 발생
+			throw new UsernameNotFoundException(username + "을 찾을 수 없습니다.");
+		}
+
+		List<GrantedAuthority> authorities = new ArrayList<>();
+
+		String memType = loginMember.getMemType();
+
+		switch (memType) {
+			case "2": // 관리자
+				// SecurityConfig의 hasAuthority("ROLE_ADMIN")과 일치
+				authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+				break;
+			case "1": // 주최자
+				authorities.add(new SimpleGrantedAuthority("ROLE_ORGANIZER"));
+				break;
+			case "0": // 일반 회원
+			default:
+				authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+				break;
+		}
+
+		// Spring Security의 User 객체를 생성하여 반환합니다.
+		return new org.springframework.security.core.userdetails.User(
+				loginMember.getMemId(),
+				loginMember.getMemPwd(), // 암호화된 비밀번호여야 합니다. (이미 확인하셨죠!)
+				authorities
+		);
+	}
 
 	public ArrayList<Member> selectMemberList() {
 		return mapper.selectMemberList();
