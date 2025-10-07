@@ -33,6 +33,9 @@ public class SecurityConfig {
                 "/member/join-success",
                 "/member/logout",
                 "/admin/main",
+                "/admin/memberUpdate",
+                "/admin/donaList",
+                "/admin/newsList",
 
                 // 이메일 및 비밀번호 찾기 관련
                 "/emailCheck",
