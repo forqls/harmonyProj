@@ -77,14 +77,11 @@ public class SecurityConfig {
                 Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 
                 // 2. 권한 목록에 'ADMIN' 문자열이 포함된 권한
-                boolean isAdmin = roles.stream()
-                        .anyMatch(role -> role.toUpperCase().contains("ADMIN"));
-
-                if (isAdmin) {
-                    // 관리자 권한이 확인되면 관리자 메인 페이지로 이동
+                if (roles.contains("ROLE_ADMIN")) {
+                    // 관리자 로그인 성공 -> 관리자 메인 페이지로 이동
                     response.sendRedirect("/admin/main");
                 } else {
-                    // 그 외 (일반 사용자)는 메인 페이지로 이동
+                    // 일반 사용자 로그인 성공 -> 메인 페이지로 이동
                     response.sendRedirect("/");
                 }
             }
