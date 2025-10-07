@@ -17,43 +17,49 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        String[] permitAllUrls = {
+                "/resources/**",
+                "/css/**",
+                "/js/**",
+                "/img/**",
+
+                // 메인 및 회원 관련
+                "/",
+                "/member/join",
+                "/member/join.id",
+                "/member/join.email",
+                "/member/login",
+                "/member/join-success",
+
+                // 이메일 및 비밀번호 찾기 관련
+                "/emailCheck",
+                "/findIdemailCheck",
+                "/findPwdemailCheck",
+                "/member/findMyId",
+                "/member/findpassword",
+                "/temporaryPwd",
+                "/findmyidsuccess",
+                "/findmypasswordsuccess",
+
+                // 기타 목록 및 페이지
+                "/page/PaymentPage",
+                "/donation/donationlist",
+                "/donation/donationdetail",
+                "/news/newsList",
+                "/news/newsDetail",
+                "/donationlist",
+                "/newsList"
+        };
+
         http
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        // 정적 자원 접근을 permitAll()로
-                        .requestMatchers(new AntPathRequestMatcher("/resources/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/css/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/img/**")).permitAll()
+                        .requestMatchers(permitAllUrls).permitAll()
 
-                        // 허용 페이지
-                        .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/member/join")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/member/join.id")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/member/join.email")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/member/login")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/emailCheck")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/findIdemailCheck")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/findPwdemailCheck")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/member/findMyId")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/temporaryPwd")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/findmyidsuccess")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/findpassword")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/findmypasswordsuccess")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/page/PaymentPage")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/donation/donationlist")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/donation/donationdetail")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/news/newsList")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/news/newsDetail")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/donationlist")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/newsList")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/member/join-success")).permitAll()
-
-                        // 이 외의 모든 요청은 인증 필요
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin.disable())
                 .csrf(csrf -> csrf.disable());
-
         return http.build();
     }
 
