@@ -20,7 +20,7 @@
 	<select id="getOldContent"> select news_content from news where news_no = #{newsNo} </select>
 	<select id="newsDetail"> select * from news_view where news_no = #{newsNo} </select>
 	<select id="selectNewsNew">
-		<![CDATA[ select * FROM news_view where ROWNUM <= 3 and news_status ='Y' ]]>
+		SELECT * FROM news_view WHERE news_status = 'Y' LIMIT 3
 	</select>
 	<select id="selectNewsDetail"> select * from news_view where news_no = #{newsNo} </select>
 	<update id="deleteNews2"> update news set news_status ='N' where news_no = #{newsNo} </update>
