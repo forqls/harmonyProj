@@ -10,7 +10,9 @@
 		order by news_no desc
 	</select>
 	<insert id="insertNews">
-		<selectKey order="BEFORE" resultType="_int" keyProperty="newsNo"> select seq_news_no.nextval from dual </selectKey>
+		<selectKey order="BEFORE" resultType="_int" keyProperty="newsNo">
+			SELECT nextval('seq_news_no')
+		</selectKey>
 		insert into news values (#{newsNo}, #{newsTitle}, 'null', default, default, #{memNo}, #{doNo})
 	</insert>
 	<update id="setContent"> update news set news_content = #{newContent} where news_no = #{newsNo} </update>
