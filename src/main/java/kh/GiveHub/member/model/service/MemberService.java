@@ -42,14 +42,14 @@ public class MemberService implements UserDetailsService {
 		switch (memType) {
 			case "2": // 관리자
 				// SecurityConfig의 hasAuthority("ROLE_ADMIN")과 일치
-				authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+				authorities.add(new SimpleGrantedAuthority("ADMIN"));
 				break;
 			case "1": // 주최자
-				authorities.add(new SimpleGrantedAuthority("ROLE_ORGANIZER"));
+				authorities.add(new SimpleGrantedAuthority("ORGANIZER"));
 				break;
 			case "0": // 일반 회원
 			default:
-				authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+				authorities.add(new SimpleGrantedAuthority("USER"));
 				break;
 		}
 
