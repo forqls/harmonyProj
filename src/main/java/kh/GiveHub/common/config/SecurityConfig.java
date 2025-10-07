@@ -18,28 +18,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        // permitAll()
-        String[] permitAllUrls = {
-                "/resources/**", "/css/**", "/js/**", "/img/**",
-                "/", "/member/join", "/member/join.id", "/member/join.email",
-                "/member/login", "/member/join-success", "/member/logout",
-
-                "/emailCheck", "/findIdemailCheck", "/findPwdemailCheck",
-                "/member/findMyId", "/member/findpassword", "/temporaryPwd",
-                "/findmyidsuccess", "/findmypasswordsuccess",
-
-                "/page/PaymentPage", "/donation/donationlist", "/donation/donationdetail",
-                "/news/newsList", "/news/newsDetail", "/donationlist", "/newsList"
-        };
-
         http
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        // permitAll() 경로 허용
-                        .requestMatchers(permitAllUrls).permitAll()
 
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        // 관리자 페이지는 인증만
+                        .requestMatchers("/admin/**").authenticated()
+                        .requestMatchers("/member/mypage", "/member/editmyinfo", "/member/mydonation", "/donation/donationWrite").authenticated()
 
-                        .anyRequest().authenticated()
+                        // 그 외 모든 경로는 로그인 여부 상관없이 허용
+                        .anyRequest().permitAll()
                 )
                 .formLogin(formLogin -> formLogin.disable())
                 .csrf(csrf -> csrf.disable());
