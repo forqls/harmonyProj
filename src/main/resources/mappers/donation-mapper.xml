@@ -7,7 +7,7 @@
         <where>
             do_enddate
             <![CDATA[ >= ]]>
-            sysdate and do_status = 'Y'
+            CURRENT_DATE and do_status = 'Y'
             <if test="categorySelect != 'all'"> and do_category = #{categorySelect} </if>
             <if test="d.doTitle != null"> and do_Title like '%${d.doTitle}%' </if>
             <if test="d.memName != null"> and mem_name like '%${d.memName}%' </if>
@@ -23,12 +23,12 @@
         <if test="i == 1">
             join (select ('/upload/' || IMG_RENAME) as thumbnailPath, REF_NO, img_type from image where board_type = 'D' and img_type = '0') on (ref_no = do_no) where do_status = 'Y' and do_enddate
             <![CDATA[ >= ]]>
-            sysdate order by do_createdate desc
+            CURRENT_DATE order by do_createdate desc
         </if>
         <if test="i == 0"> order by do_no </if>
     </select>
     <insert id="insertDonation">
-        <selectKey order="BEFORE" resultType="_int" keyProperty="doNo"> select seq_do_no.nextval from dual </selectKey>
+        <selectKey order="BEFORE" resultType="_int" keyProperty="doNo"> SELECT nextval('seq_do_no') </selectKey>
         insert into donation values (#{doNo}, #{doTitle}, 'null', #{doGoal}, #{doCategory}, #{doStartDate}, #{doEndDate}, default, default, default, #{memNo})
     </insert>
     <update id="setContent"> update donation set do_content = #{content} where do_no = #{doNo} </update>
@@ -42,12 +42,12 @@
     <select id="selectMostCategoryList">
         select * from don_view where do_category=#{mostCategory} and do_status='Y' and do_enddate
         <![CDATA[ >= ]]>
-        sysdate FETCH FIRST 2 ROWS ONLY
+        CURRENT_DATE FETCH FIRST 2 ROWS ONLY
     </select>
     <select id="selectDeadLineList">
         select * from don_view where do_status='Y' and do_enddate
         <![CDATA[ >= ]]>
-        sysdate order by do_enddate FETCH FIRST 2 ROWS ONLY
+        CURRENT_DATE order by do_enddate FETCH FIRST 2 ROWS ONLY
     </select>
     <update id="deleteDonation"> update donation set do_status='N' where do_no = #{doNo} </update>
 </mapper>

@@ -42,12 +42,12 @@
 			<if test="type == 0">
 				p.mem_no = #{no} and do_status = 'Y' and do_enddate
 				<![CDATA[ > ]]>
-				sysdate
+				CURRENT_DATE
 			</if>
 			<if test="type == 1">
 				p.mem_no = #{no} and do_status = 'Y' and do_enddate
 				<![CDATA[ <= ]]>
-				sysdate
+				CURRENT_DATE
 			</if>
 		</where>
 	</select>
