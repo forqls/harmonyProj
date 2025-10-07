@@ -18,37 +18,30 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
+        // permitAll()
         String[] permitAllUrls = {
                 "/resources/**", "/css/**", "/js/**", "/img/**",
                 "/", "/member/join", "/member/join.id", "/member/join.email",
                 "/member/login", "/member/join-success", "/member/logout",
 
-                // 이메일 및 찾기 관련
                 "/emailCheck", "/findIdemailCheck", "/findPwdemailCheck",
                 "/member/findMyId", "/member/findpassword", "/temporaryPwd",
                 "/findmyidsuccess", "/findmypasswordsuccess",
 
-                // 기타 목록
                 "/page/PaymentPage", "/donation/donationlist", "/donation/donationdetail",
                 "/news/newsList", "/news/newsDetail", "/donationlist", "/newsList"
         };
 
         http
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        // permitAll() 경로 허용
                         .requestMatchers(permitAllUrls).permitAll()
 
                         .requestMatchers("/admin/**").hasRole("ADMIN")
 
                         .anyRequest().authenticated()
                 )
-                .formLogin(formLogin -> formLogin
-                        .loginPage("/member/login")
-                        .loginProcessingUrl("/member/login")
-                        .defaultSuccessUrl("/", true)
-                        .failureUrl("/member/login?error=true")
-                        .permitAll()
-                )
-                .logout(logout -> logout.permitAll())
+                .formLogin(formLogin -> formLogin.disable())
                 .csrf(csrf -> csrf.disable());
 
         return http.build();
