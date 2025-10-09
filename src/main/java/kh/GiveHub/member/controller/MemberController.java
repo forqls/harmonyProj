@@ -27,7 +27,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @SessionAttributes("loginUser")
 public class MemberController {
-
     private final BCryptPasswordEncoder passwordEncoder;
     private final MemberService mService;
     private final PaymentService pService;
