@@ -57,6 +57,7 @@ public class MemberController {
         return "member/login";
     }
 
+
     //로그아웃
     @GetMapping("/member/logout")
     public String logout(SessionStatus session) {
