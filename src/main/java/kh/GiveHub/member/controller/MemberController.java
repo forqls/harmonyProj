@@ -86,7 +86,7 @@ public class MemberController {
         m.setMemPwd(bcrypt.encode(m.getMemPwd()));
         int result = mService.memberJoin(m);
         if (result > 0) {
-            return "member/join-success"
+            return "member/join-success";
         }
         System.out.println(bcrypt);
         throw new MemberException("실패");
