@@ -2,6 +2,10 @@
 
 package kh.GiveHub.common.config;
 
+import jakarta.servlet.http.HttpSession;
+import kh.GiveHub.member.model.service.MemberService;
+import kh.GiveHub.member.model.vo.Member;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,6 +24,9 @@ import java.util.Set;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Autowired
+    private MemberService mService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -75,17 +82,26 @@ public class SecurityConfig {
             @Override
             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 
-                // 1. 현재 인증된 사용자의 권한 목록을 가져옵니다.
-                Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
+                // 1. 인증된 사용자의 ID(username)를 가져옵니다. (Spring Security의 Principal)
+                String memberId = authentication.getName();
 
+                // 2. MemberService를 사용하여 전체 Member 객체를 DB에서 다시 가져옵니다.
+                Member memberSearch = new Member();
+                memberSearch.setMemId(memberId);
+                Member loginUser = mService.login(memberSearch); // 기존 login 쿼리 재사용
+
+                // 🌟 CRITICAL FIX: HttpSession에 loginUser 객체를 수동으로 설정합니다. 🌟
+                HttpSession session = request.getSession(true);
+                session.setAttribute("loginUser", loginUser);
+
+                // 3. 권한 목록을 가져와 로그 출력
+                Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
                 System.out.println("로그인 성공! 현재 사용자에게 부여된 권한: " + roles);
 
-                // 2. 권한 목록에 'ADMIN' 문자열이 포함된 권한
+                // 4. 리다이렉션 로직 (원래 로직과 동일)
                 if (roles.contains("ROLE_ADMIN")) {
-                    // 관리자 로그인 성공 -> 관리자 메인 페이지로 이동
                     response.sendRedirect("/admin/main");
                 } else {
-                    // 일반 사용자 로그인 성공 -> 메인 페이지로 이동
                     response.sendRedirect("/");
                 }
             }

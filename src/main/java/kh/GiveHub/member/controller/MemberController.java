@@ -121,15 +121,13 @@ public class MemberController {
 
     // 관리자 메인페이지(회원관리 페이지)
     @GetMapping("/admin/main")
-    public String adminMain(Model model, HttpSession session) {
-
-        Member loginUser = (Member) session.getAttribute("loginUser");
-
-        if (loginUser != null) {
+    public String adminMain(Model model) {
+        if (model.getAttribute("loginUser") != null) {
             ArrayList<Member> list = mService.selectMemberList();
             model.addAttribute("list", list);
             return "admin/main";
         }
+
         return "redirect:/member/login";
     }
 
