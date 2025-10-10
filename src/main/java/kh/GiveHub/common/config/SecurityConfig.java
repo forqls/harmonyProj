@@ -54,10 +54,10 @@ public class SecurityConfig {
                 )
                 .formLogin(formLogin -> formLogin
                         .loginPage("/member/login")
-                        .loginProcessingUrl("/loginAction") // 로그인 폼의 action과 일치해야 합니다.
+                        .loginProcessingUrl("/member/login")
                         .failureUrl("/member/login?error")
 
-                        // 4. customAuthenticationSuccessHandler Bean을 등록합니다.
+                        // 4. customAuthenticationSuccessHandler Bean을 등록
                         .successHandler(customAuthenticationSuccessHandler())
 
                         .permitAll()
