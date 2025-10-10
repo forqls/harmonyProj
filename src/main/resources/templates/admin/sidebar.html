@@ -26,6 +26,8 @@
 <body>
 	<div id="sidebar">
 		<button type="button" class="blackbutton"
+				th:onclick="|location.href='/'|" id="homeBtn">홈</button>
+		<button type="button" class="blackbutton"
 			th:onclick="|location.href='/admin/main'|" id="memManage">회원관리</button>
 		<button type="button" class="blackbutton"
 			th:onclick="|location.href='/admin/donaList'|" id="donaList">기부게시판</button>
