@@ -4,7 +4,14 @@
 	<select id="checkId"> select count(*) from member where mem_id = #{id} and mem_status = 'Y' </select>
 	<select id="selectMemberList"> select * from member order by 1 </select>
 	<!--  로그인  -->
-	<select id="login"> select * from MEMBER where MEM_ID = #{memId} and MEM_STATUS ='Y' </select>
+	<resultMap id="memberResultMap" type="kh.GiveHub.member.model.vo.Member">
+		<id column="MEM_NO" property="memNo" />
+		<result column="MEM_TYPE" property="memType" />
+	</resultMap>
+
+	<select id="login" resultMap="memberResultMap">
+		select * from MEMBER where MEM_ID = #{memId} and MEM_STATUS ='Y'
+	</select>
 	<select id="selectNo"> select * from member where mem_no = #{no} </select>
 	<update id="adminMemberUpdate"> update member set mem_type = #{memType}, mem_grade = #{memGrade}, mem_confirm = #{memConfirm} where mem_no = #{memNo} </update>
 	<update id="adminMemberDelete"> update member set mem_status = 'N' where mem_no = #{memNo} </update>

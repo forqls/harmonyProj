@@ -37,26 +37,35 @@ public class MemberService implements UserDetailsService {
 
 		List<GrantedAuthority> authorities = new ArrayList<>();
 
-		String memType = loginMember.getMemType();
+		// memType을 정수로 변환하여 비교
+		String memTypeStr = loginMember.getMemType();
+		int memType = 0;
 
-		switch (memType) {
-			case "2": // 관리자
-				// SecurityConfig의 hasAuthority("ROLE_ADMIN")과 일치
+		if (memTypeStr != null && !memTypeStr.trim().isEmpty()) {
+			try {
+				// trim()으로 공백 제거, parseInt로 정수 변환
+				memType = Integer.parseInt(memTypeStr.trim());
+			} catch (NumberFormatException e) {
+				// 변환 실패 시 기본값 0 유지
+			}
+		}
+
+		switch (memType) { // 이제 정수 2와 비교
+			case 2: // 관리자
 				authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 				break;
-			case "1": // 주최자
+			case 1: // 주최자
 				authorities.add(new SimpleGrantedAuthority("ROLE_ORGANIZER"));
 				break;
-			case "0": // 일반 회원
+			case 0: // 일반 회원
 			default:
 				authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 				break;
 		}
 
-		// Spring Security의 User 객체를 생성하여 반환합니다.
 		return new org.springframework.security.core.userdetails.User(
 				loginMember.getMemId(),
-				loginMember.getMemPwd(), // 암호화된 비밀번호여야 합니다. (이미 확인하셨죠!)
+				loginMember.getMemPwd(),
 				authorities
 		);
 	}
