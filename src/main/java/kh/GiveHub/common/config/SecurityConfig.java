@@ -55,6 +55,8 @@ public class SecurityConfig {
                 .formLogin(formLogin -> formLogin
                         .loginPage("/member/login")
                         .loginProcessingUrl("/member/login")
+                        .usernameParameter("memId")
+                        .passwordParameter("memPwd")
                         .failureUrl("/member/login?error")
 
                         // 4. customAuthenticationSuccessHandler Bean을 등록
