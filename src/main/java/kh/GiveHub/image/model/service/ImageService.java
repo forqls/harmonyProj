@@ -77,10 +77,11 @@ public class ImageService {
 
 			// R2 클라이언트를 이용해 파일을 임시 버킷 -> 영구 버킷으로 복사/이동
 			// CloudflareR2Client.java에 moveImage(key, sourceBucket, destinationBucket) 메서드가 있다고 가정
-			r2Client.moveImage(key);
+			// r2Client.moveImage(key);
 
 			// DB에 저장할 최종 영구 URL 생성
-			String finalImageUrl = r2PublicUrl + "/" + key;
+			String finalImageUrl = r2PublicUrl + "/" + r2UploadBucket + "/" + key;
+
 
 			// DB에 최종 URL과 파일 정보를 저장
 			Image img = new Image();
