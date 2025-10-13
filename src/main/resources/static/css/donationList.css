@@ -206,12 +206,12 @@ td.img_custom {
     height: 235px;
     overflow: hidden;
     border-radius: 19px;
-    backdrop-filter: blur(1000px) !important;
+    /*backdrop-filter: blur(1000px) !important;*/
     position: relative;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    overflow: hidden; /* 가상 요소가 넘치지 않도록 */
+    overflow: hidden;
 }
 
 td.img_custom img {
