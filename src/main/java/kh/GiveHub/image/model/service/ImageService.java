@@ -36,8 +36,8 @@ public class ImageService {
 	private String r2TempBucket;
 
 	//영구 버킷 이름 주입
-	    @Value("${cloudflare.r2.upload.bucket}")
-		private String r2UploadBucket;
+	@Value("${cloudflare.r2.upload.bucket}")
+	private String r2UploadBucket;
 
 //	private String basePath = WebMvcConfig.getBasePath();
 //	private String tempPath = basePath + "/temp/";
@@ -64,7 +64,7 @@ public class ImageService {
 		if (baseUrl.endsWith("/")) {
 			baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
 		}
-		String imageUrl = baseUrl + "/" + r2TempBucket + "/" + rename;
+		String imageUrl = baseUrl + "/" + rename;
 		return imageUrl;
 	}
 
