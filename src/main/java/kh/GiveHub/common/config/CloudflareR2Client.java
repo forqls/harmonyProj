@@ -21,10 +21,10 @@ public class CloudflareR2Client {
     @Value("${R2_TEMP_BUCKET}")
     private String tempBucket;
 
-    @Value("${R2_UPLOAD_BUCKET}")
+    @Value("${cloudflare.r2.upload.bucket}")
     private String uploadBucket;
 
-    @Value("${R2_PUBLIC_DOMAIN}")
+    @Value("${cloud.aws.r2.public-domain}")
     private String publicDomain;
 
 
@@ -94,11 +94,15 @@ public class CloudflareR2Client {
 
     public String getPublicUrl(String objectKey) {
         if (publicDomain == null || objectKey == null) {
-            // publicDomain 설정이 누락된 경우를 대비한 방어 코드
             return null;
         }
 
-        String baseUrl = publicDomain.endsWith("/") ? publicDomain : publicDomain + "/";
+        String baseUrl = publicDomain;
+
+        if (!baseUrl.endsWith("/")) {
+            baseUrl += "/";
+        }
+
         String key = objectKey.startsWith("/") ? objectKey.substring(1) : objectKey;
 
         return baseUrl + key;
