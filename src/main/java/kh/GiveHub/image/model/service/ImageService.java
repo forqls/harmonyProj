@@ -41,6 +41,7 @@ public class ImageService {
 
 	public String saveTemp(MultipartFile file,
 						   String imgName, String imgType) {
+
 		SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmssSSS");
 		int ranNum = (int)(Math.random()*100);
 		String rename = sdf.format(new Date())+ranNum+"_"+imgName;
@@ -55,7 +56,11 @@ public class ImageService {
 		}
 
 		r2Client.uploadImage(r2TempBucket, rename, data);
-		String imageUrl = r2PublicUrl + "/" + r2TempBucket + "/" + rename;
+		String baseUrl = r2PublicUrl;
+		if (baseUrl.endsWith("/")) {
+			baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
+		}
+		String imageUrl = baseUrl + "/" + r2TempBucket + "/" + rename;
 		return imageUrl;
 	}
 
