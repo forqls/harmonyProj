@@ -166,7 +166,7 @@ public class DonationController {
 		//게시글이 존재하면, 게시글 데이터(b)를 donationdetail.html로 전달
 		//게시글이 존재하지 않으면 사용자 정의 예외 발생
 		if(d != null) {
-			mv.addObject("d", d).addObject("date", date).setViewName("/donation/donationdetail");
+			mv.addObject("d", d).addObject("date", date).setViewName("donation/donationdetail");
 
 			return mv;
 		}else {
