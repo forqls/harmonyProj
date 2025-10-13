@@ -18,18 +18,50 @@
             <when test="optionSelect == 'urgent'"> order by do_enddate asc </when>
         </choose>
     </select>
-    <select id="selectDonaList">
-        select * from donation join member using(mem_no)
+    <select id="selectDonaList" resultType="kh.GiveHub.donation.model.vo.Donation">
+        SELECT
+        d.*,
+        m.mem_name AS memName,       i.thumbnailPath              FROM donation d JOIN member m USING(mem_no)
+
         <if test="i == 1">
-            join (select ('/upload/' || IMG_RENAME) as thumbnailPath, REF_NO, img_type from image where board_type = 'D' and img_type = '0') on (ref_no = do_no) where do_status = 'Y' and do_enddate
+            LEFT JOIN (
+            SELECT
+            IMG_PATH AS thumbnailPath,  REF_NO,
+            img_type
+            FROM image
+            WHERE board_type = 'D' AND img_type = '0'
+            ) i ON (i.ref_no = d.do_no)
+            WHERE d.do_status = 'Y' AND d.do_enddate
             <![CDATA[ >= ]]>
-            CURRENT_DATE order by do_createdate desc
+            CURRENT_DATE
+            ORDER BY d.do_createdate DESC
         </if>
-        <if test="i == 0"> order by do_no </if>
+        <if test="i == 0">
+            LEFT JOIN (
+            SELECT
+            IMG_PATH AS thumbnailPath,
+            REF_NO,
+            img_type
+            FROM image
+            WHERE board_type = 'D' AND img_type = '0'
+            ) i ON (i.ref_no = d.do_no)
+            ORDER BY d.do_no
+        </if>
     </select>
     <insert id="insertDonation">
         <selectKey order="BEFORE" resultType="_int" keyProperty="doNo"> SELECT nextval('seq_do_no') </selectKey>
-        insert into donation values (#{doNo}, #{doTitle}, 'null', #{doGoal}, #{doCategory}, #{doStartDate}, #{doEndDate}, default, default, default, #{memNo})
+        INSERT INTO donation VALUES (
+        #{doNo},
+        #{doTitle},
+        #{doContent},  #{doGoal},
+        #{doCategory},
+        #{doStartDate},
+        #{doEndDate},
+        DEFAULT,
+        DEFAULT,
+        DEFAULT,
+        #{memNo}
+        )
     </insert>
     <update id="setContent"> update donation set do_content = #{content} where do_no = #{doNo} </update>
     <select id="getOldContent"> select do_content from donation where do_no = #{doNo} </select>
@@ -53,7 +85,31 @@
         LIMIT 3
         ]]>
     </select>
-    <select id="selectDonation"> select * from donation join member using(mem_no) left join (select '/upload/'||IMG_RENAME as thumbnailPath, REF_NO, img_type from image where board_type = 'D' and img_type = '0') on (ref_no = do_no) left join (select do_no, sum(pay_amount) pay_amount, count(*) pay_count from payment where do_no = #{doNo} group by do_no) using(do_no) where do_status = 'Y' and do_no =#{doNo} </select>
+    <select id="selectDonation">
+        SELECT
+        d.*,
+        m.mem_name AS memName, li.thumbnailPath,
+        p.pay_amount,
+        p.pay_count
+        FROM donation d JOIN member m USING(mem_no)
+        LEFT JOIN (
+        SELECT
+        IMG_PATH AS thumbnailPath,  REF_NO,
+        img_type
+        FROM image
+        WHERE board_type = 'D' AND img_type = '0'
+        ) li ON (li.ref_no = d.do_no)
+        LEFT JOIN (
+        SELECT
+        do_no,
+        SUM(pay_amount) AS pay_amount,
+        COUNT(*) AS pay_count
+        FROM payment
+        WHERE do_no = #{doNo}
+        GROUP BY do_no
+        ) p USING(do_no)
+        WHERE d.do_status = 'Y' AND d.do_no =#{doNo}
+    </select>
     <update id="updateCount"> update donation set do_views = do_views + 1 where do_no = #{doNo} </update>
     <select id="selectMostCategoryList">
         select * from don_view where do_category=#{mostCategory} and do_status='Y' and do_enddate
