@@ -35,7 +35,19 @@
     <select id="getOldContent"> select do_content from donation where do_no = #{doNo} </select>
     <update id="updateDonation"> update Donation set do_title = #{doTitle}, do_goal = ${doGoal}, do_category = #{doCategory}, do_enddate = #{doEndDate} where do_no = #{doNo} </update>
     <select id="selectNew">
-        <![CDATA[ SELECT * FROM ( SELECT * FROM donation join (select ('/upload/' || IMG_RENAME) as thumbnailPath, REF_NO, img_type from image where board_type = 'D' and img_type = '0') on (ref_no = do_no) WHERE do_status = 'Y' ORDER BY do_createdate DESC) ROWNUM 3 ]]>
+        <![CDATA[
+    SELECT * FROM (
+        SELECT * FROM donation
+        -- 여기를 LEFT JOIN으로 변경
+        LEFT join (
+            select ('/upload/' || IMG_RENAME) as thumbnailPath, REF_NO, img_type
+            from image
+            where board_type = 'D' and img_type = '0'
+        ) i on (i.ref_no = do_no)
+        WHERE do_status = 'Y'
+        ORDER BY do_createdate DESC
+    ) LIMIT 3
+    ]]>
     </select>
     <select id="selectDonation"> select * from donation join member using(mem_no) left join (select '/upload/'||IMG_RENAME as thumbnailPath, REF_NO, img_type from image where board_type = 'D' and img_type = '0') on (ref_no = do_no) left join (select do_no, sum(pay_amount) pay_amount, count(*) pay_count from payment where do_no = #{doNo} group by do_no) using(do_no) where do_status = 'Y' and do_no =#{doNo} </select>
     <update id="updateCount"> update donation set do_views = do_views + 1 where do_no = #{doNo} </update>
