@@ -80,7 +80,7 @@ public class ImageService {
 			r2Client.moveImage(key);
 
 			// DB에 저장할 최종 영구 URL 생성
-			String finalImageUrl = r2PublicUrl + "/" + r2UploadBucket + "/" + key;
+			String finalImageUrl = r2PublicUrl + "/" + key;
 
 			// DB에 최종 URL과 파일 정보를 저장
 			Image img = new Image();
