@@ -26,13 +26,13 @@ a {
 }
 
 ::-webkit-scrollbar {
-	width: 5px;  /* 세로축 스크롤바 폭 너비 */
+	width: 5px;
 }
 body {
-	overflow-y: scroll; /* 세로 스크롤 사용 */
+	overflow-y: scroll;
 }
 ::-webkit-scrollbar-thumb {
-	background: #34D28B; /* 스크롤바 막대 색상 */
+	background: #34D28B;
 	border-radius: 12px 12px 12px 12px;
 }
 #thumbnailDiv img {
