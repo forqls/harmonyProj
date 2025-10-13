@@ -18,13 +18,13 @@ public class CloudflareR2Client {
 //    private final S3Presigner s3Presigner;
 
     //버키 이름 주입
-    @Value("${cloudflare.r2.temp.bucket}")
+    @Value("${R2_TEMP_BUCKET}")
     private String tempBucket;
 
-    @Value("${cloudflare.r2.upload.bucket}")
+    @Value("${R2_UPLOAD_BUCKET}")
     private String uploadBucket;
 
-    @Value("${cloud.aws.r2.public-domain}")
+    @Value("${R2_PUBLIC_DOMAIN}")
     private String publicDomain;
 
 

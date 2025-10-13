@@ -14,11 +14,11 @@ import java.net.URISyntaxException;
 
 @Configuration
 public class S3Config {
-    @Value("${cloudflare.r2.account.id}")
+    @Value("${R2_ACCOUNT_ID}")
     private String accountId;
-    @Value("${cloudflare.r2.access.key}")
+    @Value("${R2_ACCESS_KEY}")
     private String accessKey;
-    @Value("${cloudflare.r2.secret.key}")
+    @Value("${R2_SECRET_KEY}")
     private String secretKey;
     @Value("${R2_ENDPOINT}")
     private String r2Endpoint;
