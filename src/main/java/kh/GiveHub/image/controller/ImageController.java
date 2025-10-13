@@ -29,8 +29,6 @@ public class ImageController {
 	private final DonationService dService;
 	private final NewsService nService;
 	private final CloudflareR2Client r2Client;
-	private String tempPubURL = "https://pub-3bb314a7c29441ef992a38858df220b1.r2.dev";
-	private String uploadsPubURL = "https://pub-4761268efaff4d7abd91082aacc5a4a6.r2.dev";
 
 	@PostMapping("/temp")
 	@ResponseBody
@@ -39,8 +37,8 @@ public class ImageController {
 			@RequestParam("imgType") String imgType,
 			@RequestParam("imgName") String imgName) {
 
-		String rename = iService.saveTemp(file, imgName, imgType);
-		return ResponseEntity.ok(tempPubURL+"/"+rename);
+		String imageUrl = iService.saveTemp(file, imgName, imgType);
+		return ResponseEntity.ok(imageUrl);
 	}
 
 	//	@PostMapping("/delete")
@@ -94,73 +92,4 @@ public class ImageController {
 		return false;
 	}
 
-	//updateBoard(){
-	//똑같이 iService.saveUpload(list, bid, boardType)로 사진 저장.
-	//	- 그러면 리스트에 있는 사진들을 /upload/로 보냄
-	//	- 그리고 db에 이미지 테이블에 정보 입력
-	// 반환값이 true라면 -> compareContent(bid, boardType,  content) 를 사용
-	//	- bid, boardType로 oldContent 가져와서 비교
-	//	- oldcontent에서 <img src="/upload/a.png"> matcher로 찾음
-	//	- 사진 a, b, c가 나오면 그게 newcontent에 있는지 확인 (a, b는 없고 c, +d, +e 만 있다고 가정)
-	//	- a랑 b를 리스트에 담아서 compare() -> delete(list)로 보낸다.
-	//	- delete에서 c:/GiveHub/upload 에 있는 a랑 b를 if exists해서 지운다.
-	//	- 다 지워지면 db에도 지운 사진 반영 delete(list)-> deleteDB(list).
-	//	- 완료되면 updateBoard()<- compare() <- delete() <- deleteDB() 로 돌아옴
-	//	- updateBoard() -> setContent(bid, content)
-	//	- 여기 컨텐트에는 /upload/ 1개 /temp/ 2개가 있음.
-	// 	- pattern, matcher로 StringBuilder newContent 에 ../temp/ 를 /upload/로 바꿔버리고
-	//	- db에 저장.
-//	@PostMapping("/update")
-//	@ResponseBody
-//	public boolean update(
-//			@RequestParam(value = "updateFiles", required=false) List<String> list,
-//			@RequestParam("bid") int bid,
-//			@RequestParam("boardType") String boardType,
-//			@RequestParam("content") String content) {
-//		boolean isUploaded = true;
-//		if (list != null) {
-//			isUploaded = iService.saveUpload(list, bid, boardType);
-//		}
-//		System.out.println("==========update()==========");
-//		System.out.println("boardType : "+boardType);
-//		System.out.println("bid : "+bid);
-//		System.out.println("--content before insert into db--\n"+content+"\n----------");
-//		System.out.println("isUploaded : "+isUploaded);
-//		//참고
-//		//oldContent 는 수정 전의 content를 말한다.
-//		//content는 작성한 내용(내용 안에 img src가  "/temp/"로 시작하는 content).
-//		//newContent는 content와 사실상 동일한 내용인데 img src가 "/upload/"로 시작.
-//		if (isUploaded) {
-//			int result = 0;
-//			boolean isDeleted = false;
-//			String oldcontent = null;
-//			if(boardType.equals("donation")) {
-//				oldcontent = dService.getOldContent(bid);
-//				System.out.println("oldcontent ----------\n"+oldcontent+"\n----------");
-//				List<String> delFiles = iService.compareContent(content, oldcontent);
-//				System.out.println("delFiles : "+ delFiles);
-//				isDeleted = iService.deleteImage(delFiles);
-//				System.out.println("isDeleted : "+ isDeleted);
-//				if (isDeleted) {
-//					result = dService.setContent(bid, content);
-//				}
-//			}else {
-//				oldcontent = nService.getOldContent(bid);
-//				System.out.println("oldcontent ----------\n"+oldcontent+"\n----------");
-//				List<String> delFiles = iService.compareContent(content, oldcontent);
-//				System.out.println("delFiles : "+ delFiles);
-//				isDeleted = iService.deleteImage(delFiles);
-//				System.out.println("isDeleted : "+ isDeleted);
-//				if (isDeleted) {
-//					result = nService.setContent(bid, content);
-//				}
-//			}
-//			System.out.println("setContent() result : "+result);
-//			System.out.println("==============================");
-//			if (result == 1) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
 }
