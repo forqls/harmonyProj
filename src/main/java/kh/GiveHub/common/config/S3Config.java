@@ -20,7 +20,7 @@ public class S3Config {
     private String accessKey;
     @Value("${cloudflare.r2.secret.key}")
     private String secretKey;
-    @Value("${cloud.aws.r2.endpoint}")
+    @Value("${R2_ENDPOINT}")
     private String r2Endpoint;
 
     @Bean
