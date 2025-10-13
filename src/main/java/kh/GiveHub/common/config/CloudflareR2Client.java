@@ -1,5 +1,6 @@
 package kh.GiveHub.common.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -15,6 +16,13 @@ import java.util.List;
 public class CloudflareR2Client {
     private final S3Client s3Client;
 //    private final S3Presigner s3Presigner;
+
+    //버키 이름 주입
+    @Value("${cloudflare.r2.temp.bucket}")
+    private String tempBucket;
+
+    @Value("${cloudflare.r2.upload.bucket}")
+    private String uploadBucket;
 
 
     public CloudflareR2Client(S3Client s3Client){
@@ -65,16 +73,16 @@ public class CloudflareR2Client {
 
     public void moveImage(String key){
         CopyObjectRequest copyRequest = CopyObjectRequest.builder()
-                .sourceBucket("gh-temp")
+                .sourceBucket(tempBucket)
                 .sourceKey(key)
-                .destinationBucket("gh-uploads")
+                .destinationBucket(uploadBucket )
                 .destinationKey(key)
                 .build();
 
         s3Client.copyObject(copyRequest);
 
         DeleteObjectRequest deleteRequest = DeleteObjectRequest.builder()
-                .bucket("gh-temp") // 원본 버킷 이름
+                .bucket(tempBucket) // 원본 버킷 이름
                 .key(key)
                 .build();
         s3Client.deleteObject(deleteRequest);

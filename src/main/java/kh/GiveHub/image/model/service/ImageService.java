@@ -30,6 +30,11 @@ public class ImageService {
 	private final CloudflareR2Client r2Client;
 	@Value("${cloudflare.r2.public.url}")
 	private String r2PublicUrl;
+
+	//버킷 이름 주입
+	@Value("${cloudflare.r2.temp.bucket}")
+	private String r2TempBucket;
+
 //	private String basePath = WebMvcConfig.getBasePath();
 //	private String tempPath = basePath + "/temp/";
 //	private String uploadPath =basePath + "/upload/";
@@ -49,8 +54,8 @@ public class ImageService {
 			throw new RuntimeException("Failed to get bytes from image"+ex.getMessage());
 		}
 
-		r2Client.uploadImage("gh-temp", rename, data);
-		String imageUrl = r2PublicUrl + "/gh-temp/" + rename;
+		r2Client.uploadImage(r2TempBucket, rename, data);
+		String imageUrl = r2PublicUrl + "/" + r2TempBucket + "/" + rename;
 		return imageUrl;
 	}
 
