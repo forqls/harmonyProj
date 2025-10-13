@@ -35,7 +35,11 @@ body {
 	background: #34D28B; /* 스크롤바 막대 색상 */
 	border-radius: 12px 12px 12px 12px;
 }
-
+#thumbnailDiv img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
 
 
 
