@@ -5,16 +5,15 @@
     <select id="selectCategory" resultType="kh.GiveHub.donation.model.vo.Donation">
         SELECT
         dv.*,
-        i.thumbnailPath
+        m.mem_name AS memName,   i.thumbnailPath
         FROM don_view dv
-        LEFT JOIN (
+        JOIN member m ON (dv.mem_no = m.mem_no)  LEFT JOIN (
         SELECT
-        IMG_PATH AS thumbnailPath,  -- IMG_PATH 컬럼 사용
+        IMG_PATH AS thumbnailPath,
         REF_NO
         FROM image
         WHERE board_type = 'D' AND img_type = '0'
         ) i ON (i.ref_no = dv.do_no)
-
         <where>
             dv.do_enddate
             <![CDATA[ >= ]]>

@@ -101,6 +101,15 @@ public class DonationController {
 
 		ArrayList<Donation> list = dService.selectCategory(map);
 
+		if (list != null && !list.isEmpty()) {
+			System.out.println("=== 디버깅 ===");
+			System.out.println("작성자 이름(memName): " + list.get(0).getMemName());
+			System.out.println("썸네일 경로(thumbnailPath): " + list.get(0).getThumbnailPath());
+			System.out.println("=== =디버깅 종료 ===");
+		} else {
+			System.out.println("=== 리스트 비어있음 ===");
+		}
+
 		return list;
 	}
 
