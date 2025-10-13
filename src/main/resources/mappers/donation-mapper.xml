@@ -2,20 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kh.GiveHub.donation.model.mapper.DonationMapper">
     <update id="deleteDona"> update donation set do_status = 'N' where do_no = #{no} </update>
-    <select id="selectCategory">
-        select * from don_view
+    <select id="selectCategory" resultType="kh.GiveHub.donation.model.vo.Donation">
+        SELECT
+        dv.*,
+        i.thumbnailPath
+        FROM don_view dv
+        LEFT JOIN (
+        SELECT
+        IMG_PATH AS thumbnailPath,  -- IMG_PATH 컬럼 사용
+        REF_NO
+        FROM image
+        WHERE board_type = 'D' AND img_type = '0'
+        ) i ON (i.ref_no = dv.do_no)
+
         <where>
-            do_enddate
+            dv.do_enddate
             <![CDATA[ >= ]]>
-            CURRENT_DATE and do_status = 'Y'
-            <if test="categorySelect != 'all'"> and do_category = #{categorySelect} </if>
-            <if test="d.doTitle != null"> and do_Title like '%${d.doTitle}%' </if>
-            <if test="d.memName != null"> and mem_name like '%${d.memName}%' </if>
+            CURRENT_DATE AND dv.do_status = 'Y'
+            <if test="categorySelect != 'all'"> AND dv.do_category = #{categorySelect} </if>
+            <if test="d.doTitle != null"> AND dv.do_Title LIKE '%' || #{d.doTitle} || '%' </if>
+            <if test="d.memName != null"> AND dv.mem_name LIKE '%' || #{d.memName} || '%' </if>
         </where>
         <choose>
-            <when test="optionSelect == 'popular'"> order by do_views desc </when>
-            <when test="optionSelect == 'recent'"> order by do_createdate desc </when>
-            <when test="optionSelect == 'urgent'"> order by do_enddate asc </when>
+            <when test="optionSelect == 'popular'"> ORDER BY dv.do_views DESC </when>
+            <when test="optionSelect == 'recent'"> ORDER BY dv.do_createdate DESC </when>
+            <when test="optionSelect == 'urgent'"> ORDER BY dv.do_enddate ASC </when>
         </choose>
     </select>
     <select id="selectDonaList" resultType="kh.GiveHub.donation.model.vo.Donation">
