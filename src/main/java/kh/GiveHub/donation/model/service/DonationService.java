@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import kh.GiveHub.common.config.CloudflareR2Client;
 import org.springframework.stereotype.Service;
 
 import kh.GiveHub.donation.model.mapper.DonationMapper;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 public class DonationService {
     private final DonationMapper mapper;
+    private final CloudflareR2Client cloudflareR2Client;
 
     public int deleteDona(String no) {
         return mapper.deleteDona(no);
@@ -27,7 +29,22 @@ public class DonationService {
     }
 
     public ArrayList<Donation> selectCategory(Map<String, Object> map) {
-        return mapper.selectCategory(map);
+        List<Donation> list = mapper.selectCategory(map);
+
+        for (Donation donation : list) {
+            String imageKey = donation.getThumbnailPath();
+
+
+            if (imageKey != null && !imageKey.isEmpty()) {
+                String publicUrl = cloudflareR2Client.getPublicUrl(imageKey);
+
+                donation.setThumbnailPath(publicUrl);
+            } else {
+                donation.setThumbnailPath("/img/board_img01.jpg");
+            }
+        }
+
+        return (ArrayList<Donation>) list;
     }
 
     public Donation selectDonation(int doNo, Integer id) {
@@ -103,4 +120,7 @@ public class DonationService {
     public int deleteDonation(int doNo) {
         return mapper.deleteDonation(doNo);
     }
+
 }
+
+

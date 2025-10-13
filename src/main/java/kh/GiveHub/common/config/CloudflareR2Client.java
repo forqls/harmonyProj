@@ -24,6 +24,9 @@ public class CloudflareR2Client {
     @Value("${cloudflare.r2.upload.bucket}")
     private String uploadBucket;
 
+    @Value("${cloud.aws.r2.public-domain}")
+    private String publicDomain;
+
 
     public CloudflareR2Client(S3Client s3Client){
         this.s3Client = s3Client;
@@ -89,24 +92,16 @@ public class CloudflareR2Client {
 
     }
 
-//    public String generateUploadUrl(String bucket, String key) {
-//        try {
-//            PutObjectRequest request = PutObjectRequest.builder()
-//                    .bucket(bucket)
-//                    .key(key)
-//                    .build();
-//
-//            PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
-//                    .signatureDuration(Duration.ofMinutes(10))
-//                    .putObjectRequest(request)
-//                    .build();
-//
-//            String url = s3Presigner.presignPutObject(presignRequest).url().toString();
-//            System.out.println("Generated PreSigned URL: " + url);
-//            return url;
-//        } catch (Exception e) {
-//            throw new RuntimeException("Failed to generate presigned URL: " + e.getMessage(), e);
-//        }
-//    }
+    public String getPublicUrl(String objectKey) {
+        if (publicDomain == null || objectKey == null) {
+            // publicDomain 설정이 누락된 경우를 대비한 방어 코드
+            return null;
+        }
+
+        String baseUrl = publicDomain.endsWith("/") ? publicDomain : publicDomain + "/";
+        String key = objectKey.startsWith("/") ? objectKey.substring(1) : objectKey;
+
+        return baseUrl + key;
+    }
 
 }
