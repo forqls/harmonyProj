@@ -35,6 +35,10 @@ public class ImageService {
 	@Value("${cloudflare.r2.temp.bucket}")
 	private String r2TempBucket;
 
+	//영구 버킷 이름 주입
+	    @Value("${cloudflare.r2.upload.bucket}")
+		private String r2UploadBucket;
+
 //	private String basePath = WebMvcConfig.getBasePath();
 //	private String tempPath = basePath + "/temp/";
 //	private String uploadPath =basePath + "/upload/";
@@ -76,9 +80,9 @@ public class ImageService {
 			r2Client.moveImage(key);
 
 			// DB에 저장할 최종 영구 URL 생성
-			String finalImageUrl = r2PublicUrl + "/gh-uploads/" + key;
+			String finalImageUrl = r2PublicUrl + "/" + r2UploadBucket + "/" + key;
 
-			// DB에 최종 URL과 파일 정보를 저장 (기존 주석 코드를 R2 맞게 수정)
+			// DB에 최종 URL과 파일 정보를 저장
 			Image img = new Image();
 			img.setImgPath(finalImageUrl); // 영구 URL을 저장
 			img.setImgName(key.substring(key.lastIndexOf("_") + 1));
