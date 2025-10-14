@@ -32,12 +32,14 @@
     <select id="selectDonaList" resultType="kh.GiveHub.donation.model.vo.Donation">
         SELECT
         d.*,
-        m.mem_name AS memName,       i.thumbnailPath              FROM donation d JOIN member m USING(mem_no)
+        m.mem_name AS memName,
+        i.imageRename AS thumbnailPath
+        FROM donation d JOIN member m USING(mem_no)
 
         <if test="i == 1">
             LEFT JOIN (
             SELECT
-            IMG_RENAME AS thumbnailPath,  REF_NO,
+            IMG_RENAME AS imageRename,  REF_NO,
             img_type
             FROM image
             WHERE board_type = 'D' AND img_type = '0'
@@ -50,7 +52,7 @@
         <if test="i == 0">
             LEFT JOIN (
             SELECT
-            IMG_RENAME AS thumbnailPath, REF_NO,
+            IMG_RENAME AS imageRename, REF_NO,
             img_type
             FROM image
             WHERE board_type = 'D' AND img_type = '0'
