@@ -151,7 +151,6 @@
 				if (data != null) {
 					tbody.innerHTML = '';
 					for (const d of data) {
-						// 카테고리 값을 한글로 변환
 						const categoryMapping = {
 							"all": "전체",
 							"child": "아동/청소년",
@@ -162,21 +161,23 @@
 							"environment": "환경",
 							"etc": "기타"
 						};
+						const categoryInKorean = categoryMapping[d.doCategory] || d.doCategory;
 
-						const tr = document.createElement('tr');
 						const thumbnail = (d.thumbnailPath && d.thumbnailPath !== "null") ? d.thumbnailPath : null;
 
+						const tr = document.createElement('tr');
 						tr.innerHTML = `
-						  <td><input type="hidden" value="${d.doNo}"></td>
-						  <td class="img_custom" ${thumbnail ? `style="background-image: url('${thumbnail}');"` : ""}>
+						<td><input type="hidden" value="${d.doNo}"></td>
+						<td class="img_custom"
+							${thumbnail ? `style="background-image: url('${thumbnail}');"` : ""}>
 							${thumbnail ? `<img src="${thumbnail}" width="100%" height="100%">` : ""}
-						  </td>
-						  <td class="list_category_custom">${categoryInKorean}</td>
-						  <td class="list_title_custom">${d.doTitle}</td>
-						  <td>${d.memName}</td>
-						  <td class="dona_date">${d.doCreateDate}~${d.doEndDate}</td>
-						  <td class="views_custom">조회수 ${d.doViews}</td>
-						`;
+						</td>
+						<td class="list_category_custom">${categoryInKorean}</td>
+						<td class="list_title_custom">${d.doTitle}</td>
+						<td>${d.memName}</td>
+						<td class="dona_date">${d.doCreateDate}~${d.doEndDate}</td>
+						<td class="views_custom">조회수 ${d.doViews}</td>
+					`;
 						tbody.appendChild(tr);
 					}
 				} else {
