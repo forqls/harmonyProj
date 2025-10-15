@@ -84,54 +84,27 @@ public class DonationController {
 
 	@GetMapping("/category")
 	@ResponseBody
-	public ArrayList<Donation> category (@RequestParam("categorySelect") String categorySelect, @RequestParam("searchItem") String searchItem,
-										 @RequestParam("searchInput") String searchInput, @RequestParam("optionSelect") String optionSelect){
+	public ArrayList<Donation> category(
+			@RequestParam("categorySelect") String categorySelect,
+			@RequestParam("searchItem") String searchItem,
+			@RequestParam("searchInput") String searchInput,
+			@RequestParam("optionSelect") String optionSelect) {
+
 		Map<String, Object> map = new HashMap<>();
 		map.put("categorySelect", categorySelect);
 		map.put("optionSelect", optionSelect);
+
 		Donation d = new Donation();
 		if (!searchInput.equals("")) {
-			if (searchItem.equals("doTitle")){
+			if (searchItem.equals("doTitle")) {
 				d.setDoTitle(searchInput);
-			}else{
+			} else {
 				d.setMemName(searchInput);
 			}
 		}
 		map.put("d", d);
 
-		ArrayList<Donation> list = dService.selectCategory(map);
-
-		if (list != null && !list.isEmpty()) {
-			for (Donation donation : list) {
-				String wrongUrlPrefix = "https://968fed4a879b9acd043c264ac166156a.r2.cloudflarestorage.com/harmony-images/";
-				String correctUrlPrefix = "https://pub-d307c9789e8a4ec2b24b351bfb46478e.r2.dev/";
-
-				String currentPath = donation.getThumbnailPath();
-
-				if (currentPath != null) {
-					// 1. 잘못된 S3-API 도메인 + 버킷 이름 형태를 올바른 Public URL로 교체
-					if (currentPath.startsWith(wrongUrlPrefix)) {
-						String newPath = correctUrlPrefix + currentPath.substring(wrongUrlPrefix.length());
-						donation.setThumbnailPath(newPath);
-					}
-					// 2. 혹시 DB UPDATE가 불완전했을 경우, 잔여 /harmony-images/만 제거
-					else if (currentPath.contains("/harmony-images/")) {
-						String newPath = currentPath.replace("/harmony-images/", "/");
-						donation.setThumbnailPath(newPath);
-					}
-				}
-			}
-
-			System.out.println("=== 디버깅 ===");
-			System.out.println("작성자 이름(memName): " + list.get(0).getMemName());
-			System.out.println("수정 후 썸네일 경로(thumbnailPath): " + list.get(0).getThumbnailPath());
-			System.out.println("=== =디버깅 종료 ===");
-		} else {
-			System.out.println("=== 리스트 비어있음 ===");
-		}
-
-
-		return list;
+		return dService.selectCategory(map);
 	}
 
 	@PostMapping("/donation/insert")

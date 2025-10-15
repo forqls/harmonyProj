@@ -40,7 +40,7 @@ public class DonationService {
 
                 donation.setThumbnailPath(publicUrl);
             } else {
-                donation.setThumbnailPath("/img/board_img01.jpg");
+                donation.setThumbnailPath(null);
             }
         }
 
