@@ -163,10 +163,8 @@
 						};
 						const categoryInKorean = categoryMapping[d.doCategory] || d.doCategory;
 
-						const thumbnail = (d.thumbnailPath
-								&& d.thumbnailPath.trim() !== ""
-								&& d.thumbnailPath !== "null")
-								? d.thumbnailPath : null;
+						const thumbnail = (d.thumbnailPath && d.thumbnailPath !== "null") ? d.thumbnailPath : null;
+
 
 						const tr = document.createElement('tr');
 						tr.innerHTML = `
