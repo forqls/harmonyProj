@@ -167,26 +167,42 @@ if(submitBtn){
             return;
         }
 
-        //도네이션 insert
+        // 도네이션 insert
         const form = document.querySelector("form");
+
+        // 1 에디터에서 본문 꺼내오기
+        const content = tinymce.get("doContent").getContent();
+
+        // 2 비어 있으면 막기 (에디터가 <p><br></p>만 있어도 빈 내용으로 봄)
+        if (!content || content.trim() === "" || content.trim() === "<p><br></p>") {
+            alert("본문 내용을 입력해 주세요유!");
+            return;
+        }
+
+        // 3 기존 form 데이터 + doContent를 직접 추가
+        const fd = new FormData(form);
+        fd.append("doContent", content);     // ✅ 핵심
+
         let bid;
         try {
-            const response = await fetch("/donation/insert",{
+            const response = await fetch("/donation/insert", {
                 method: "POST",
-                body: new FormData(form)
+                body: fd
             });
-            if(!response.ok){
-                throw new Error("failed : insert donation")
+            if (!response.ok) {
+                throw new Error("failed : insert donation");
             }
             bid = await response.json();
-            console.log(bid);
+            console.log("new donation id:", bid);
         } catch (error) {
-            console.error
+            console.error(error);
+            alert("후원글 저장 중 오류가 발생했어유.");
+            return; // 실패하면 아래 업로드 로직은 진행하지 않도록 종료
         }
+
 
         //1)이미지들 temp->upload로 이동
         //2)content 넣기
-        const content = tinymce.get("doContent").getContent();
         const boardType = document.getElementById("boardType").value;
 
         try {
@@ -240,7 +256,7 @@ if(editBtn){
             result = await response.json();
             console.log("update result : "+result);
         } catch (error) {
-            console.error
+            console.error(error)
         }
 
         //

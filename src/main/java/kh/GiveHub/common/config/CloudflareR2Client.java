@@ -89,6 +89,7 @@ public class CloudflareR2Client {
     public String moveImage(String key){
         // 1) 최종 키는 선두 'T' 제거 (있을 때만)
         String destKey = key.startsWith("T") ? key.substring(1) : key;
+        System.out.println("Copying from tempBucket: " + tempBucket + "/" + key + " → " + uploadBucket + "/" + destKey);
 
         CopyObjectRequest copyRequest = CopyObjectRequest.builder()
                 .sourceBucket(tempBucket)
@@ -107,6 +108,7 @@ public class CloudflareR2Client {
                 .key(key)
                 .build();
         s3Client.deleteObject(deleteRequest);
+
 
         return destKey; // ✅ 최종 키 반환
     }
