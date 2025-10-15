@@ -35,13 +35,6 @@ public class ImageService {
 	@Value("${cloudflare.r2.temp.bucket}")
 	private String r2TempBucket;
 
-	//영구 버킷 이름 주입
-	@Value("${cloudflare.r2.upload.bucket}")
-	private String r2UploadBucket;
-
-//	private String basePath = WebMvcConfig.getBasePath();
-//	private String tempPath = basePath + "/temp/";
-//	private String uploadPath =basePath + "/upload/";
 
 	public String saveTemp(MultipartFile file,
 						   String imgName, String imgType) {
@@ -72,15 +65,17 @@ public class ImageService {
 		// 로컬 파일 처리 관련 주석은 모두 제거
 
 		for (String imageUrl : list) {
-			// DB에 저장된 URL에서 파일명(key)을 추출
 			String key = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
 
 			// R2 클라이언트를 이용해 파일을 임시 버킷 -> 영구 버킷으로 복사/이동
-			// CloudflareR2Client.java에 moveImage(key, sourceBucket, destinationBucket) 메서드가 있다고 가정
 			r2Client.moveImage(key);
 
-			// DB에 저장할 최종 영구 URL 생성
-			String finalImageUrl = r2PublicUrl + "/" + r2UploadBucket + "/" + key;
+			String finalImageUrl = r2PublicUrl;
+			if (!finalImageUrl.endsWith("/")) {
+				finalImageUrl += "/";
+			}
+			finalImageUrl += key;
+
 
 
 			// DB에 최종 URL과 파일 정보를 저장
@@ -95,56 +90,4 @@ public class ImageService {
 		}
 		return true;
 	}
-//
-//	public List<String> compareContent(String content, String oldcontent) {
-//		List<String> oldFiles = new ArrayList<String>();
-//        List<String> delFiles = new ArrayList<>();
-//		//Pattern pattern = Pattern.compile("<img[^>]+?src=\"/upload/([^\"]+)\"[^>]*?>");
-//        //Pattern pattern = Pattern.compile("<img[^>]+?src=\"(?:/upload/|../upload/)([^\"]+)\"[^>]*?>");
-//        Pattern pattern = Pattern.compile("<"
-//        		+ "img[^>]+?src=\"(?:/upload/|\\.\\./upload/|\\.\\./\\.\\./upload/)([^\"]+)\"[^>]*?>");
-//        Matcher matcher = pattern.matcher(oldcontent);
-//
-//        while (matcher.find()) {
-//        	String filename = matcher.group(1);
-//        	oldFiles.add(filename);
-//        }
-//
-//        for (String oldFile : oldFiles) {
-//        	if(!content.contains(oldFile)) {
-//        		delFiles.add(oldFile);
-//        	}
-//        }
-//        return delFiles;
-//	}
-//
-//	public boolean deleteImage(List<String> delFiles) {
-//	    int totalCount = delFiles.size();
-//	    int successCount = 0;
-//
-//	    for (String filename : delFiles) {
-//	        File file = new File(uploadPath + filename);
-//	        boolean fileDeleted = false;
-//
-//	        if (file.exists()) {
-//	            try {
-//	                fileDeleted = file.delete();
-//	                if (fileDeleted) {
-//	                    int dbResult = mapper.deleteImage(filename);
-//	                    if (dbResult > 0) {
-//	                        successCount++;
-//	                    }
-//	                }
-//	            } catch (SecurityException e) {
-//	                e.printStackTrace();
-//	            }
-//	        } else {
-//	            int dbResult = mapper.deleteImage(filename);
-//	            if (dbResult > 0) {
-//	                successCount++;
-//	            }
-//	        }
-//	    }
-//	    return successCount == totalCount;
-//	}
 }
