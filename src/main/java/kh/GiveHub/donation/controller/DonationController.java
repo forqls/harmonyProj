@@ -84,11 +84,12 @@ public class DonationController {
 
 	@GetMapping("/category")
 	@ResponseBody
-	public ArrayList<Donation> category(
-			@RequestParam("categorySelect") String categorySelect,
-			@RequestParam("searchItem") String searchItem,
-			@RequestParam("searchInput") String searchInput,
-			@RequestParam("optionSelect") String optionSelect) {
+	public String category( // 반환 타입을 String으로 변경하여 JSON 오류 해결
+							@RequestParam("categorySelect") String categorySelect,
+							@RequestParam("searchItem") String searchItem,
+							@RequestParam("searchInput") String searchInput,
+							@RequestParam("optionSelect") String optionSelect,
+							HttpServletResponse response) { // HttpServletResponse 매개변수 사용
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("categorySelect", categorySelect);
@@ -104,7 +105,33 @@ public class DonationController {
 		}
 		map.put("d", d);
 
-		return dService.selectCategory(map);
+		ArrayList<Donation> list = dService.selectCategory(map);
+
+		JSONArray array = new JSONArray();
+		final String R2_PUBLIC_URL_PREFIX = "https://968fed4a879b9acd043c264ac166156a.r2.cloudflarestorage.com/harmony-images/";
+
+		for (Donation item : list) {
+			JSONObject json = new JSONObject();
+			json.put("doCategory", item.getDoCategory());
+			json.put("doTitle", item.getDoTitle());
+			json.put("doNo", item.getDoNo());
+			json.put("doCreateDate", item.getDoCreateDate());
+			json.put("doEndDate", item.getDoEndDate());
+			json.put("memName", item.getMemName());
+			json.put("doViews", item.getDoViews());
+
+			String path = item.getThumbnailPath();
+			if (path != null && !path.equals("null") && !path.trim().isEmpty()) {
+				json.put("thumbnailPath", R2_PUBLIC_URL_PREFIX + path);
+			} else {
+				json.put("thumbnailPath", JSONObject.NULL);
+			}
+
+			array.put(json);
+		}
+
+		response.setContentType("application/json; charset=UTF-8");
+		return array.toString();
 	}
 
 	@PostMapping("/donation/insert")
