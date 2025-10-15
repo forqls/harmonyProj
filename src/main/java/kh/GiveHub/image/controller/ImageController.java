@@ -41,29 +41,6 @@ public class ImageController {
 		return ResponseEntity.ok(imageUrl);
 	}
 
-	//	@PostMapping("/delete")
-//	@ResponseBody
-//	public boolean deleteTemp(
-//			@RequestParam(value="tempFiles", required=false) List<String> list) {
-//		if (list == null) {
-//			return true;
-//		}
-//		int length = list.size();
-//		System.out.println("list.size() : "+length);
-//		System.out.println("list : "+list);
-//		int delcount = 0;
-//		//name은 "/temp/" + 파일이름 으로 되어있다.
-//		for(String name : list) {
-//			File tempFile = new File(basePath+name);
-//			if (tempFile.exists()) {
-//				tempFile.delete();
-//				delcount++;
-//			}
-//		}
-//		System.out.println("delcount : "+delcount);
-//		return length==delcount? true:false;
-//	}
-//
 	@PostMapping("/upload")
 	@ResponseBody
 	public boolean saveUpload(

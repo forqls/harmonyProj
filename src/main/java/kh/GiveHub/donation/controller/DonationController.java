@@ -104,7 +104,7 @@ public class DonationController {
 		if (list != null && !list.isEmpty()) {
 			for (Donation donation : list) {
 				String wrongUrlPrefix = "https://968fed4a879b9acd043c264ac166156a.r2.cloudflarestorage.com/harmony-images/";
-				String correctUrlPrefix = "https://pub-d307c9789e8a4ec2b24b351bfb46478e.r2.dev/"; // 학생의 올바른 Public URL
+				String correctUrlPrefix = "https://pub-d307c9789e8a4ec2b24b351bfb46478e.r2.dev/";
 
 				String currentPath = donation.getThumbnailPath();
 

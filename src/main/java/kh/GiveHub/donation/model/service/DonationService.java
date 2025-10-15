@@ -116,7 +116,6 @@ public class DonationService {
     public int updateDonation(Donation d) {
         return mapper.updateDonation(d);
     }
-    //쿼리 delete 가 아니라 update status='N'으로 하는거
     public int deleteDonation(int doNo) {
         return mapper.deleteDonation(doNo);
     }

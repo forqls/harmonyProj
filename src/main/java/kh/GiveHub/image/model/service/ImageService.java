@@ -43,7 +43,7 @@ public class ImageService {
 		int ranNum = (int)(Math.random()*100);
 		String rename = sdf.format(new Date())+ranNum+"_"+imgName;
 		if (imgType.equals("0")) {
-			rename = "T"+rename;
+			rename = rename.replace(" ", "_");
 		}
 		byte[] data = null;
 		try {
@@ -67,23 +67,19 @@ public class ImageService {
 		for (String imageUrl : list) {
 			String key = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
 
-			// R2 클라이언트를 이용해 파일을 임시 버킷 -> 영구 버킷으로 복사/이동
-			r2Client.moveImage(key);
+			String finalKey = r2Client.moveImage(key);
 
 			String finalImageUrl = r2PublicUrl;
-			if (!finalImageUrl.endsWith("/")) {
-				finalImageUrl += "/";
-			}
-			finalImageUrl += key;
+			if (!finalImageUrl.endsWith("/")) finalImageUrl += "/";
+			finalImageUrl += finalKey;
 
-
-
-			// DB에 최종 URL과 파일 정보를 저장
 			Image img = new Image();
-			img.setImgPath(finalImageUrl); // 영구 URL을 저장
-			img.setImgName(key.substring(key.lastIndexOf("_") + 1));
-			img.setImgRename(key);
+			img.setImgPath(finalImageUrl);
+			img.setImgName(finalKey.substring(finalKey.lastIndexOf("_") + 1));
+			img.setImgRename(finalKey);
+
 			img.setImgType(key.startsWith("T") ? "0" : "1");
+
 			img.setRefNo(bid);
 			img.setBoardType(boardType.equals("donation") ? "D" : "N");
 			mapper.insertImage(img);
