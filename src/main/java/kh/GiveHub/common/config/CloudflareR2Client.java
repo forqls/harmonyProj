@@ -71,8 +71,8 @@ public class CloudflareR2Client {
             PutObjectRequest request = PutObjectRequest.builder()
                     .bucket(bucket)
                     .key(key)
-                    .contentType(contentType)             // ✅ MIME 설정
-                    .contentDisposition("inline")         // ✅ 브라우저 표시
+                    .contentType(contentType)
+                    .contentDisposition("inline")
                     .build();
             s3Client.putObject(request, RequestBody.fromBytes(data));
         } catch (S3Exception e){

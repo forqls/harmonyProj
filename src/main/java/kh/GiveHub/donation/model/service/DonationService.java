@@ -36,7 +36,12 @@ public class DonationService {
 
 
             if (imageKey != null && !imageKey.isEmpty()) {
-                String publicUrl = cloudflareR2Client.getPublicUrl(imageKey);
+
+                if (imageKey.startsWith("harmony-images/")) {
+                    imageKey = imageKey.substring("harmony-images/".length());
+                }
+
+                String publicUrl = cloudflareR2Client.getPublicUrl(imageKey); // 정제된 imageKey 사용
 
                 donation.setThumbnailPath(publicUrl);
             } else {
