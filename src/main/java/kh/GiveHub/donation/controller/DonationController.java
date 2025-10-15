@@ -108,7 +108,8 @@ public class DonationController {
 		ArrayList<Donation> list = dService.selectCategory(map);
 
 		JSONArray array = new JSONArray();
-		final String R2_PUBLIC_URL_PREFIX = "";
+		final String R2_PUBLIC_URL_PREFIX = "https://pub-d307c9789e8a4ec2b24b351bfb46478e.r2.dev/";
+
 
 		for (Donation item : list) {
 			JSONObject json = new JSONObject();
