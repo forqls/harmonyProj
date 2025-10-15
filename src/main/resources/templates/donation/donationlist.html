@@ -163,15 +163,17 @@
 						};
 						const categoryInKorean = categoryMapping[d.doCategory] || d.doCategory;
 
-						const thumbnail = (d.thumbnailPath && d.thumbnailPath.trim() !== "" && d.thumbnailPath !== "null")
+						const thumbnail = (d.thumbnailPath
+								&& d.thumbnailPath.trim() !== ""
+								&& d.thumbnailPath !== "null")
 								? d.thumbnailPath : null;
 
 						const tr = document.createElement('tr');
 						tr.innerHTML = `
 						<td><input type="hidden" value="${d.doNo}"></td>
-						<td class="img_custom"> ${thumbnail
-								? `<img src="${thumbnail}" width="100%" height="100%">`
-								: '<div style="background-color: #f0f0f0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">No Image</div>'
+						<td class="img_custom" style="height: 100px;"> ${thumbnail
+								? `<img src="${thumbnail}" style="width:100%; height:100%; object-fit: cover;">` // <img> 태그만 사용
+								: '<div style="background-color: #f0f0f0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; font-size: 12px; color: #555;">No Image</div>'
 						}
 						</td>
 						<td class="list_category_custom">${categoryInKorean}</td>
