@@ -34,17 +34,16 @@ public class DonationService {
         for (Donation donation : list) {
             String imageKey = donation.getThumbnailPath();
 
-
-            if (imageKey != null && !imageKey.isEmpty()) {
+            if (imageKey != null && !imageKey.isEmpty() && !imageKey.startsWith("http")) {
 
                 if (imageKey.startsWith("harmony-images/")) {
                     imageKey = imageKey.substring("harmony-images/".length());
                 }
 
-                String publicUrl = cloudflareR2Client.getPublicUrl(imageKey); // 정제된 imageKey 사용
-
+                String publicUrl = cloudflareR2Client.getPublicUrl(imageKey);
                 donation.setThumbnailPath(publicUrl);
-            } else {
+            }
+            else if(imageKey != null && imageKey.trim().isEmpty()){
                 donation.setThumbnailPath(null);
             }
         }
