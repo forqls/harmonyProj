@@ -34,16 +34,21 @@ public class DonationService {
         for (Donation donation : list) {
             String imageKey = donation.getThumbnailPath();
 
-            if (imageKey != null && !imageKey.isEmpty() && !imageKey.startsWith("http")) {
+
+            if (imageKey != null && !imageKey.isEmpty()) {
+
+                if (imageKey.toLowerCase().startsWith("http")) {
+                    continue;
+                }
 
                 if (imageKey.startsWith("harmony-images/")) {
                     imageKey = imageKey.substring("harmony-images/".length());
                 }
 
                 String publicUrl = cloudflareR2Client.getPublicUrl(imageKey);
+
                 donation.setThumbnailPath(publicUrl);
-            }
-            else if(imageKey != null && imageKey.trim().isEmpty()){
+            } else {
                 donation.setThumbnailPath(null);
             }
         }
