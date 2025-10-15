@@ -163,16 +163,15 @@
 						};
 						const categoryInKorean = categoryMapping[d.doCategory] || d.doCategory;
 
-						// d.thumbnailPath가 null이거나 "null" 문자열이 아닌 경우에만 경로를 사용
-						const thumbnail = (d.thumbnailPath && d.thumbnailPath !== "null") ? d.thumbnailPath : null;
+						const thumbnail = (d.thumbnailPath && d.thumbnailPath.trim() !== "" && d.thumbnailPath !== "null")
+								? d.thumbnailPath : null;
 
 						const tr = document.createElement('tr');
 						tr.innerHTML = `
 						<td><input type="hidden" value="${d.doNo}"></td>
-						<td class="img_custom">
-							${thumbnail
-								? `<img src="${thumbnail}" style="width:100%; height:100%; object-fit: cover;">`
-								: '<span>No Image</span>'
+						<td class="img_custom"> ${thumbnail
+								? `<img src="${thumbnail}" width="100%" height="100%">`
+								: '<div style="background-color: #f0f0f0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">No Image</div>'
 						}
 						</td>
 						<td class="list_category_custom">${categoryInKorean}</td>
