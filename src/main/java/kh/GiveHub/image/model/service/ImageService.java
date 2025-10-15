@@ -43,7 +43,7 @@ public class ImageService {
 		int ranNum = (int)(Math.random()*100);
 		String rename = sdf.format(new Date())+ranNum+"_"+imgName;
 		if (imgType.equals("0")) {
-			String rename = sdf.format(new Date()) + ranNum + "_" + imgName.replace(" ", "_");
+			rename = sdf.format(new Date()) + ranNum + "_" + imgName.replace(" ", "_");
 		}
 		byte[] data = null;
 		try {
