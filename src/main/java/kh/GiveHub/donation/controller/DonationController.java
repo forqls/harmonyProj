@@ -123,7 +123,10 @@ public class DonationController {
 
 			String path = item.getThumbnailPath();
 			if (path != null && !path.equals("null") && !path.trim().isEmpty()) {
-				json.put("thumbnailPath", R2_PUBLIC_URL_PREFIX + path);
+
+				String cleanedPath = path.replaceFirst("^harmony-images/", "");
+
+				json.put("thumbnailPath", R2_PUBLIC_URL_PREFIX + cleanedPath);
 			} else {
 				json.put("thumbnailPath", JSONObject.NULL);
 			}
