@@ -33,31 +33,26 @@
         SELECT
         d.*,
         m.mem_name AS memName,
-        i.imageRename AS thumbnailPath
+        i.imagePath AS thumbnailPath
         FROM donation d JOIN member m USING(mem_no)
 
         <if test="i == 1">
             LEFT JOIN (
             SELECT
-            IMG_RENAME AS imageRename,  REF_NO,
+            IMG_PATH AS imagePath,  REF_NO,
             img_type
             FROM image
             WHERE board_type = 'D' AND img_type = '0'
             ) i ON (i.ref_no = d.do_no)
-            WHERE d.do_status = 'Y' AND d.do_enddate
-            <![CDATA[ >= ]]>
-            CURRENT_DATE
-            ORDER BY d.do_createdate DESC
         </if>
         <if test="i == 0">
             LEFT JOIN (
             SELECT
-            IMG_RENAME AS imageRename, REF_NO,
+            IMG_PATH AS imagePath, REF_NO,
             img_type
             FROM image
             WHERE board_type = 'D' AND img_type = '0'
             ) i ON (i.ref_no = d.do_no)
-            ORDER BY d.do_no
         </if>
     </select>
     <insert id="insertDonation">

@@ -107,7 +107,7 @@ public class DonationController {
 			System.out.println("썸네일 경로(thumbnailPath): " + list.get(0).getThumbnailPath());
 			System.out.println("=== =디버깅 종료 ===");
 		} else {
-			System.out.println("=== 리스트 비어있음 ===");
+			System.out.println("=== list empty ===");
 		}
 
 		return list;
@@ -175,7 +175,6 @@ public class DonationController {
 
 
 	}
-
 
 	@GetMapping("/donation/edit/{doNo}")
 	public String toEdit(@PathVariable("doNo") int doNo,
