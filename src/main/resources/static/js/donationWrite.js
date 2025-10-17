@@ -13,7 +13,7 @@ document.getElementById("doStartDate").addEventListener("change", function () {
 document.getElementById("doEndDate").addEventListener("change", function () {
     const start = document.getElementById("doStartDate").value;
     if (this.value < start) {
-        alert("start date > end date");
+        alert("종료 날짜가 시작 날짜보다 이전입니다. 다시 확인해주세요.");
         this.value = null;
     }
 });

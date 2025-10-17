@@ -76,7 +76,9 @@
 
 		<div class="donation_info">
 			<div class="donation_img_wrap">
-				<img th:src="${donation.thumbnailPath}" />
+				<img th:if="${d.thumbnailPath != null}" th:src="${d.thumbnailPath}" />
+
+				<img th:if="${d.thumbnailPath == null}" src="/img/harmony_logo.png" />
 			</div>
 			<div class="donation_info_text_wrap">
 				<ul>
