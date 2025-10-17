@@ -7,14 +7,14 @@
         SELECT
         dv.*,
         m.mem_name AS memName,
-        i.imageRename AS thumbnailPath
+        i.imgPath AS thumbnailPath
         FROM don_view dv
         JOIN member m ON (dv.mem_no = m.mem_no)
         LEFT JOIN (
         SELECT
         IMG_RENAME AS imageRename,  REF_NO
         FROM image
-        WHERE board_type = 'D' AND img_type = '1'  ) i ON (i.ref_no = dv.do_no)
+        WHERE board_type = 'D' AND img_type = '0'  ) i ON (i.ref_no = dv.do_no)
         <where>
             dv.do_enddate
             <![CDATA[ >= ]]>
@@ -57,22 +57,16 @@
     </select>
     <update id="updateThumbnailPath" parameterType="map">
         UPDATE DONATION
-        SET THUMBNAIL_PATH = #{thumbnailPath}
+        SET IMG_PATH = #{thumbnailPath}
         WHERE DO_NO = #{doNo}
     </update>
-    <insert id="insertDonation">
-        <selectKey order="BEFORE" resultType="_int" keyProperty="doNo"> SELECT nextval('seq_do_no') </selectKey>
-        INSERT INTO donation VALUES (
-        #{doNo},
-        #{doTitle},
-        #{doContent},  #{doGoal},
-        #{doCategory},
-        #{doStartDate},
-        #{doEndDate},
-        DEFAULT,
-        DEFAULT,
-        DEFAULT,
-        #{memNo}
+    <insert id="insertDonation" parameterType="Donation" useGeneratedKeys="true" keyProperty="doNo">
+        INSERT INTO DONATION (
+        do_no, mem_no, mem_name, do_title, do_content, do_goal,
+        do_category, do_startdate, do_enddate
+        ) VALUES (
+        nextval('seq_do_no'), #{memNo}, #{memName}, #{doTitle}, #{doContent}, #{doGoal},
+        #{doCategory}, #{doStartDate}, #{doEndDate}
         )
     </insert>
     <update id="setContent"> update donation set do_content = #{content} where do_no = #{doNo} </update>

@@ -130,12 +130,6 @@ public class DonationService {
         return mapper.deleteDonation(doNo);
     }
 
-    public int updateThumbnailPath(int doNo, String thumbnailPath) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("doNo", doNo);
-        params.put("thumbnailPath", thumbnailPath);
-        return mapper.updateThumbnailPath(params);
-    }
 
 }
 

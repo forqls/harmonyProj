@@ -47,12 +47,10 @@ public class ImageController {
 			@RequestParam("bid") int bid,
 			@RequestParam("boardType") String boardType,
 			@RequestParam("content") String content) {
-		String thumbnailPath = iService.saveUpload(list, bid, boardType);
+
+		iService.saveUpload(list, bid, boardType);
 
 		int result = 0;
-		if (thumbnailPath != null && !thumbnailPath.isEmpty()) {
-			dService.updateThumbnailPath(bid, thumbnailPath);
-		}
 
 		if(boardType.equals("donation")) {
 			result = dService.setContent(bid, content);
