@@ -24,8 +24,8 @@ public class CloudflareR2Client {
     @Value("${cloudflare.r2.upload.bucket}")
     private String uploadBucket;
 
-    @Value("${cloud.aws.r2.public-domain}")
-    private String publicDomain;
+    @Value("${cloudflare.r2.public.url}")
+    private String r2PublicUrl;
 
 
     public CloudflareR2Client(S3Client s3Client){
@@ -123,11 +123,11 @@ public class CloudflareR2Client {
     }
 
     public String getPublicUrl(String objectKey) {
-        if (publicDomain == null || objectKey == null) {
+        if (r2PublicUrl == null || objectKey == null) {
             return null;
         }
 
-        String baseUrl = publicDomain;
+        String baseUrl = r2PublicUrl;
 
         if (!baseUrl.endsWith("/")) {
             baseUrl += "/";
