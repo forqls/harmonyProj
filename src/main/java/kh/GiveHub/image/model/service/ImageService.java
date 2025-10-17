@@ -30,10 +30,6 @@ public class ImageService {
 	@Value("${cloudflare.r2.public.url}")
 	private String r2PublicUrl;
 
-	//버킷 이름 주입
-	@Value("${cloudflare.r2.temp.bucket}")
-	private String r2TempBucket;
-
 
 	public String saveTemp(MultipartFile file,
 						   String imgName, String imgType) {
