@@ -21,7 +21,7 @@ public class CloudflareR2Client {
     @Value("${R2_TEMP_BUCKET}")
     private String tempBucket;
 
-    @Value("${cloudflare.r2.upload.bucket}")
+    @Value("${R2_UPLOAD_BUCKET}")
     private String uploadBucket;
 
     @Value("${cloudflare.r2.public.url}")
@@ -96,7 +96,7 @@ public class CloudflareR2Client {
                 .sourceKey(key)
                 .destinationBucket(uploadBucket)
                 .destinationKey(destKey)
-                // ✅ 메타데이터 교체로 MIME 보정 (필요 시)
+                .acl(ObjectCannedACL.PUBLIC_READ)
                 .metadataDirective(MetadataDirective.REPLACE)
                 .contentType(guessContentType(destKey))
                 .contentDisposition("inline")
