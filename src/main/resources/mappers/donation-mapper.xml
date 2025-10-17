@@ -55,6 +55,11 @@
             ) i ON (i.ref_no = d.do_no)
         </if>
     </select>
+    <update id="updateThumbnailPath" parameterType="map">
+        UPDATE DONATION
+        SET THUMBNAIL_PATH = #{thumbnailPath}
+        WHERE DO_NO = #{doNo}
+    </update>
     <insert id="insertDonation">
         <selectKey order="BEFORE" resultType="_int" keyProperty="doNo"> SELECT nextval('seq_do_no') </selectKey>
         INSERT INTO donation VALUES (

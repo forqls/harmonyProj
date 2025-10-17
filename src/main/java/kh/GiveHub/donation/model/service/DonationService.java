@@ -1,6 +1,7 @@
 package kh.GiveHub.donation.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -127,6 +128,13 @@ public class DonationService {
     }
     public int deleteDonation(int doNo) {
         return mapper.deleteDonation(doNo);
+    }
+
+    public int updateThumbnailPath(int doNo, String thumbnailPath) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("doNo", doNo);
+        params.put("thumbnailPath", thumbnailPath);
+        return mapper.updateThumbnailPath(params);
     }
 
 }

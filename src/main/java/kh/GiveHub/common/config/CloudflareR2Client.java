@@ -5,27 +5,21 @@ import org.springframework.stereotype.Component;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
-import software.amazon.awssdk.services.s3.presigner.S3Presigner;
-import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
-import java.time.Duration;
 import java.util.List;
 
 
 @Component
 public class CloudflareR2Client {
+
     private final S3Client s3Client;
-//    private final S3Presigner s3Presigner;
 
-    //버키 이름 주입
-    @Value("${cloudflare.r2.temp.bucket}")
-    private String tempBucket;
-
-    @Value("${cloudflare.r2.upload.bucket}")
-    private String uploadBucket;
+    @Value("${cloudflare.r2.bucket}")
+    private String bucket;
 
     @Value("${cloudflare.r2.public.url}")
     private String r2PublicUrl;
+    private String key;
 
 
     public CloudflareR2Client(S3Client s3Client){
@@ -53,26 +47,21 @@ public class CloudflareR2Client {
         }
     }
 
-    public void uploadImage(String bucket, String key, byte[] data){
+    public void uploadImage(String key, byte[] data){
         System.out.println("=== Upload Debug Info ===");
-        System.out.println("Bucket: " + bucket);
+        System.out.println("Bucket: " + this.bucket);
         System.out.println("Key: " + key);
         System.out.println("Data length: " + data.length);
 
-        // 1) 확장자 기반으로 contentType 추정
-        String contentType = "application/octet-stream";
-        String lower = key.toLowerCase();
-        if (lower.endsWith(".png"))  contentType = "image/png";
-        else if (lower.endsWith(".jpg") || lower.endsWith(".jpeg")) contentType = "image/jpeg";
-        else if (lower.endsWith(".gif")) contentType = "image/gif";
-        else if (lower.endsWith(".webp")) contentType = "image/webp";
+        String contentType = guessContentType(key);
 
         try{
             PutObjectRequest request = PutObjectRequest.builder()
-                    .bucket(bucket)
+                    .bucket(this.bucket) // 항상 단일 버킷을 사용
                     .key(key)
                     .contentType(contentType)
                     .contentDisposition("inline")
+                    .acl(ObjectCannedACL.PUBLIC_READ) // ★★★ 업로드 시 바로 공개 설정
                     .build();
             s3Client.putObject(request, RequestBody.fromBytes(data));
         } catch (S3Exception e){
@@ -83,33 +72,6 @@ public class CloudflareR2Client {
             System.out.println("Request ID: " + e.requestId());
             throw new RuntimeException("Failed to upload image"+e.getMessage());
         }
-    }
-
-
-    public String moveImage(String key){
-        String destKey = key.startsWith("T") ? key.substring(1) : key;
-        System.out.println("Copying from tempBucket: " + tempBucket + "/" + key + " → " + uploadBucket + "/" + destKey);
-
-        CopyObjectRequest copyRequest = CopyObjectRequest.builder()
-                .sourceBucket(tempBucket)
-                .sourceKey(key)
-                .destinationBucket(uploadBucket)
-                .destinationKey(destKey)
-                .acl(ObjectCannedACL.PUBLIC_READ)
-                .metadataDirective(MetadataDirective.REPLACE)
-                .contentType(guessContentType(destKey))
-                .contentDisposition("inline")
-                .build();
-        s3Client.copyObject(copyRequest);
-
-        DeleteObjectRequest deleteRequest = DeleteObjectRequest.builder()
-                .bucket(tempBucket)
-                .key(key)
-                .build();
-        s3Client.deleteObject(deleteRequest);
-
-
-        return destKey; // ✅ 최종 키 반환
     }
 
     private String guessContentType(String key){

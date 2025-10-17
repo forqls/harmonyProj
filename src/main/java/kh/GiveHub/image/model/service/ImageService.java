@@ -16,7 +16,6 @@ import kh.GiveHub.common.config.CloudflareR2Client;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import kh.GiveHub.common.config.WebMvcConfig;
 import kh.GiveHub.image.model.exception.ImageException;
 import kh.GiveHub.image.model.mapper.ImageMapper;
 import kh.GiveHub.image.model.vo.Image;
@@ -41,10 +40,12 @@ public class ImageService {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmssSSS");
 		int ranNum = (int)(Math.random()*100);
-		String rename = sdf.format(new Date())+ranNum+"_"+imgName;
+		String rename = sdf.format(new Date())+ranNum+"_"+imgName.replace(" ", "_");
+
 		if (imgType.equals("0")) {
-			rename = sdf.format(new Date()) + ranNum + "_" + imgName.replace(" ", "_");
+			rename = "thumb_" + rename;
 		}
+
 		byte[] data = null;
 		try {
 			data = file.getBytes();
@@ -52,38 +53,33 @@ public class ImageService {
 			throw new RuntimeException("Failed to get bytes from image"+ex.getMessage());
 		}
 
-		r2Client.uploadImage(r2TempBucket, rename, data);
-		String baseUrl = r2PublicUrl;
-		if (baseUrl.endsWith("/")) {
-			baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
-		}
-		String imageUrl = baseUrl + "/" + rename;
-		return imageUrl;
+		r2Client.uploadImage(rename, data);
+
+		return r2Client.getPublicUrl(rename);
 	}
 
-	public boolean saveUpload(List<String> list, int bid, String boardType) {
-		// 로컬 파일 처리 관련 주석은 모두 제거
+	public String saveUpload(List<String> list, int bid, String boardType) {
+		String thumbnailFinalUrl = null;
 
 		for (String imageUrl : list) {
 			String key = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
 
-			String finalKey = r2Client.moveImage(key);
-
-			String finalImageUrl = r2PublicUrl;
-			if (!finalImageUrl.endsWith("/")) finalImageUrl += "/";
-			finalImageUrl += finalKey;
-
 			Image img = new Image();
-			img.setImgPath(finalImageUrl);
-			img.setImgName(finalKey.substring(finalKey.lastIndexOf("_") + 1));
-			img.setImgRename(finalKey);
+			img.setImgPath(imageUrl);
+			img.setImgName(key.substring(key.lastIndexOf("_") + 1));
+			img.setImgRename(key);
 
-			img.setImgType(key.startsWith("T") ? "0" : "1");
+			boolean isThumbnail = key.startsWith("thumb_");
+			img.setImgType(isThumbnail ? "0" : "1");
 
 			img.setRefNo(bid);
 			img.setBoardType(boardType.equals("donation") ? "D" : "N");
 			mapper.insertImage(img);
+
+			if (isThumbnail) {
+				thumbnailFinalUrl = imageUrl;
+			}
 		}
-		return true;
+		return thumbnailFinalUrl;
 	}
 }

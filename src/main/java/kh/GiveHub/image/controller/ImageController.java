@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import kh.GiveHub.common.config.WebMvcConfig;
 import kh.GiveHub.donation.model.service.DonationService;
 import kh.GiveHub.image.model.service.ImageService;
 import kh.GiveHub.news.model.service.NewsService;
@@ -48,25 +47,20 @@ public class ImageController {
 			@RequestParam("bid") int bid,
 			@RequestParam("boardType") String boardType,
 			@RequestParam("content") String content) {
-		boolean isUploaded = iService.saveUpload(list, bid, boardType);
-		System.out.println("==========saveUpload==========");
-		System.out.println("boardType : "+boardType);
-		System.out.println("bid : "+bid);
-		System.out.println("--content before insert into db --\n"+content+"\n----------");
-		System.out.println("isUploaded : "+isUploaded);
-		System.out.println("==============================");
+		String thumbnailPath = iService.saveUpload(list, bid, boardType);
+
 		int result = 0;
-		if (isUploaded) {
-			if(boardType.equals("donation")) {
-				result = dService.setContent(bid, content);
-			}else {
-				result = nService.setContent(bid, content);
-			}
+		if (thumbnailPath != null && !thumbnailPath.isEmpty()) {
+			dService.updateThumbnailPath(bid, thumbnailPath);
 		}
-		if(result>0) {
-			return true;
+
+		if(boardType.equals("donation")) {
+			result = dService.setContent(bid, content);
+		} else {
+			result = nService.setContent(bid, content);
 		}
-		return false;
+
+		return result > 0;
 	}
 
 }
