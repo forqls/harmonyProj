@@ -1,10 +1,14 @@
 package kh.GiveHub.common.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer{
+
+	@Value("${upload.path}")
+	private String uploadPath;
 
 	public static String getBasePath() {
 		String os = System.getProperty("os.name").toLowerCase();
@@ -24,6 +28,8 @@ public class WebMvcConfig implements WebMvcConfigurer{
 				.addResourceLocations("file:///"+basePath+"/upload/");
 		registry.addResourceHandler("/**")
 				.addResourceLocations("classpath:/static/");
+		registry.addResourceHandler("/upload/**")
+				.addResourceLocations("file:///" + uploadPath);
 
 	}
 }

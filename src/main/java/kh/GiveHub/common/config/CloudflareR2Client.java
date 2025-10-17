@@ -18,10 +18,10 @@ public class CloudflareR2Client {
 //    private final S3Presigner s3Presigner;
 
     //버키 이름 주입
-    @Value("${R2_TEMP_BUCKET}")
+    @Value("${cloudflare.r2.temp.bucket}")
     private String tempBucket;
 
-    @Value("${R2_UPLOAD_BUCKET}")
+    @Value("${cloudflare.r2.upload.bucket}")
     private String uploadBucket;
 
     @Value("${cloudflare.r2.public.url}")
@@ -87,7 +87,6 @@ public class CloudflareR2Client {
 
 
     public String moveImage(String key){
-        // 1) 최종 키는 선두 'T' 제거 (있을 때만)
         String destKey = key.startsWith("T") ? key.substring(1) : key;
         System.out.println("Copying from tempBucket: " + tempBucket + "/" + key + " → " + uploadBucket + "/" + destKey);
 
