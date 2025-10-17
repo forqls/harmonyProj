@@ -12,16 +12,17 @@
         JOIN member m ON (dv.mem_no = m.mem_no)
         LEFT JOIN (
         SELECT
-        IMG_RENAME AS imageRename,  REF_NO
+        img_path AS imgPath, ref_no
         FROM image
-        WHERE board_type = 'D' AND img_type = '0'  ) i ON (i.ref_no = dv.do_no)
+        WHERE board_type = 'D' AND img_type = '0'
+        ) i ON (i.ref_no = dv.do_no)
         <where>
             dv.do_enddate
             <![CDATA[ >= ]]>
             CURRENT_DATE AND dv.do_status = 'Y'
             <if test="categorySelect != 'all'"> AND dv.do_category = #{categorySelect} </if>
             <if test="d.doTitle != null"> AND dv.do_Title LIKE '%' || #{d.doTitle} || '%' </if>
-            <if test="d.memName != null"> AND dv.mem_name LIKE '%' || #{d.memName} || '%' </if>
+            <if test="d.memName != null"> AND m.mem_name LIKE '%' || #{d.memName} || '%' </if>
         </where>
         <choose>
             <when test="optionSelect == 'popular'"> ORDER BY dv.do_views DESC </when>
@@ -62,10 +63,10 @@
     </update>
     <insert id="insertDonation" parameterType="Donation" useGeneratedKeys="true" keyProperty="doNo">
         INSERT INTO DONATION (
-        do_no, mem_no, mem_name, do_title, do_content, do_goal,
+        do_no, mem_no, do_title, do_content, do_goal,
         do_category, do_startdate, do_enddate
         ) VALUES (
-        nextval('seq_do_no'), #{memNo}, #{memName}, #{doTitle}, #{doContent}, #{doGoal},
+        nextval('seq_do_no'), #{memNo}, #{doTitle}, #{doContent}, #{doGoal},
         #{doCategory}, #{doStartDate}, #{doEndDate}
         )
     </insert>

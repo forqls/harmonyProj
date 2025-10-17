@@ -196,7 +196,7 @@ if(submitBtn){
             console.log("new donation id:", bid);
         } catch (error) {
             console.error(error);
-            alert("후원글 저장 중 오류가 발생했어유.");
+            alert("후원글 저장 중 오류가 발생했습니다.");
             return; // 실패하면 아래 업로드 로직은 진행하지 않도록 종료
         }
 
