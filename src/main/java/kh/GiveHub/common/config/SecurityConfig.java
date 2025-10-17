@@ -55,7 +55,10 @@ public class SecurityConfig {
                 // 헤더 설정 (CSP 추가)
                 .headers(headers -> headers
                         .contentSecurityPolicy(csp -> csp
-                                .policyDirectives("img-src 'self' data:; script-src 'self' 'unsafe-inline';")
+                                .policyDirectives(
+                                        "img-src 'self' data: https://pub-d307c9789e8a4ec2b24b351bfb46478e.r2.dev; " +
+                                                "script-src 'self' https://code.jquery.com 'unsafe-inline';"
+                                )
                         )
                 )
 
