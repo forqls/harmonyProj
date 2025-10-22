@@ -9,11 +9,13 @@ import org.springframework.stereotype.Service;
 import kh.GiveHub.news.model.mapper.NewsMapper;
 import kh.GiveHub.news.model.vo.News;
 import lombok.RequiredArgsConstructor;
+import kh.GiveHub.common.config.CloudflareR2Client;
 
 @Service
 @RequiredArgsConstructor
 public class NewsService {
     private final NewsMapper mapper;
+    private final CloudflareR2Client cloudflareR2Client;
 
     public News selectNews(int newsNo) {
         return mapper.selectNews(newsNo);
@@ -68,7 +70,24 @@ public class NewsService {
     public News newsDetail(int newsNo) {return mapper.newsDetail(newsNo);}
 
     public ArrayList<News> selectNewsNew() {
-        return mapper.selectNewsNew();
+        ArrayList<News> list = mapper.selectNewsNew();
+
+        for (News news : list) {
+            String imageKey = news.getThumbnailPath();
+            if (imageKey != null && !imageKey.isEmpty()) {
+                if (imageKey.toLowerCase().startsWith("http")) {
+                    continue;
+                }
+                if (imageKey.startsWith("harmony-images/")) {
+                    imageKey = imageKey.substring("harmony-images/".length());
+                }
+                String publicUrl = cloudflareR2Client.getPublicUrl(imageKey);
+                news.setThumbnailPath(publicUrl);
+            } else {
+                news.setThumbnailPath(null);
+            }
+        }
+        return list;
     }
 
     public News selectNewsDetail(String newsNo) {return mapper.selectNewsDetail(newsNo);

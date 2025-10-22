@@ -37,8 +37,7 @@
                 <tbody class="list_custom newsList_custom">
                 <tr th:each="n : ${nlist}">
                     <td><input type="hidden" th:value="${n.newsNo}"></td>
-                    <td class="img_custom" th:style="|background-image: url(${n.thumbnailPath});|">
-                        <img th:src="${#item.imgPath}" alt="이미지"></td>
+                    <td class="img_custom" th:style="|background-image: url(${n.thumbnailPath});|"></td>
                     <td class="list_title_custom">[[${n.newsTitle}]]</td>
                     <td>[[${n.memName}]]</td>
                     <td class="dona_date">[[${n.newsCreateDate}]]</td>
