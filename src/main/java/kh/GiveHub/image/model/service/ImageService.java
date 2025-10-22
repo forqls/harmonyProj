@@ -51,7 +51,7 @@ public class ImageService {
 
 		r2Client.uploadImage(rename, data);
 
-		return r2Client.getPublicUrl(rename);
+		return r2PublicUrl + "/" + rename;
 	}
 
 	public String saveUpload(List<String> list, int bid, String boardType) {

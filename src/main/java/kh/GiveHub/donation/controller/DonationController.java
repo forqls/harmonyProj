@@ -68,7 +68,7 @@ public class DonationController {
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		model.addAttribute("memName",loginUser.getMemName());
 		model.addAttribute("doNo",doNo);
-		return "page/paymentPage";
+		return "page/PaymentPage";
 	}
 
 	@GetMapping("/donation/donationWrite")
