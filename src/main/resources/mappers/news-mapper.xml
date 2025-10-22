@@ -21,24 +21,23 @@
 	<select id="newsDetail"> select * from news_view where news_no = #{newsNo} </select>
 	<select id="selectNewsNew" resultType="kh.GiveHub.news.model.vo.News">
 		SELECT
-		n.news_no AS "newsNo",
-		n.news_title AS "newsTitle",
-		n.news_createdate AS "newsCreateDate",
-		m.mem_name AS "memName",
-		d.do_category AS "doCategory",
-		i.img_path AS "thumbnailPath"
+			n.news_no AS "newsNo",
+			n.news_title AS "newsTitle",
+			n.news_createdate AS "newsCreateDate",
+			m.mem_name AS "memName",
+			d.do_category AS "doCategory",
+			i.img_path AS "thumbnailPath"
 		FROM
-		news n
+			news n
 		JOIN
-		member m ON n.mem_no = m.mem_no
+			member m ON n.mem_no = m.mem_no
 		LEFT JOIN
-		donation d ON n.do_no = d.do_no
+			donation d ON n.do_no = d.do_no
 		LEFT JOIN
-		image i ON (n.do_no = i.ref_no AND i.board_type = 'D' AND i.img_type = '0')
-		WHERE
-		n.news_status = 'Y'
+			image i ON (n.news_no = i.ref_no AND i.board_type = 'N' AND i.img_type = '0') WHERE
+			n.news_status = 'Y'
 		ORDER BY
-		n.news_createdate DESC
+			n.news_createdate DESC
 		LIMIT 3
 	</select>
 	<select id="selectNewsDetail"> select * from news_view where news_no = #{newsNo} </select>
