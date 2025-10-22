@@ -118,12 +118,16 @@
     </select>
     <update id="updateCount"> update donation set do_views = do_views + 1 where do_no = #{doNo} </update>
     <select id="selectMostCategoryList">
-        select * from don_view where do_category=#{mostCategory} and do_status='Y' and do_enddate
+        select dv.*, dv.do_thumbnail_path AS "thumbnailPath"
+        from don_view dv
+        where do_category=#{mostCategory} and do_status='Y' and do_enddate
         <![CDATA[ >= ]]>
         CURRENT_DATE FETCH FIRST 2 ROWS ONLY
     </select>
     <select id="selectDeadLineList">
-        select * from don_view where do_status='Y' and do_enddate
+        select dv.*, dv.do_thumbnail_path AS "thumbnailPath"
+        from don_view dv
+        where do_status='Y' and do_enddate
         <![CDATA[ >= ]]>
         CURRENT_DATE order by do_enddate FETCH FIRST 2 ROWS ONLY
     </select>
