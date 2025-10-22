@@ -108,7 +108,24 @@ public class DonationService {
 
 
     public ArrayList<Donation> selectNew() {
-        return mapper.selectNew();
+        ArrayList<Donation> list = mapper.selectNew();
+
+        for (Donation donation : list) {
+            String imageKey = donation.getThumbnailPath();
+            if (imageKey != null && !imageKey.isEmpty()) {
+                if (imageKey.toLowerCase().startsWith("http")) {
+                    continue;
+                }
+                if (imageKey.startsWith("harmony-images/")) {
+                    imageKey = imageKey.substring("harmony-images/".length());
+                }
+                String publicUrl = cloudflareR2Client.getPublicUrl(imageKey);
+                donation.setThumbnailPath(publicUrl);
+            } else {
+                donation.setThumbnailPath(null);
+            }
+        }
+        return list;
     }
 
     public String getOldContent(int doNo) {

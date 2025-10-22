@@ -80,12 +80,11 @@
         FROM
             donation d
         LEFT JOIN (
-            SELECT
-                ('/upload/' || IMG_RENAME) as thumbnailPath, REF_NO
-            FROM
-                image
-            WHERE
-                board_type = 'D' and img_type = '0'
+        SELECT
+            IMG_PATH as thumbnailPath, REF_NO  FROM
+            image
+        WHERE
+            board_type = 'D' and img_type = '0'
         ) i ON (i.ref_no = d.do_no)
         WHERE d.do_status = 'Y'
         ORDER BY d.do_createdate DESC
