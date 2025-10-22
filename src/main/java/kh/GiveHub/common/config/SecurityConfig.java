@@ -42,10 +42,13 @@ public class SecurityConfig {
                 "/member/findpassword",
                 "/member/findpasswordsuccess",
                 "/donation/donationlist",
-                "/donation/donationdetail",
+                "/donation/donationdetail/**",
                 "/news/newsList",
                 "/news/newsDetail",
-                "/page/PaymentPage"
+                "/page/PaymentPage",
+                "/donation/new",
+                "/donation/newNews",
+                "/donation/customNews"
         };
 
         http
