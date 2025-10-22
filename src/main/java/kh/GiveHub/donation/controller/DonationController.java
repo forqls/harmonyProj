@@ -244,7 +244,12 @@ public class DonationController {
 
 
 	@GetMapping("/donation/customNews")
-	public ResponseEntity<List<Donation>> getCustomNews(@RequestParam(value = "userId" , required = false,defaultValue = "0") int userId){
+	public ResponseEntity<List<Donation>> getCustomNews(@RequestParam(value = "userId" , required = false) Integer userId){
+
+		if (userId == null) {
+			userId = 0;
+		}
+
 		ArrayList<Payment> list = mService.selectDonationList(userId,0);
 
 		System.out.println(userId);
