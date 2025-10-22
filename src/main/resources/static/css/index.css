@@ -65,7 +65,7 @@ h3.board_title {
 
 .slide_img, .board_img {
    display: flex;
-   height: 100% !important;
+   height: 100%;
 }
 
 /* 공통영역 end */
