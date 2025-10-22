@@ -68,6 +68,10 @@ h3.board_title {
    height: 100%;
 }
 
+.board_img {
+   height: auto !important;
+}
+
 /* 공통영역 end */
 
 
