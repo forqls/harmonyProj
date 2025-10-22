@@ -16,7 +16,7 @@ public class News {
     private Date newsCreateDate;
     private String newsStatus;
     private int memNo;
-    private String doNo;
+    private int doNo;
     private String doTitle;
     private String memName;
     private String thumbnailPath;
