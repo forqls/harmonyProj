@@ -283,6 +283,7 @@ public class DonationController {
 			donations = dService.selectMostCategoryList(mostCategory);
 		}
 
+
 		if (donations == null || donations.isEmpty()) {
 			donations = dService.selectDeadLineList();
 		}
