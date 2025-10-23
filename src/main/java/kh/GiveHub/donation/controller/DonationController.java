@@ -66,6 +66,9 @@ public class DonationController {
 	@GetMapping("payment")
 	public String paymentPage (HttpSession session , Model model , @RequestParam("doNo") String doNo) {
 		Member loginUser = (Member)session.getAttribute("loginUser");
+		if (loginUser == null) {
+			return "redirect:/member/login";
+		}
 		model.addAttribute("memName",loginUser.getMemName());
 		model.addAttribute("doNo",doNo);
 		return "page/PaymentPage";
