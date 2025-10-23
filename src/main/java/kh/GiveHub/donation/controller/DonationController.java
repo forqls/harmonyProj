@@ -281,7 +281,9 @@ public class DonationController {
 		ArrayList<Donation> donations = null;
 		if(mostCategory != null) {
 			donations = dService.selectMostCategoryList(mostCategory);
-		}else{
+		}
+
+		if (donations == null || donations.isEmpty()) {
 			donations = dService.selectDeadLineList();
 		}
 
